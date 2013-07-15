@@ -1,0 +1,1 @@
+/home/zenathar/.vimrc
