@@ -1,0 +1,37 @@
+ls
+cd .emacs.d/
+ñs
+ls
+mkdir config
+cd config
+ls
+cd ~/.emacs.d
+cd elpa/
+ls
+cd yasnippet-20130722.1832/
+ls
+cd snippets/
+ls
+cd latex-mode/
+ls
+wget
+curl
+culr --help
+cur´l --help
+curl --help
+git
+git clone https://github.com/madsdk/yasnippets-latex.git
+ls
+cd yasnippets-latex/
+ls
+cd ..
+cp yasnippets-latex/* . 
+ls
+rmdir yasnippets-latex
+cd yasnippets-latex/
+ls
+cd 
+pushd .emacs.d/elpa/yasnippet-20130722.1832/snippets/latex-mode/
+ls
+rm -r yasnippets-latex/
+exit
