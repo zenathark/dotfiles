@@ -13,7 +13,7 @@
     call vundle#rc()
     Bundle 'gmarik/vundle'
     "Add your bundles here
-    Bundle 'Syntastic'
+    Bundle 'scrooloose/syntastic'
     Bundle 'https://github.com/tpope/vim-fugitive'
     Bundle 'scrooloose/nerdtree' 
     Bundle 'flazz/vim-colorschemes'
@@ -24,48 +24,101 @@
     Bundle 'wavded/vim-stylus'
     Bundle 'hail2u/vim-css3-syntax'
     Bundle 'klen/rope-vim'
+    Bundle 'git://git.code.sf.net/p/vim-latex/vim-latex'
     Bundle 'phpvim'
-    Bundle 'Lokaltog/powerline'
+    Bundle 'moll/vim-node'
+    Bundle 'klen/python-mode'
+    Bundle 'davidhalter/jedi-vim'
+"    Bundle 'Lokaltog/powerline'
     if iCanHazVundle == 0
         echo "Installing Bundles, please ignore key map error messages"
         echo ""
         :BundleInstall
     endif
-" Setting up Vundle - the vim plugin bundler enddisable arrows
-if $COLORTERM == 'gnome-terminal'
-  set t_Co=256
-endif
 "set line numbers
 set number
 "Maximize gvim window
 if has("gui_running")
-    "set font
-    set guifont=PragmataPro\ 9
-    set lines=999 columns=999
     colorscheme solarized
-    set bg=dark
+    set bg=light
     set guioptions-=T
     set guioptions-=r
-else
-    " if exists("+lines")
-    "     set lines=999
-    " " endif
-    " " if exists("+columns")
-    "     set columns=999
-    " endif
-    set bg=dark
-    colors solarized
+    set guifont=Inconsolata_for_Powerline:h13
+    set columns=100
+    set lines=50
 endif 
-"set tabular
+"indentation
 set cindent
-set tabstop=2
+set tabstop=4
 set shiftwidth=4
 set expandtab
-
-"klet NERDTreeQuitOnOpen=1
-"insert with one key stroke <Space>
-    "set color
-"autocmd BufNewFile,BufRead *.styl set filetype=stylus
 set laststatus=2
+"Extra keys
 :imap jj <Esc>
-:nmap ;; :
+:nmap ññ :
+
+filetype plugin on
+filetype indent plugin on
+syntax on
+
+"Tex Config
+let g:Tex_CompileRule_pdf = 'xelatex -interaction=nonstopmode $*'
+
+"Hidden chars
+set listchars=tab:▸\ ,eol:¬
+"leader \
+nmap <leader>l :set list!<CR>
+
+"Powerline Config
+python from powerline.vim import setup as powerline_setup
+python powerline_setup()
+python del powerline_setup
+
+"Python config
+
+" Python-mode
+" Activate rope
+" Keys:
+" K             Show python docs
+" <Ctrl-Space>  Rope autocomplete
+" <Ctrl-c>g     Rope goto definition
+" <Ctrl-c>d     Rope show documentation
+" <Ctrl-c>f     Rope find occurrences
+" <Leader>b     Set, unset breakpoint (g:pymode_breakpoint enabled)
+" [[            Jump on previous class or function (normal, visual, operator modes)
+" ]]            Jump on next class or function (normal, visual, operator modes)
+" [M            Jump on previous class or method (normal, visual, operator modes)
+" ]M            Jump on next class or method (normal, visual, operator modes)
+let g:pymode_rope = 0 "Using jedi-vim rope disabled
+
+" Documentation
+let g:pymode_doc = 1
+let g:pymode_doc_key = 'K'
+
+"Linting
+let g:pymode_lint = 1
+let g:pymode_lint_checker = "pyflakes,pep8"
+" Auto check on save
+let g:pymode_lint_write = 1
+
+" Support virtualenv
+let g:pymode_virtualenv = 1
+" Enable breakpoints plugin
+let g:pymode_breakpoint = 1
+let g:pymode_breakpoint_key = '<leader>b'
+
+" syntax highlighting
+let g:pymode_syntax = 1
+let g:pymode_syntax_all = 1
+let g:pymode_syntax_indent_errors = g:pymode_syntax_all
+let g:pymode_syntax_space_errors = g:pymode_syntax_all
+
+" Don't autofold code
+let g:pymode_folding = 0
+
+if has("autocmd")
+    autocmd FileType python setlocal ts=4 sts=4 sw=4 expandtab
+endif
+
+"Insert just one char with space
+:nmap <Space> i_<Esc>r
