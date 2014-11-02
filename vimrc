@@ -29,6 +29,9 @@
     Bundle 'moll/vim-node'
     Bundle 'klen/python-mode'
     Bundle 'davidhalter/jedi-vim'
+    Bundle 'vim-coffee-script'
+    Bundle 'lukerandall/haskellmode-vim'
+    Bundle 'slim-template/vim-slim'
 "    Bundle 'Lokaltog/powerline'
     if iCanHazVundle == 0
         echo "Installing Bundles, please ignore key map error messages"
@@ -39,33 +42,34 @@
 set number
 "Maximize gvim window
 if has("gui_running")
-    colorscheme solarized
-    set bg=light
+    colorscheme molokai
+    set bg=dark
     set guioptions-=T
     set guioptions-=r
     set guifont=Inconsolata_for_Powerline:h13
     set columns=100
     set lines=50
 endif 
-"indentation
+"default indentation
 set cindent
 set tabstop=4
 set shiftwidth=4
 set expandtab
-set laststatus=2
 "Extra keys
 :imap jj <Esc>
 :nmap ññ :
-
+"enable check for type of file and syntax
 filetype plugin on
 filetype indent plugin on
 syntax on
 
 "Tex Config
 let g:Tex_CompileRule_pdf = 'xelatex -interaction=nonstopmode $*'
+let g:Tex_MultipleCompileFormats = 'dvi,pdf,ps'
 
 "Hidden chars
 set listchars=tab:▸\ ,eol:¬
+
 "leader \
 nmap <leader>l :set list!<CR>
 
@@ -92,12 +96,12 @@ python del powerline_setup
 let g:pymode_rope = 0 "Using jedi-vim rope disabled
 
 " Documentation
-let g:pymode_doc = 1
+let g:pymode_doc = 0
 let g:pymode_doc_key = 'K'
 
 "Linting
 let g:pymode_lint = 1
-let g:pymode_lint_checker = "pyflakes,pep8"
+let g:pymode_lint_checker = ["pyflakes" ,"pep8"]
 " Auto check on save
 let g:pymode_lint_write = 1
 
@@ -118,7 +122,16 @@ let g:pymode_folding = 0
 
 if has("autocmd")
     autocmd FileType python setlocal ts=4 sts=4 sw=4 expandtab
+    autocmd FileType *.tex setlocal ts=2 sts=2 sw=2 expandtab spell spelllang=en_us 
 endif
 
 "Insert just one char with space
 :nmap <Space> i_<Esc>r
+" au Bufenter *.hs compiler ghc
+let g:haddock_browser="open"
+let g:haddock_browser_callformat = "%s %s"
+let g:syntastic_enable_signs=1
+let g:syntastic_mode_map={ 'mode': 'active',
+\ 'active_filetypes': [],
+\ 'passive_filetypes': ['slim'] }
+let g:syntactic_check_on_open=1
