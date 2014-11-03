@@ -1,4 +1,3 @@
-    set rtp+=~/.vim/bundle/powerline/powerline/bindings/vim
 " Setting up Vundle - the vim plugin bundler
     let iCanHazVundle=1
     let vundle_readme=expand('~/.vim/bundle/vundle/README.md')
@@ -32,7 +31,7 @@
     Bundle 'vim-coffee-script'
     Bundle 'lukerandall/haskellmode-vim'
     Bundle 'slim-template/vim-slim'
-"    Bundle 'Lokaltog/powerline'
+    Bundle 'Lokaltog/powerline', {'rtp': 'powerline/bindings/vim/'}
     if iCanHazVundle == 0
         echo "Installing Bundles, please ignore key map error messages"
         echo ""
@@ -49,12 +48,18 @@ if has("gui_running")
     set guifont=Inconsolata_for_Powerline:h13
     set columns=100
     set lines=50
+    set encoding=utf-8
+else
+    set t_Co=256
+    set term=xterm-256color
+    set termencoding=utf-8
 endif 
 "default indentation
 set cindent
 set tabstop=4
 set shiftwidth=4
 set expandtab
+set laststatus=2
 "Extra keys
 :imap jj <Esc>
 :nmap ññ :
@@ -73,10 +78,11 @@ set listchars=tab:▸\ ,eol:¬
 "leader \
 nmap <leader>l :set list!<CR>
 
-"Powerline Config
-python from powerline.vim import setup as powerline_setup
-python powerline_setup()
-python del powerline_setup
+" Powerline Config
+set rtp+=~/.vim/bundle/powerline/powerline/bindings/vim
+" python from powerline.vim import setup as powerline_setup
+" python powerline_setup()
+" python del powerline_setup
 
 "Python config
 
@@ -127,7 +133,7 @@ endif
 
 "Insert just one char with space
 :nmap <Space> i_<Esc>r
-" au Bufenter *.hs compiler ghc
+au Bufenter *.hs compiler ghc
 let g:haddock_browser="open"
 let g:haddock_browser_callformat = "%s %s"
 let g:syntastic_enable_signs=1
