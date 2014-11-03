@@ -50,8 +50,11 @@ if has("gui_running")
     set lines=50
     set encoding=utf-8
 else
+    set encoding=utf-8
     set t_Co=256
     set term=xterm-256color
+    colorscheme molokai
+    set bg=dark
     set termencoding=utf-8
 endif 
 "default indentation
