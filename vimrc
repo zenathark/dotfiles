@@ -17,7 +17,10 @@
     Bundle 'scrooloose/nerdtree' 
     Bundle 'flazz/vim-colorschemes'
     Bundle 'tpope/vim-surround'
-    Bundle 'snipMate' 
+    Bundle "MarcWeber/vim-addon-mw-utils"
+    Bundle "tomtom/tlib_vim"
+    Bundle "garbas/vim-snipmate"
+    Bundle "honza/vim-snippets"
     Bundle 'tComment'
     Bundle 'tpope/vim-rails'
     Bundle 'wavded/vim-stylus'
@@ -41,7 +44,7 @@
 set number
 "Maximize gvim window
 if has("gui_running")
-    colorscheme molokai
+    colorscheme base16-monokai
     set bg=dark
     set guioptions-=T
     set guioptions-=r
