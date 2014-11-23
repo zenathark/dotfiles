@@ -12,29 +12,64 @@
     call vundle#rc()
     Bundle 'gmarik/vundle'
     "Add your bundles here
+    " Syntaxis checker
     Bundle 'scrooloose/syntastic'
-    Bundle 'https://github.com/tpope/vim-fugitive'
-    Bundle 'scrooloose/nerdtree' 
-    Bundle 'flazz/vim-colorschemes'
+    " Surround with tags
     Bundle 'tpope/vim-surround'
-    Bundle "MarcWeber/vim-addon-mw-utils"
-    Bundle "tomtom/tlib_vim"
-    Bundle "garbas/vim-snipmate"
+    " Add delimiter surrounding ()
+    Bundle 'Raimondi/delimitMate'
+    "Git Integration
+    Bundle 'https://github.com/tpope/vim-fugitive'
+    "File Navegation
+    Bundle 'scrooloose/nerdtree'
+    "Move arond easier lead lead b n
+    Bundle 'Lokaltog/vim-easymotion'
+    "Better buffexplorer like NerdTree
+    Bundle 'jlanzarotta/bufexplorer'
+    "Fuzzy file searcher
+    Bundle 'kien/ctrlp.vim'
+    "Fuzzy Autocompleter
+    Bundle 'Valloric/YouCompleteMe'
+    "SuperTab for UltiSnip YMC interoperation
+    Bundle 'ervandew/supertab'
+    "UI Colors
+    Bundle 'flazz/vim-colorschemes'
+    " Bundle 'Lokaltog/powerline', {'rtp': 'powerline/bindings/vim/'}
+    Bundle 'bling/vim-airline'
+    "Dependency ?
+    Bundle 'tomtom/tlib_vim'
+    "Snippets
+    Bundle 'SirVer/ultisnips'
+    " Old snippets plugin
+    " Bundle 'garbas/vim-snipmate'
     Bundle "honza/vim-snippets"
+    " Block commenter
     Bundle 'tComment'
+    " Languaje Specific
+    " RubyRails
     Bundle 'tpope/vim-rails'
+    " CSS
     Bundle 'wavded/vim-stylus'
     Bundle 'hail2u/vim-css3-syntax'
-    Bundle 'klen/rope-vim'
+    " Latex
     Bundle 'git://git.code.sf.net/p/vim-latex/vim-latex'
+    " PHP
     Bundle 'phpvim'
+    " Node
     Bundle 'moll/vim-node'
-    Bundle 'klen/python-mode'
-    Bundle 'davidhalter/jedi-vim'
+    " CoffeScript
     Bundle 'vim-coffee-script'
-    Bundle 'lukerandall/haskellmode-vim'
+    " Slim/HTML
     Bundle 'slim-template/vim-slim'
-    Bundle 'Lokaltog/powerline', {'rtp': 'powerline/bindings/vim/'}
+    " Python
+    Bundle 'nvie/vim-flake8'
+    " Disabled in favor of YCM
+    " Bundle 'klen/python-mode'
+    " Bundle 'davidhalter/jedi-vim'
+    " Disabled in favor of YCM
+    " Bundle 'klen/rope-vim'
+    " snipMate dependency
+    " Bundle 'MarcWeber/vim-addon-mw-utils'
     if iCanHazVundle == 0
         echo "Installing Bundles, please ignore key map error messages"
         echo ""
@@ -48,18 +83,22 @@ if has("gui_running")
     set bg=dark
     set guioptions-=T
     set guioptions-=r
-    set guifont=Inconsolata_for_Powerline:h13
+    "Remove left scrollbar
+    set go-=L
+    set guifont=Source\ Code\ Pro\ for\ Powerline:h13
     set columns=100
     set lines=50
     set encoding=utf-8
+    set cursorline
 else
-    set encoding=utf-8
-    set t_Co=256
     set term=xterm-256color
-    colorscheme molokai
-    set bg=dark
+    set encoding=utf-8
     set termencoding=utf-8
-endif 
+    " set t_Co=256
+    colorscheme base16-monokai
+    set bg=dark
+    set guifont=Source\ Code\ Pro\ for\ Powerline:h13
+endif
 "default indentation
 set cindent
 set tabstop=4
@@ -67,83 +106,36 @@ set shiftwidth=4
 set expandtab
 set laststatus=2
 "Extra keys
-:imap jj <Esc>
+:imap kj <Esc>
 :nmap ññ :
+"Latin America keyboard specifics
+"Hidden chars
+nmap <leader>h :set list!<CR>
+set listchars=tab:▸\ ,eol:¬
+"Insert just one char with space
+:nmap <Space> i_<Esc>r
 "enable check for type of file and syntax
 filetype plugin on
 filetype indent plugin on
 syntax on
-
+"------------------Plug In Specfics ------------------------------------------
+"
 "Tex Config
 let g:Tex_CompileRule_pdf = 'xelatex -interaction=nonstopmode $*'
 let g:Tex_MultipleCompileFormats = 'dvi,pdf,ps'
 
-"Hidden chars
-set listchars=tab:▸\ ,eol:¬
+"Start Flake8 Plugin
+" autocmd BufWritePost *.py call Flake8()
 
-"leader \
-nmap <leader>l :set list!<CR>
+"YouCompleteMe UltiSnip Tab
+let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
+let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
+let g:SuperTabDefaultCompletionType = '<C-n>'
 
-" Powerline Config
-set rtp+=~/.vim/bundle/powerline/powerline/bindings/vim
-" python from powerline.vim import setup as powerline_setup
-" python powerline_setup()
-" python del powerline_setup
+"Better key bindings for UltiSnipsExpandTrigger
+let g:UltiSnipsExpandTrigger = "<tab>"
+let g:UltiSnipsJumpForwardTrigger = "<tab>"
+let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
 
-"Python config
-
-" Python-mode
-" Activate rope
-" Keys:
-" K             Show python docs
-" <Ctrl-Space>  Rope autocomplete
-" <Ctrl-c>g     Rope goto definition
-" <Ctrl-c>d     Rope show documentation
-" <Ctrl-c>f     Rope find occurrences
-" <Leader>b     Set, unset breakpoint (g:pymode_breakpoint enabled)
-" [[            Jump on previous class or function (normal, visual, operator modes)
-" ]]            Jump on next class or function (normal, visual, operator modes)
-" [M            Jump on previous class or method (normal, visual, operator modes)
-" ]M            Jump on next class or method (normal, visual, operator modes)
-let g:pymode_rope = 0 "Using jedi-vim rope disabled
-
-" Documentation
-let g:pymode_doc = 0
-let g:pymode_doc_key = 'K'
-
-"Linting
-let g:pymode_lint = 1
-let g:pymode_lint_checker = ["pyflakes" ,"pep8"]
-" Auto check on save
-let g:pymode_lint_write = 1
-
-" Support virtualenv
-let g:pymode_virtualenv = 1
-" Enable breakpoints plugin
-let g:pymode_breakpoint = 1
-let g:pymode_breakpoint_key = '<leader>b'
-
-" syntax highlighting
-let g:pymode_syntax = 1
-let g:pymode_syntax_all = 1
-let g:pymode_syntax_indent_errors = g:pymode_syntax_all
-let g:pymode_syntax_space_errors = g:pymode_syntax_all
-
-" Don't autofold code
-let g:pymode_folding = 0
-
-if has("autocmd")
-    autocmd FileType python setlocal ts=4 sts=4 sw=4 expandtab
-    autocmd FileType *.tex setlocal ts=2 sts=2 sw=2 expandtab spell spelllang=en_us 
-endif
-
-"Insert just one char with space
-:nmap <Space> i_<Esc>r
-au Bufenter *.hs compiler ghc
-let g:haddock_browser="open"
-let g:haddock_browser_callformat = "%s %s"
-let g:syntastic_enable_signs=1
-let g:syntastic_mode_map={ 'mode': 'active',
-\ 'active_filetypes': [],
-\ 'passive_filetypes': ['slim'] }
-let g:syntactic_check_on_open=1
+let g:airline_theme='base16'
+let g:airline_powerline_fonts = 1
