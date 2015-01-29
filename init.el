@@ -94,9 +94,10 @@
     (helm-mode t)
     (evil-leader/set-key "f" 'helm-find-files)
     (evil-leader/set-key "b" 'helm-buffers-list)
+    (key-chord-define-global ";;" 'helm-M-x)
     ;; esc quits
     (defun minibuffer-keyboard-quit ()
-      "Abort recursive edit.In Delete Selection mode, if the mark is active, just deactivate it;then it takes a second \\[keyboard-quit] to abort the minibuffer."
+      "Abort recursive edit. In Delete Selection mode, if the mark is active, just deactivate it;then it takes a second \\[keyboard-quit] to abort the minibuffer."
       (interactive)
       (if (and delete-selection-mode transient-mark-mode mark-active)
 	  (setq deactivate-mark  t)
@@ -112,6 +113,16 @@
     (global-set-key [escape] 'evil-exit-emacs-state)))
 
 ;;; Visual Tweaks
+
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(custom-safe-themes
+   (quote
+    ("756597b162f1be60a12dbd52bab71d40d6a2845a3e3c2584c6573ee9c332a66e" default))))
+
 (use-package smart-mode-line
   :ensure
   :init
@@ -119,7 +130,6 @@
 
 (column-number-mode 1)
 
-(global-linum-mode 1)
 
 (scroll-bar-mode 0)
 
@@ -134,6 +144,9 @@
  ;; If there is more than one, they won't work right.
  '(fringe ((t (:background "gray19")))))
 
+(add-hook 'emacs-lisp-mode-hook
+	  (lambda ()
+	    (linum-mode 1)))
 (setq linum-format " %4d ")
 
 (use-package moe-theme
@@ -143,15 +156,16 @@
   (moe-theme-set-color 'cyan)
 )
 
-(add-to-list 'default-frame-alist '(font . "DejaVu Sans Mono-11"))
-(set-frame-font "DejaVu Sans Mono-11" nil t)
+(add-to-list 'default-frame-alist '(font . "Source Code Pro-14"))
+(set-frame-font "Source Code Pro-14" nil t)
 
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(custom-safe-themes
-   (quote
-    ("756597b162f1be60a12dbd52bab71d40d6a2845a3e3c2584c6573ee9c332a66e" default))))
+(use-package markdown-mode
+  :ensure
+  :init
+  (progn
+    (add-to-list 'auto-mode-alist '("\\.text\\'" . markdown-mode))
+    (add-to-list 'auto-mode-alist '("\\.markdown\\'" . markdown-mode))
+    (add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))))
 
+(use-package magit
+  :ensure)
