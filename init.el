@@ -1,6 +1,6 @@
-;;; Initialize package manager
+;;; init-file --- Initialize package manager
 (setq package-archives '(("melpa" . "http://melpa.milkbox.net/packages/")
-			 ("gnu" . "http://elpa.gnu.org/package/")))
+			 ("gnu" . "http://elpa.gnu.org/packages/")))
 (package-initialize)
 (require 'use-package)
 
@@ -9,6 +9,8 @@
 
 ;;; Remove welcome screen
 (setq inhibit-startup-message t)
+
+(setq visible-bell t)
 
 ;;; evil setup
 (use-package evil-leader
@@ -58,6 +60,7 @@
     (evil-leader/set-key "w" 'ace-window)
     (evil-leader/set-key "sw" 'ace-swap-window)
     (evil-leader/set-key "dw" 'ace-delete-window)
+    (global-set-key (kbd "C-c w") 'ace-window)
     (setq aw-keys '(?a ?o ?e ?u ?i ?h ?t ?n ?s))))
 
 ;;;Fix text object
@@ -79,7 +82,7 @@
   :init
   (progn
     (evilnc-default-hotkeys)
-    (evil-leader/set-key ",ci" 'evilnc-comment-or-uncomment-lines)))
+    (evil-leader/set-key "ci" 'evilnc-comment-or-uncomment-lines)))
 
 (use-package ace-window
   :ensure
@@ -110,7 +113,11 @@
     (define-key minibuffer-local-completion-map [escape] 'minibuffer-keyboard-quit)
     (define-key minibuffer-local-must-match-map [escape] 'minibuffer-keyboard-quit)
     (define-key minibuffer-local-isearch-map [escape] 'minibuffer-keyboard-quit)
-    (global-set-key [escape] 'evil-exit-emacs-state)))
+    (global-set-key [escape] 'evil-exit-emacs-state)
+    (define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action) ; rebind tab to run persistent action
+    (define-key helm-map (kbd "C-i") 'helm-execute-persistent-action) ; make TAB works in terminal
+    (define-key helm-map (kbd "C-z")  'helm-select-action) ; list actions using C-z
+    ))
 
 ;;; Visual Tweaks
 
@@ -153,11 +160,16 @@
   :ensure
   :init
   (moe-dark)
-  (moe-theme-set-color 'cyan)
-)
+  (moe-theme-set-color 'w/b))
 
-(add-to-list 'default-frame-alist '(font . "Source Code Pro-14"))
-(set-frame-font "Source Code Pro-14" nil t)
+(use-package golden-ratio
+  :ensure
+  :init
+  (golden-ratio-mode 1))
+
+(add-to-list 'default-frame-alist '(font . "Source Code Pro-12"))
+(set-frame-font "Source Code Pro-12" nil t)
+(set-face-attribute 'default nil :height 120)
 
 (use-package markdown-mode
   :ensure
@@ -169,3 +181,101 @@
 
 (use-package magit
   :ensure)
+
+
+;; (use-package auto-complete
+;;   :ensure
+;;   :init
+;;   (progn
+;;     (require 'auto-complete-config)
+;;     (ac-config-default)))
+
+(use-package yasnippet
+  :ensure
+  :init
+  (progn
+    (yas-global-mode t)))
+
+(use-package company
+  :ensure
+  :init
+  (progn 
+    (add-hook 'after-init-hook 'global-company-mode)))
+
+;; (use-package ac-helm
+;;   :ensure
+;;   )
+
+(use-package flycheck
+  :ensure
+  :init
+  (add-hook 'prog-mode-hook 'flycheck-mode))
+
+(use-package projectile
+  :ensure
+  :init
+  (projectile-global-mode))
+
+(use-package helm-projectile
+  :ensure
+  :init
+    (helm-projectile-on))
+
+;;; Web Development
+
+(use-package web-mode
+  :ensure
+  :init
+  (progn
+    (add-to-list 'auto-mode-alist '("\\.phtml\\'" . web-mode))
+    (add-to-list 'auto-mode-alist '("\\.tpl\\.php\\'" . web-mode))
+    (add-to-list 'auto-mode-alist '("\\.[agj]sp\\'" . web-mode))
+    (add-to-list 'auto-mode-alist '("\\.as[cp]x\\'" . web-mode))
+    (add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
+    (add-to-list 'auto-mode-alist '("\\.mustache\\'" . web-mode))
+    (add-to-list 'auto-mode-alist '("\\.djhtml\\'" . web-mode))
+    (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
+    (add-to-list 'auto-mode-alist '("\\.html\\'" . web-mode))
+    (add-hook 'web-mode-hook
+	      (lambda ()
+		(progn
+		  (setq web-mode-markup-indent-offset 2))))))
+
+(use-package know-your-http-well
+  :ensure)
+
+(use-package restclient
+  :ensure)
+
+(use-package company-restclient
+  :ensure
+  :init
+  (push 'company-restclient company-backends))
+
+(use-package less-css-mode
+  :ensure
+  :init
+  (add-to-list 'auto-mode-alist '("\\.less\\'" . less-css-mode)))
+
+(use-package js2-mode
+  :ensure
+  :init
+  (progn
+    (push '("\\.js\\'" . js2-mode) auto-mode-alist)
+    (push '("node" . js2-mode) interpreter-mode-alist)))
+
+(use-package impatient-mode
+  :ensure
+  :init
+  (progn
+    (add-hook 'web-mode-hook 'impatient-mode)))
+
+;; (use-package skewer-mode
+;;   :ensure
+;;   :init
+;;   (skewer-setup))
+
+;; (use-package skewer-less
+;;   :ensure)
+
+;;; init.el ends here
