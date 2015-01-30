@@ -167,6 +167,15 @@
   :init
   (golden-ratio-mode 1))
 
+(defun pl/helm-alive-p ()
+  (if (boundp 'helm-alive-p)
+      (symbol-value 'helm-alive-p)))
+
+(add-to-list 'golden-ratio-inhibit-functions 'pl/helm-alive-p)
+(helm-autoresize-mode t)
+(set 'helm-autoresize-max-height 25)
+(set 'helm-autoresize-min-height 25)
+
 (add-to-list 'default-frame-alist '(font . "Source Code Pro-12"))
 (set-frame-font "Source Code Pro-12" nil t)
 (set-face-attribute 'default nil :height 120)
