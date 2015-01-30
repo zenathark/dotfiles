@@ -50,6 +50,12 @@
 
 ;;Insert only one character, it can be usefull for more stuff
 
+;; (defun golden-window ()
+;;   "Move to window and resize"
+;;   (interactive)
+;;   (ace-select-window))
+;;   ;; (golden-ratio))
+
 (use-package ace-jump-mode
   :ensure
   :init
