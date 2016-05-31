@@ -93,7 +93,7 @@
     (evil-leader/set-key
       "bM" 'ace-swap-window
       "wC" 'ace-delete-window
-      "w <SPC>" 'ace-window)
+      "ww" 'ace-window)
     (setq aw-keys '(?a ?o ?e ?u ?i ?d ?h ?t ?t?n ?s))))
 
 (use-package golden-ratio
@@ -173,6 +173,8 @@
 (use-package rainbow-delimiters
   :ensure t
   :defer t
+  :mode ("\\.clj\\'" . rainbow-delimiters-mode)
+  :mode ("\\.cljc\\'" . rainbow-delimiters-mode)
   :init
   (progn
     (evil-leader/set-key "tPd" 'rainbow-delimiters-mode)))
@@ -404,7 +406,8 @@
        "hm"   'helm-man-woman
        "iu"   'helm-ucs
        "ry"   'helm-register
-       "rm"   'helm-all-mark-rings)))
+       "rm"   'helm-all-mark-rings
+	   "xx"   'helm-M-x)))
 
 (use-package helm-descbinds
   :ensure t)
@@ -475,7 +478,9 @@
     (push '("*ert*"                    :dedicated t :position bottom :stick t :noselect nil :height 0.4) popwin:special-display-config)
     (push '("*grep*"                   :dedicated t :position bottom :stick t :noselect nil :height 0.4) popwin:special-display-config)
     (push '("*nosetests*"              :dedicated t :position bottom :stick t :noselect nil :height 0.4) popwin:special-display-config)
-    (push '("^\*WoMan.+\*$" :regexp t               :position bottom                                   ) popwin:special-display-config)))
+    (push '("^\*WoMan.+\*$" :regexp t               :position bottom                                   ) popwin:special-display-config)
+    (push '("*cider-test-report*"      :dedicated t :position bottom :stick t :noselect t   :height 0.4) popwin:special-display-config)
+	(push '("*cider-error*"            :dedicated t :position bottom :stick t :noselect t   :height 0.4) popwin:special-display-config)))
 
 (use-package recentf
   :ensure t
@@ -652,6 +657,7 @@
     "cr" 'comment-or-uncomment-region
     "cv" 'evilnc-toggle-invert-comment-line-by-line
     ";" 'evilnc-comment-operator
+	"kk" 'kill-buffer
     ))
 
 (use-package evil-surround
@@ -973,3 +979,23 @@
 ;; (add-hook 'c-mode-hook 'lazy-load-stickyfunc-enhance)
 
 ;; (add-hook 'c++-mode-hook 'lazy-load-stickyfunc-enhance)
+
+
+;;;------------------------------------------------------------------------------
+;;;                             Clojure Section
+;;;------------------------------------------------------------------------------
+
+(use-package clojure-mode
+  :ensure t
+  :mode "//.clj//'"
+  :config
+  (progn
+	(evil-leader/set-key "wpb" 'popwin:popup-buffer  )))
+(popwin:popup-buffer "*cider-test-report*")
+(use-package clojurec-mode)
+
+(use-package clojurescript-mode)
+
+(use-package cider-repl-mode
+  :ensure cider)
+
