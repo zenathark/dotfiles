@@ -1,0 +1,6 @@
+set nocompatible
+imap hh <Esc>
+vmap hh <Esc>
+set timeout timeoutlen=300 ttimeoutlen=500
+set surround
+
