@@ -5,11 +5,12 @@
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes
    (quote
-    ("705f3f6154b4e8fac069849507fd8b660ece013b64a0a31846624ca18d6cf5e1" "4904daa168519536b08ca4655d798ca0fb50d3545e6244cefcf7d0c7b338af7e" "8122f00211dbaf973fbe5831f808af92387c8fc1a44f0c6bcc9b22c16997c9dd" default)))
- '(flycheck-racket-executable "/usr/local/bin/racket" t)
+	("4f0f2f5ec60a4c6881ba36ffbfef31b2eea1c63aad9fe3a4a0e89452346de278" "705f3f6154b4e8fac069849507fd8b660ece013b64a0a31846624ca18d6cf5e1" "4904daa168519536b08ca4655d798ca0fb50d3545e6244cefcf7d0c7b338af7e" "8122f00211dbaf973fbe5831f808af92387c8fc1a44f0c6bcc9b22c16997c9dd" default)))
+ '(flycheck-racket-executable "/usr/local/bin/racket")
  '(package-selected-packages
    (quote
-    (flycheck-ycmd vi-tilde-fringe volatile-highlights define-word expand-region google-translate highlight-parentheses highlight-numbers highlight-indentation indent-guide open-junk-file rainbow-delimiters ace-window ace-link electric-indent-mode page-break-lines fill-column-indicator exec-path-from-shell srefactor helm-gtags helm-cscope company-c-headers disaster stickyfunc-enhance stickyfunc-enhace helm cmake-font-lock whitespace-cleanup-mode use-package smartparens racket-mode pyenv-mode key-chord irony-eldoc hlinum haskell-mode geiser flycheck-irony evil-numbers evil-nerd-commenter evil-leader evil-args company-ycmd company-irony company-anaconda atom-one-dark-theme))))
+	(company-auctex ahk-mode cider clojure-mode paredit clang-format cmake-mode evil-search-highlight-persist evil-matchit evil-org-mode flycheck-ycmd vi-tilde-fringe volatile-highlights define-word expand-region google-translate highlight-parentheses highlight-numbers highlight-indentation indent-guide open-junk-file rainbow-delimiters ace-window ace-link electric-indent-mode page-break-lines fill-column-indicator exec-path-from-shell srefactor helm-gtags helm-cscope company-c-headers disaster stickyfunc-enhance stickyfunc-enhace helm cmake-font-lock whitespace-cleanup-mode use-package smartparens racket-mode pyenv-mode key-chord irony-eldoc hlinum haskell-mode geiser flycheck-irony evil-numbers evil-nerd-commenter evil-leader evil-args company-ycmd company-irony company-anaconda atom-one-dark-theme)))
+ '(safe-local-variable-values (quote ((Tex-master . "syllabus")))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -35,13 +36,14 @@
 (eval-when-compile
   (require 'use-package))
 
+(setq default-input-method "latin-1-prefix")
+
 (desktop-change-dir "~/.emacs.d/cache")
 (desktop-save-mode 1)
 
 ;;;------------------------------------------------------------------------------
 ;;;                              General Section
 ;;;------------------------------------------------------------------------------
-
 ;;; Theme
 (use-package atom-one-dark-theme
   :ensure t)
@@ -68,7 +70,7 @@
 (setq mouse-wheel-scroll-amount '(1 ((shift) . 1)))
 (setq scroll-step 1)
 (setq scroll-margin 3)
-(setq require-final-newline)
+(setq require-final-newline t)
 (set-face-font 'default "DejaVu Sans Mono-11")
 (set-face-font 'variable-pitch "DejaVu Sans Mono-11")
 (setq linum-format " %4d  ")
@@ -173,8 +175,6 @@
 (use-package rainbow-delimiters
   :ensure t
   :defer t
-  :mode ("\\.clj\\'" . rainbow-delimiters-mode)
-  :mode ("\\.cljc\\'" . rainbow-delimiters-mode)
   :init
   (progn
     (evil-leader/set-key "tPd" 'rainbow-delimiters-mode)))
@@ -636,11 +636,16 @@
   (define-key evil-motion-state-map "H" 'evil-backward-arg)
   (define-key evil-normal-state-map "K" 'evil-jump-out-args))
 
+(use-package evil-org
+  :ensure t)
+
 (use-package key-chord
   :ensure t
   :config
   (key-chord-mode t)
   (key-chord-define evil-insert-state-map "kj" 'evil-normal-state)
+  (key-chord-define evil-insert-state-map "hh" 'evil-normal-state)
+  (key-chord-define evil-visual-state-map "hh" 'evil-normal-state)
   (key-chord-define evil-insert-state-map "hh" 'evil-normal-state)
   (key-chord-define evil-visual-state-map "hh" 'evil-normal-state)
   (key-chord-define evil-normal-state-map ";;" 'evil-ex))
@@ -683,14 +688,11 @@
 (use-package evil-exchange
   :ensure t)
 
-(use-package evil-jumper
-  :ensure t)
-
 (use-package evil-matchit
   :ensure t)
 
 ;; (use-package eval-sexp-fu
-;;   :ensure t)
+;;   :ensure )
 
 (use-package evil-search-highlight-persist
   :ensure t)
@@ -984,10 +986,17 @@
 ;;;------------------------------------------------------------------------------
 ;;;                             Clojure Section
 ;;;------------------------------------------------------------------------------
+(use-package paredit
+  :ensure t
+  :config
+	(autoload 'enable-paredit-mode "paredit" "Turn pseudo structural editing" t))
 
 (use-package clojure-mode
   :ensure t
   :mode "//.clj//'"
+  :init
+  (add-hook 'clojure-mode-hook 'rainbow-delimiters-mode)
+  (add-hook 'clojure-mode-hook #'enable-paredit-mode)
   :config
   (progn
 	(evil-leader/set-key "wpb" 'popwin:popup-buffer  )))
@@ -999,3 +1008,101 @@
 (use-package cider-repl-mode
   :ensure cider)
 
+
+;;;------------------------------------------------------------------------------
+;;;                             Windows Section
+;;;------------------------------------------------------------------------------
+
+(use-package ahk-mode
+  :if (string-equal system-type "windows-nt")
+  :ensure t
+  :mode "//.ahk//'")
+
+;;;------------------------------------------------------------------------------
+;;;                             Latex Section
+;;;------------------------------------------------------------------------------
+(use-package tex-mik
+  :if (or (eq system-type 'ms-dos) (eq system-type 'windows-nt)))
+
+(use-package company-auctex
+  :ensure t
+  :config
+  (company-auctex-init))
+
+
+(setq ispell-program-name "aspell")
+(setq ispell-dictionary "spanish")
+(require 'ispell)
+(add-to-list 'ispell-local-dictionary-alist
+     '("spanish"
+        "[a-zA-Z]"
+        "[^a-zA-Z]"
+        "[']"
+        nil
+        ("-d" "es")
+        nil
+        iso-8859-1))
+
+(require 'dbus)
+
+(add-hook 'LaTeX-mode-hook 'enable-evince-sync)
+  
+(setq TeX-view-program-list '(("Evince" "evince --page-index=%(outpage) %o")))
+(setq TeX-view-program-selection '((output-pdf "Evince")))
+
+(defun th-evince-sync (file linecol &rest ignored)
+  (let* ((fname (un-urlify file))
+         (buf (find-buffer-visiting fname))
+         (line (car linecol))
+         (col (cadr linecol)))
+    (if (null buf)
+        (message "[Synctex]: %s is not opened..." fname)
+      (switch-to-buffer buf)
+      (goto-line (car linecol))
+      (unless (= col -1)
+        (move-to-column col)))))
+
+(defvar *dbus-evince-signal* nil)
+
+(defun un-urlify (fname-or-url)
+  "A trivial function that replaces a prefix of file:/// with just /."
+  (if (string= (substring fname-or-url 0 8) "file:///")
+      (substring fname-or-url 7)
+    fname-or-url))
+
+(defun enable-evince-sync ()
+  (require 'dbus)
+  (when (and
+         (eq window-system 'x)
+         (fboundp 'dbus-register-signal))
+    (unless *dbus-evince-signal*
+      (setf *dbus-evince-signal*
+            (dbus-register-signal
+             :session nil "/org/gnome/evince/Window/0"
+             "org.gnome.evince.Window" "SyncSource"
+             'th-evince-sync)))))
+
+;;;------------------------------------------------------------------------------
+;;;                             Org Section
+;;;------------------------------------------------------------------------------
+(setq org-latex-classes '())
+
+(add-to-list 'org-latex-classes
+             '("koma-article"
+               "\\documentclass{scrartcl}
+                 [NO-DEFAULT-PACKAGES]
+                 [EXTRA]"
+               ("\\section{%s}" . "\\section*{%s}")
+               ("\\subsection{%s}" . "\\subsection*{%s}")
+               ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+               ("\\paragraph{%s}" . "\\paragraph*{%s}")
+               ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
+
+(setq org-latex-to-pdf-process
+	  '("latexmk -e "$pdflatex=q/xelatex -synctex=1 -interaction=nonstopmode/" -pdf %f"))
+
+(setq org-latex-pdf-process '("latexmk -xelatex -quiet -shell-escape -pdf -output-directory=build -f %f"))
+
+(setq-default TeX-master nil)
+
+;;; init.el ends here
