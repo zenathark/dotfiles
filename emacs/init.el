@@ -5,11 +5,11 @@
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes
    (quote
-	("4f0f2f5ec60a4c6881ba36ffbfef31b2eea1c63aad9fe3a4a0e89452346de278" "705f3f6154b4e8fac069849507fd8b660ece013b64a0a31846624ca18d6cf5e1" "4904daa168519536b08ca4655d798ca0fb50d3545e6244cefcf7d0c7b338af7e" "8122f00211dbaf973fbe5831f808af92387c8fc1a44f0c6bcc9b22c16997c9dd" default)))
- '(flycheck-racket-executable "/usr/local/bin/racket")
+	("2a998a3b66a0a6068bcb8b53cd3b519d230dd1527b07232e54c8b9d84061d48d" "c11421683c971b41d154b1a4ef20a2c800537b72fefa618b50b184bbfe6b48a0" "4f0f2f5ec60a4c6881ba36ffbfef31b2eea1c63aad9fe3a4a0e89452346de278" "705f3f6154b4e8fac069849507fd8b660ece013b64a0a31846624ca18d6cf5e1" "4904daa168519536b08ca4655d798ca0fb50d3545e6244cefcf7d0c7b338af7e" "8122f00211dbaf973fbe5831f808af92387c8fc1a44f0c6bcc9b22c16997c9dd" default)))
+ '(flycheck-racket-executable "/usr/local/bin/racket" t)
  '(package-selected-packages
    (quote
-	(company-auctex ahk-mode cider clojure-mode paredit clang-format cmake-mode evil-search-highlight-persist evil-matchit evil-org-mode flycheck-ycmd vi-tilde-fringe volatile-highlights define-word expand-region google-translate highlight-parentheses highlight-numbers highlight-indentation indent-guide open-junk-file rainbow-delimiters ace-window ace-link electric-indent-mode page-break-lines fill-column-indicator exec-path-from-shell srefactor helm-gtags helm-cscope company-c-headers disaster stickyfunc-enhance stickyfunc-enhace helm cmake-font-lock whitespace-cleanup-mode use-package smartparens racket-mode pyenv-mode key-chord irony-eldoc hlinum haskell-mode geiser flycheck-irony evil-numbers evil-nerd-commenter evil-leader evil-args company-ycmd company-irony company-anaconda atom-one-dark-theme)))
+	(powerline base16-theme sublimity smooth-scroll company-auctex ahk-mode cider clojure-mode paredit clang-format cmake-mode evil-search-highlight-persist evil-matchit evil-org-mode flycheck-ycmd vi-tilde-fringe volatile-highlights define-word expand-region google-translate highlight-parentheses highlight-numbers highlight-indentation indent-guide open-junk-file rainbow-delimiters ace-window ace-link electric-indent-mode page-break-lines fill-column-indicator exec-path-from-shell srefactor helm-gtags helm-cscope company-c-headers disaster stickyfunc-enhance stickyfunc-enhace helm cmake-font-lock whitespace-cleanup-mode use-package smartparens racket-mode pyenv-mode key-chord irony-eldoc hlinum haskell-mode geiser flycheck-irony evil-numbers evil-nerd-commenter evil-leader evil-args company-ycmd company-irony company-anaconda atom-one-dark-theme)))
  '(safe-local-variable-values (quote ((Tex-master . "syllabus")))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
@@ -45,23 +45,51 @@
 ;;;                              General Section
 ;;;------------------------------------------------------------------------------
 ;;; Theme
-(use-package atom-one-dark-theme
-  :ensure t)
+(use-package base16-theme
+  :ensure t
+  :if window-system
+  :init
+  (load-theme 'base16-harmonic16-light)
+  (defvar zen/base16-colors base16-harmonic16-light-colors)
+  (set-face-attribute 'fringe nil
+					  :foreground (plist-get zen/base16-colors :base04)
+					  :background (plist-get zen/base16-colors :base00))
+  )
 
 (scroll-bar-mode -1)
 (tool-bar-mode -1)
 (column-number-mode 1)
 (setq inhibit-splash-screen t)
-(load-theme 'atom-one-dark)
 
+ 
 ; Line numbers
 (use-package hlinum
-   :ensure t
-   :init
-   (hlinum-activate))
-(global-linum-mode)
+  :ensure t
+  :init
+  (hlinum-activate)
+  (when window-system
+  (set-face-attribute 'linum nil
+					  :foreground (plist-get zen/base16-colors :base02))
+  (set-face-attribute 'linum-highlight-face nil
+					  :foreground (plist-get zen/base16-colors :base02)
+					  :background (plist-get zen/base16-colors :base03))))
 
-(toggle-truncate-lines)
+(global-linum-mode)
+(hl-line-mode t)
+(when window-system
+(set-face-attribute 'hl-line nil
+					:foreground nil
+					:background (plist-get zen/base16-colors :base01)))
+(when window-system
+(set-cursor-color (plist-get zen/base16-colors :base05)))
+
+(set-face-attribute 'mode-line nil
+		    :font "DejaVu Sans Mono-12")
+(set-face-attribute 'mode-line-inactive nil
+		    :font "DejaVu Sans Mono-12")
+(set-face-attribute 'minibuffer-prompt nil
+		    :font "DejaVu Sans Mono-12")
+(setq truncate-lines t)
 (fset 'yes-or-no-p 'y-or-n-p)
 (setq x-underline-at-descent-line t)
 (setq redisplay-dont-pause t)
@@ -73,9 +101,16 @@
 (setq require-final-newline t)
 (set-face-font 'default "DejaVu Sans Mono-11")
 (set-face-font 'variable-pitch "DejaVu Sans Mono-11")
-(setq linum-format " %4d  ")
 (set-face-font 'fixed-pitch "DejaVu Sans Mono-11")
+(setq linum-format " %4d  ")
 (setq-default line-spacing 3)
+
+(use-package powerline
+  :ensure t
+  :if window-system
+  )
+(when window-system
+(powerline-center-evil-theme))
 
 (use-package ace-link
    :ensure t
@@ -247,17 +282,6 @@
   (when (memq window-system '(mac ns))
     (exec-path-from-shell-initialize)))
 
-(use-package fill-column-indicator
-  :ensure
-  :defer t
-  :init
-  (progn
-    (setq fci-rule-width 1)
-    (setq fci-rule-color "#333333")
-    (setq fci-always-use-textual-rule nil)
-    (setq fci-rule-character ?|)
-    (evil-leader/set-key "tf" 'fci-mode)))
-
 (use-package irony
   :ensure t)
 
@@ -266,6 +290,8 @@
   :config
   (add-hook 'after-init-hook #'global-flycheck-mode)
   (add-hook 'flycheck-mode-hook #'flycheck-irony-setup))
+
+(require 'sublimity-scroll)
 
 (use-package smartparens
   :ensure t
@@ -294,6 +320,9 @@
 		'(:add (spacemacs/smartparens-pair-newline-and-indent "RET")))
     (sp-pair "[" nil :post-handlers
 	    '(:add (spacemacs/smartparens-pair-newline-and-indent "RET")))))
+
+(require 'yasnippet)
+(yas-global-mode t)
 
 (use-package company
   :ensure t
@@ -771,19 +800,6 @@
 
 ;; (add-hook 'python-mode-hook '(lambda () (add-to-list 'company-backends 'company-anaconda)))
 
-(set-face-attribute 'linum nil
-		    :foreground "#555555")
-
-(set-face-attribute 'linum-highlight-face nil
-		    :foreground "#aaaaaa"
-		    :background "#2D2C34")
-
-(set-face-attribute 'mode-line nil
-		    :font "Noto Sans-11")
-(set-face-attribute 'mode-line-inactive nil
-		    :font "Noto Sans-11")
-(set-face-attribute 'minibuffer-prompt nil
-		    :font "Noto Sans-11")
 ;; exec-path (cons "/usr/local/bin" exec-path))
 ;; (setq exec-path (cons (concat (getenv "HOME") "/.pyenv/shims") exec-path))
 ;; (setenv "PATH" (cl-reduce '(lambda (a b) (concat a ":" b)) exec-path))
@@ -837,6 +853,8 @@
   (add-hook 'c-mode-hook 'irony-mode)
   (add-hook 'objc-mode-hook 'irony-mode)
   (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options))
+(add-hook 'c++-mode-hook 'electric-pair-mode)
+(add-hook 'c-mode-hook 'electric-pair-mode)
 
 (use-package company-irony
   :ensure t
@@ -969,14 +987,21 @@
     "mgi" 'cscope-index-files)
 
 (add-hook 'c-mode-hook 'flycheck-mode)
-
 (add-hook 'c++-mode-hook 'flycheck-mode)
 
 (add-hook 'c-mode-hook 'lazy-load-srefactor)
-
 (add-hook 'c++-mode-hook 'lazy-load-srefactor)
 
+(add-hook 'c-mode-hook 'electric-pair-mode)
+(add-hook 'c++-mode-hook 'electric-pair-mode)
+
+(add-hook 'c-mode-hook 'hlinum-activate)
+(add-hook 'c++-mode-hook 'hlinum-activate)
+(add-hook 'java-mode 'hlinum-activate)
+(add-hook 'java-mode 'fci-mode)
 (setq-default tab-width 4)
+(setq c-default-style "linux"
+	  c-basic-offset 4)
 
 ;; (add-hook 'c-mode-hook 'lazy-load-stickyfunc-enhance)
 
