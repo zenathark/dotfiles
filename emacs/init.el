@@ -5,11 +5,11 @@
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes
    (quote
-	("2a998a3b66a0a6068bcb8b53cd3b519d230dd1527b07232e54c8b9d84061d48d" "c11421683c971b41d154b1a4ef20a2c800537b72fefa618b50b184bbfe6b48a0" "4f0f2f5ec60a4c6881ba36ffbfef31b2eea1c63aad9fe3a4a0e89452346de278" "705f3f6154b4e8fac069849507fd8b660ece013b64a0a31846624ca18d6cf5e1" "4904daa168519536b08ca4655d798ca0fb50d3545e6244cefcf7d0c7b338af7e" "8122f00211dbaf973fbe5831f808af92387c8fc1a44f0c6bcc9b22c16997c9dd" default)))
- '(flycheck-racket-executable "/usr/local/bin/racket" t)
+    ("2a998a3b66a0a6068bcb8b53cd3b519d230dd1527b07232e54c8b9d84061d48d" "c11421683c971b41d154b1a4ef20a2c800537b72fefa618b50b184bbfe6b48a0" "4f0f2f5ec60a4c6881ba36ffbfef31b2eea1c63aad9fe3a4a0e89452346de278" "705f3f6154b4e8fac069849507fd8b660ece013b64a0a31846624ca18d6cf5e1" "4904daa168519536b08ca4655d798ca0fb50d3545e6244cefcf7d0c7b338af7e" "8122f00211dbaf973fbe5831f808af92387c8fc1a44f0c6bcc9b22c16997c9dd" default)))
+ '(flycheck-racket-executable "/usr/local/bin/racket")
  '(package-selected-packages
    (quote
-	(powerline base16-theme sublimity smooth-scroll company-auctex ahk-mode cider clojure-mode paredit clang-format cmake-mode evil-search-highlight-persist evil-matchit evil-org-mode flycheck-ycmd vi-tilde-fringe volatile-highlights define-word expand-region google-translate highlight-parentheses highlight-numbers highlight-indentation indent-guide open-junk-file rainbow-delimiters ace-window ace-link electric-indent-mode page-break-lines fill-column-indicator exec-path-from-shell srefactor helm-gtags helm-cscope company-c-headers disaster stickyfunc-enhance stickyfunc-enhace helm cmake-font-lock whitespace-cleanup-mode use-package smartparens racket-mode pyenv-mode key-chord irony-eldoc hlinum haskell-mode geiser flycheck-irony evil-numbers evil-nerd-commenter evil-leader evil-args company-ycmd company-irony company-anaconda atom-one-dark-theme)))
+    (xcscope aggressive-indent auto-highlight-symbol clean-aindent-mode popwin popup company-statistics company yasnippet powerline base16-theme sublimity smooth-scroll company-auctex ahk-mode cider clojure-mode paredit clang-format cmake-mode evil-search-highlight-persist evil-matchit evil-org-mode flycheck-ycmd vi-tilde-fringe volatile-highlights define-word expand-region google-translate highlight-parentheses highlight-numbers highlight-indentation indent-guide open-junk-file rainbow-delimiters ace-window ace-link electric-indent-mode page-break-lines fill-column-indicator exec-path-from-shell srefactor helm-gtags helm-cscope company-c-headers disaster stickyfunc-enhance stickyfunc-enhace helm cmake-font-lock whitespace-cleanup-mode use-package smartparens racket-mode pyenv-mode key-chord irony-eldoc hlinum haskell-mode geiser flycheck-irony evil-numbers evil-nerd-commenter evil-leader evil-args company-ycmd company-irony company-anaconda atom-one-dark-theme)))
  '(safe-local-variable-values (quote ((Tex-master . "syllabus")))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
@@ -27,11 +27,13 @@
 (unless (eq system-type 'windows-nt)
   (set-selection-coding-system 'utf-8))
 (prefer-coding-system 'utf-8)
+(set-default 'truncate-lines t)
 
 (require 'cl-lib)
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
 (package-initialize)
+(setq package-enable-at-startup nil)
 
 (eval-when-compile
   (require 'use-package))
@@ -61,7 +63,6 @@
 (column-number-mode 1)
 (setq inhibit-splash-screen t)
 
- 
 ; Line numbers
 (use-package hlinum
   :ensure t
@@ -110,7 +111,21 @@
   :if window-system
   )
 (when window-system
-(powerline-center-evil-theme))
+  (powerline-center-evil-theme))
+
+(use-package evil
+  :ensure t
+  :config
+  (evil-mode t))
+
+(use-package general
+  :ensure t
+  :config
+  (general-evil-setup t)
+  (setq evil-leader "SPC")
+  (imap "C-c" 'evil-normal-state)
+  (vmap "C-c" 'evil-normal-state)
+  (evil-ex-define-cmd "q" 'save-buffers-kill-terminal))
 
 (use-package ace-link
    :ensure t
@@ -127,7 +142,7 @@
   :defer t
   :init
   (progn
-    (evil-leader/set-key
+    (nmap :prefix evil-leader
       "bM" 'ace-swap-window
       "wC" 'ace-delete-window
       "ww" 'ace-window)
@@ -205,21 +220,22 @@
 		    ess-eval-buffer-and-go
 		    ess-eval-function-and-go
 		    ess-eval-line-and-go)))
-    (evil-leader/set-key "tg" 'golden-ratio-mode)))
+    (nmap :prefix evil-leader
+	  "tg" 'golden-ratio-mode)))
 
 (use-package rainbow-delimiters
   :ensure t
   :defer t
-  :init
-  (progn
-    (evil-leader/set-key "tPd" 'rainbow-delimiters-mode)))
+  :config
+  (nmap :prefix evil-leader
+	"tPd" 'rainbow-delimiters-mode))
 
 (use-package open-junk-file
   :ensure t
   :defer t
   :commands (open-junk-file)
-  :init
-  (evil-leader/set-key "fJ" 'open-junk-file)
+  :config
+  (general-nmap :prefix evil-leader "fJ" 'open-junk-file)
   (setq open-junk-file-directory "~/.emacs.d/cache/junk/"))
 
 (use-package indent-guide
@@ -227,32 +243,31 @@
   :defer t
   :commands (indent-guide-mode
 	     indent-guide-global-mode)
-  :init
-  (evil-leader/set-key "ti" 'indent-guide-mode)
-  (evil-leader/set-key "t C-i" 'indent-guide-global-mode))
+  :config
+  (nmap :prefix evil-leader
+	"ti" 'indent-guide-mode
+	"t C-i" 'indent-guide-global-mode))
 
 (use-package highlight-indentation
   :ensure t
   :commands (highlight-indentation-mode highlight-indentation-current-column-mode)
-  :init
-  (evil-leader/set-key "thi" 'highlight-indentation-mode)
-  (evil-leader/set-key "thc" 'highlight-indentation-current-column-mode))
+  :config
+  (nmap :prefix evil-leader
+	"thi" 'highlight-indentation-mode
+	"thc" 'highlight-indentation-current-column-mode))
 
 (use-package highlight-numbers
   :ensure t
-  :init
-  (progn
-    (add-hook 'prog-mode-hook 'highlight-numbers-mode)))
+  :config
+  (add-hook 'prog-mode-hook 'highlight-numbers-mode))
 
 (use-package highlight-parentheses
   :ensure t
   :defer t
-  :init
-  (progn
-    (add-hook 'prog-mode-hook #'highlight-parentheses-mode)
-    (setq hl-paren-delay 0.2)
-    (evil-leader/set-key "tHp" 'highlight-parentheses-mode))
   :config
+  (add-hook 'prog-mode-hook #'highlight-parentheses-mode)
+  (setq hl-paren-delay 0.2)
+  (general-nmap :prefix evil-leader "tHp" 'highlight-parentheses-mode)
   (set-face-attribute 'hl-paren-face nil :weight 'ultra-bold))
 
 
@@ -261,9 +276,8 @@
 
 (use-package expand-region
   :ensure t
-  :init
-  (evil-leader/set-key "v" 'er/expand-region)
   :config
+  (nmap :prefix evil-leader "v" 'er/expand-region)
   (setq expand-region-contract-fast-key "V"
         expand-region-reset-fast-key "r"))
 
@@ -288,41 +302,39 @@
 (use-package flycheck
   :ensure t
   :config
-  (add-hook 'after-init-hook #'global-flycheck-mode)
-  (add-hook 'flycheck-mode-hook #'flycheck-irony-setup))
+  (add-hook 'after-init-hook #'global-flycheck-mode))
 
-(require 'sublimity-scroll)
+(use-package sublimity
+  :ensure t
+  :config
+  (require 'sublimity-scroll))
 
 (use-package smartparens
   :ensure t
-  :init
-  (progn
-    (evil-leader/set-key "tp" 'smartparens-mode)
-    (setq sp-show-pair-delay 0.2
-	  sp-show-pair-from-inside t
-	  sp-cancel-autoskip-on-backward-movement nil))
   :config
-  (progn
-    (require 'smartparens-config)
-    (show-smartparens-global-mode +1)
-    (sp-local-pair 'minibuffer-inactive-mode "'" nil :actions nil)
+  (general-nmap :prefix evil-leader "tp" 'smartparens-mode)
+  (setq sp-show-pair-delay 0.2
+	sp-show-pair-from-inside t
+	sp-cancel-autoskip-on-backward-movement nil)
+  (require 'smartparens-config)
+  (show-smartparens-global-mode +1)
+  (sp-local-pair 'minibuffer-inactive-mode "'" nil :actions nil)
+  (defun spacemacs/smartparens-pair-newline (id action context)
+    (save-excursion
+      (newline)
+      (indent-according-to-mode)))
+  (defun spacemacs/smartparens-pair-newline-and-indent (id action context)
+    (spacemacs/smartparens-pair-newline id action context)
+    (indent-according-to-mode))
+  (sp-pair "{" nil :post-handlers
+	   '(:add (spacemacs/smartparens-pair-newline-and-indent "RET")))
+  (sp-pair "[" nil :post-handlers
+	   '(:add (spacemacs/smartparens-pair-newline-and-indent "RET"))))
 
-    (defun spacemacs/smartparens-pair-newline (id action context)
-      (save-excursion
-	(newline)
-	(indent-according-to-mode)))
-
-    (defun spacemacs/smartparens-pair-newline-and-indent (id action context)
-      (spacemacs/smartparens-pair-newline id action context)
-      (indent-according-to-mode))
-
-    (sp-pair "{" nil :post-handlers
-		'(:add (spacemacs/smartparens-pair-newline-and-indent "RET")))
-    (sp-pair "[" nil :post-handlers
-	    '(:add (spacemacs/smartparens-pair-newline-and-indent "RET")))))
-
-(require 'yasnippet)
-(yas-global-mode t)
+(use-package yasnippet
+  :ensure t
+  :config
+  (yas-global-mode t))
 
 (use-package company
   :ensure t
@@ -334,12 +346,6 @@
   :ensure t
   :config
   (company-statistics-mode))
-
-(defmacro def-company-backends (backends)
-  "Define default company BACKENDS for mode."
-  (set (make-variable-buffer-local 'company-backends)
-       (let (default '(company-dabbrev-code company-gtags company-etags company-keywords) company-files company-dabbrev)
-	 (mapcar (lambda (backend) (push backend default)) backends))))
 
 (use-package whitespace-cleanup-mode
   :ensure t
@@ -361,128 +367,121 @@
 	     projectile-replace
 	     projectile-find-test-file
 	     projectile-find-tag)
-  :init
-  (progn
-    (setq projectile-enable-caching t
-	  projectile-indexing-method 'alien
-	  projectile-sort-order 'recentf
-	  projectile-cache-file "~/.emacs.d/cache/projectile.cache"
-	  projectile-knowns-projects-file "~/.emacs.d/cache/projectile-bookmarks.eld")
-    (evil-leader/set-key
-      "p!" 'projectile-run-shell-command-in-root
-      "p&" 'projectile-run-async-shell-command-in-root
-      "pa" 'projectile-toggle-between-implementation-and-test
-      "pc" 'projectile-compile-project
-      "pD" 'projectile-dired
-      "pG" 'projectile-regenerate-tags
-      "pI" 'projectile-invalidate-cache
-      "pk" 'projectile-kill-buffers
-      "po" 'projectile-multi-occur
-      "pR" 'projectile-replace
-      "pT" 'projectile-find-test-file
-      "py" 'projectile-find-tag))
   :config
-  (progn
-    (projectile-global-mode)))
+  (setq projectile-enable-caching t
+	projectile-indexing-method 'alien
+	projectile-sort-order 'recentf
+	projectile-cache-file "~/.emacs.d/cache/projectile.cache"
+	projectile-knowns-projects-file "~/.emacs.d/cache/projectile-bookmarks.eld")
+  (nmap :prefix evil-leader
+	"p!" 'projectile-run-shell-command-in-root
+	"p&" 'projectile-run-async-shell-command-in-root
+	"pa" 'projectile-toggle-between-implementation-and-test
+	"pc" 'projectile-compile-project
+	"pD" 'projectile-dired
+	"pG" 'projectile-regenerate-tags
+	"pI" 'projectile-invalidate-cache
+	"pk" 'projectile-kill-buffers
+	"po" 'projectile-multi-occur
+	"pR" 'projectile-replace
+	"pT" 'projectile-find-test-file
+	"py" 'projectile-find-tag)
+  (projectile-global-mode))
 
 (use-package page-break-lines
   :ensure t
-  :init
+  :config
   (global-page-break-lines-mode t))
 
 (use-package magit
   :ensure t)
 
-(use-package helm
-  :ensure t
-  :defer t
-  :commands (helm-find-file)
-  :config
-  (progn
-    (setq helm-autoresize-min-height 10)
-    (helm-autoresize-mode 1)
-    (defvar helm-source-header-default-background (face-attribute 'helm-source-header :background))
-    (defvar helm-source-header-default-foreground (face-attribute 'helm-source-header :foreground))
-    (defvar helm-source-header-default-box (face-attribute 'helm-source-header :box))
-    (defvar helm-source-header-default-height (face-attribute 'helm-source-header :height)))
-  :init
-  (progn
-      (setq helm-prevent-escaping-from-minibuffer t
-            helm-bookmark-show-location t
-            helm-display-header-line nil
-            helm-split-window-in-side-p t
-            helm-always-two-windows t
-            helm-echo-input-in-header-line t
-            helm-imenu-execute-action-at-once-if-one nil)
-     (setq helm-M-x-fuzzy-match t
-            helm-apropos-fuzzy-match t
-            helm-file-cache-fuzzy-match t
-            helm-imenu-fuzzy-match t
-            helm-lisp-fuzzy-completion t
-            helm-recentf-fuzzy-match t
-            helm-semantic-fuzzy-match t
-            helm-buffers-fuzzy-matching t)
-     (setq helm-locate-fuzzy-match (executable-find "locate"))
-     (evil-leader/set-key
-       "<f1>" 'helm-apropos
-       "Cl"   'helm-colors
-       "ff"   'helm-find-files
-       "fL"   'helm-locate
-       "fr"   'helm-recentf
-       "hb"   'helm-filtered-bookmarks
-       "hi"   'helm-info-at-point
-       "hl"   'helm-resume
-       "hm"   'helm-man-woman
-       "iu"   'helm-ucs
-       "ry"   'helm-register
-       "rm"   'helm-all-mark-rings
-	   "xx"   'helm-M-x)))
+;; (use-package helm
+;;   :ensure t
+;;   :defer t
+;;   :commands (helm-find-file)
+;;   :config
+;;   (setq helm-autoresize-min-height 10)
+;;   (helm-autoresize-mode 1)
+;;   (defvar helm-source-header-default-background (face-attribute 'helm-source-header :background))
+;;   (defvar helm-source-header-default-foreground (face-attribute 'helm-source-header :foreground))
+;;   (defvar helm-source-header-default-box (face-attribute 'helm-source-header :box))
+;;   (defvar helm-source-header-default-height (face-attribute 'helm-source-header :height))
+;;   (setq helm-prevent-escaping-from-minibuffer t
+;; 	helm-bookmark-show-location t
+;; 	helm-display-header-line nil
+;; 	helm-split-window-in-side-p t
+;; 	helm-always-two-windows t
+;; 	helm-echo-input-in-header-line t
+;; 	helm-imenu-execute-action-at-once-if-one nil)
+;;   (setq helm-M-x-fuzzy-match t
+;; 	helm-apropos-fuzzy-match t
+;; 	helm-file-cache-fuzzy-match t
+;; 	helm-imenu-fuzzy-match t
+;; 	helm-lisp-fuzzy-completion t
+;; 	helm-recentf-fuzzy-match t
+;; 	helm-semantic-fuzzy-match t
+;; 	helm-buffers-fuzzy-matching t)
+;;   (setq helm-locate-fuzzy-match (executable-find "locate"))
+;;   (nmap :prefix evil-leader
+;; 	"<f1>" 'helm-apropos
+;; 	"Cl"   'helm-colors
+;; 	"ff"   'helm-find-files
+;; 	"fL"   'helm-locate
+;; 	"fr"   'helm-recentf
+;; 	"hb"   'helm-filtered-bookmarks
+;; 	"hi"   'helm-info-at-point
+;; 	"hl"   'helm-resume
+;; 	"hm"   'helm-man-woman
+;; 	"iu"   'helm-ucs
+;; 	"ry"   'helm-register
+;; 	"rm"   'helm-all-mark-rings
+;; 	"xx"   'helm-M-x))
 
-(use-package helm-descbinds
-  :ensure t)
+;; (use-package helm-descbinds
+;;   :ensure t)
 
-(use-package helm-projectile
-  :ensure t
-  :commands (helm-projectile-switch-to-buffer
-	     helm-projectile-find-dir
-	     helm-projectile-dired-find-dir
-	     helm-projectile-recentf
-	     helm-projectile-find-file
-	     helm-projectile-grep
-	     helm-projectile
-	     helm-projectile-switch-project)
-  :init
-  (progn
-    (setq projectile-switch-project-action 'helm-projectile)
-    (evil-leader/set-key
-      "pb" 'helm-projectile-switch-to-buffer
-      "pd" 'helm-projectile-find-dir
-      "pf" 'helm-projectile-find-file
-      "ph" 'helm-projectile
-      "pp" 'helm-projectile-switch-project
-      "pr" 'helm-projectile-recentf
-      "pv" 'projectile-vc
-      "sgp" 'helm-projectile-grep)))
+;; (use-package helm-projectile
+;;   :ensure t
+;;   :commands (helm-projectile-switch-to-buffer
+;; 	     helm-projectile-find-dir
+;; 	     helm-projectile-dired-find-dir
+;; 	     helm-projectile-recentf
+;; 	     helm-projectile-find-file
+;; 	     helm-projectile-grep
+;; 	     helm-projectile
+;; 	     helm-projectile-switch-project)
+;;   :config
+;;   (setq projectile-switch-project-action 'helm-projectile)
+;;   (nmap :prefix evil-leader
+;; 	"pb" 'helm-projectile-switch-to-buffer
+;; 	"pd" 'helm-projectile-find-dir
+;; 	"pf" 'helm-projectile-find-file
+;; 	"ph" 'helm-projectile
+;; 	"pp" 'helm-projectile-switch-project
+;; 	"pr" 'helm-projectile-recentf
+;; 	"pv" 'projectile-vc
+;; 	"sgp" 'helm-projectile-grep))
 
-(use-package helm-ag
-  :ensure t)
+;; (use-package helm-ag
+;;   :ensure t)
 
-(use-package helm-make
-  :ensure t
-  :defer t
-  :init
-  (evil-leader/set-key
-    "cc" 'helm-make-projectile
-    "cm" 'helm-make))
+;; (use-package helm-make
+;;   :ensure t
+;;   :defer t
+;;   :config
+;;   (nmap :prefix evil-leader
+;; 	"cc" 'helm-make-projectile
+;; 	"cm" 'helm-make))
 
-(use-package helm-swoop
-  :ensure t)
+;; (use-package helm-swoop
+;;   :ensure t)
 
-(use-package helm-cscope
-  :ensure t)
+;; (use-package helm-cscope
+;;   :ensure t)
 
-(use-package helm-gtags
-  :ensure t)
+;; (use-package helm-gtags
+;;   :ensure t)
 
 (use-package popup
   :ensure t
@@ -491,33 +490,31 @@
 (use-package popwin
   :ensure t
   :config
-  (progn
-    (popwin-mode 1)
-    (evil-leader/set-key "wpm" 'popwin:messages)
-    (evil-leader/set-key "wpp" 'popwin:close-popup-window)
-	(evil-leader/set-key "wpc" '(lambda () (interactive) (popwin:display-buffer "*compilation*")))
-    (setq popwin:special-display-config nil)
-
-    (push '("*Help*"                   :dedicated t :position bottom :stick t :noselect nil :height 0.4) popwin:special-display-config)
-    (push '("*compilation*"            :dedicated t :position bottom :stick t :noselect t   :height 0.4) popwin:special-display-config)
-    (push '("*Warnings*"               :dedicated t :position bottom :stick t :noselect t   :height 0.4) popwin:special-display-config)
-    (push '("*Shell Command Output*"   :dedicated t :position bottom :stick t :noselect nil            ) popwin:special-display-config)
-    (push '("*Async Shell Command*"    :dedicated t :position bottom :stick t :noselect nil            ) popwin:special-display-config)
-    (push '(" *undo-tree*"             :dedicated t :position bottom :stick t :noselect nil :height 0.4) popwin:special-display-config)
-    (push '("*ert*"                    :dedicated t :position bottom :stick t :noselect nil :height 0.4) popwin:special-display-config)
-    (push '("*grep*"                   :dedicated t :position bottom :stick t :noselect nil :height 0.4) popwin:special-display-config)
-    (push '("*nosetests*"              :dedicated t :position bottom :stick t :noselect nil :height 0.4) popwin:special-display-config)
-    (push '("^\*WoMan.+\*$" :regexp t               :position bottom                                   ) popwin:special-display-config)
-    (push '("*cider-test-report*"      :dedicated t :position bottom :stick t :noselect t   :height 0.4) popwin:special-display-config)
-	(push '("*cider-error*"            :dedicated t :position bottom :stick t :noselect t   :height 0.4) popwin:special-display-config)))
+  (popwin-mode 1)
+  (nmap :prefix evil-leader
+	"wpm" 'popwin:messages
+	"wpp" 'popwin:close-popup-window
+	"wpc" '(lambda () (interactive) (popwin:display-buffer "*compilation*")))
+  (setq popwin:special-display-config nil)
+  (push '("*Help*"                   :dedicated t :position bottom :stick t :noselect nil :height 0.4) popwin:special-display-config)
+  (push '("*compilation*"            :dedicated t :position bottom :stick t :noselect t   :height 0.4) popwin:special-display-config)
+  (push '("*Warnings*"               :dedicated t :position bottom :stick t :noselect t   :height 0.4) popwin:special-display-config)
+  (push '("*Shell Command Output*"   :dedicated t :position bottom :stick t :noselect nil            ) popwin:special-display-config)
+  (push '("*Async Shell Command*"    :dedicated t :position bottom :stick t :noselect nil            ) popwin:special-display-config)
+  (push '(" *undo-tree*"             :dedicated t :position bottom :stick t :noselect nil :height 0.4) popwin:special-display-config)
+  (push '("*ert*"                    :dedicated t :position bottom :stick t :noselect nil :height 0.4) popwin:special-display-config)
+  (push '("*grep*"                   :dedicated t :position bottom :stick t :noselect nil :height 0.4) popwin:special-display-config)
+  (push '("*nosetests*"              :dedicated t :position bottom :stick t :noselect nil :height 0.4) popwin:special-display-config)
+  (push '("^\*WoMan.+\*$" :regexp t               :position bottom                                   ) popwin:special-display-config)
+  (push '("*cider-test-report*"      :dedicated t :position bottom :stick t :noselect t   :height 0.4) popwin:special-display-config)
+  (push '("*cider-error*"            :dedicated t :position bottom :stick t :noselect t   :height 0.4) popwin:special-display-config))
 
 (use-package recentf
   :ensure t
   :defer t
-  :init
+  :config
   (add-hook 'find-file-hook (lambda () (unless recentf-mode
 					 (recentf-mode))))
-  :config
   (add-to-list 'recentf-exclude "~/.emacs.d/cache")
   (add-to-list 'recentf-exclude "~/.emacs.d/elpa")
   (add-to-list 'recentf-exclude "~/.emacs.d/irony")
@@ -527,25 +524,12 @@
   (setq recentf-auto-cleanup 'never)
   (setq recentf-auto-save-timer (run-with-idle-timer 600 t 'recentf-save-list)))
 
-;; (use-package ido-vertical-mode
-;;   :ensure t
-;;   :init
-;;   (progn
-;;     (ido-vertical-mode t)
-;;     (evil-leader/set-key "ff" 'ido-find-file)
-
 (use-package stickyfunc-enhance
   :ensure t)
 
-;; (use-package winner
-;;   :ensure t)
-
-;(use-package which-key
-;  :ensure t)
-
 (use-package undo-tree
   :ensure t
-  :init
+  :config
   (global-undo-tree-mode)
   (setq undo-tree-visualizer-timestamps t)
   (setq undo-tree-visualizer-diff t))
@@ -553,30 +537,27 @@
 (use-package subword
   :ensure t
   :defer t
-  :init
-  (progn
-    (unless (category-docstring ?U)
-	(define-category ?U "Uppercase")
-	(define-category ?u "Lowercase"))
-    (modify-category-entry (cons ?A ?Z) ?U)
-    (modify-category-entry (cons ?a ?z) ?u)
-    (make-variable-buffer-local 'evil-cjk-word-separating-categories)
-    (defun subword-enable-camel-case ()
-      (if subword-mode
-	  (push '(?u . ?U) evil-cjk-word-separating-categories)
-	(setq evil-cjk-word-separating-categories
-	      (default-value 'evil-cjk-word-separating-categories))))
-    (add-hook 'subword-mode-hook 'subword-enable-camel-case)
-    (evil-leader/set-key "tc" 'subword-mode)
-    (evil-leader/set-key "tC" 'global-subword-mode)))
-      
-(use-package recentf
-  :ensure t)
+  :config
+  (unless (category-docstring ?U)
+    (define-category ?U "Uppercase")
+    (define-category ?u "Lowercase"))
+  (modify-category-entry (cons ?A ?Z) ?U)
+  (modify-category-entry (cons ?a ?z) ?u)
+  (make-variable-buffer-local 'evil-cjk-word-separating-categories)
+  (defun subword-enable-camel-case ()
+    (if subword-mode
+	(push '(?u . ?U) evil-cjk-word-separating-categories)
+      (setq evil-cjk-word-separating-categories
+	    (default-value 'evil-cjk-word-separating-categories))))
+  (add-hook 'subword-mode-hook 'subword-enable-camel-case)
+  (nmap :prefix evil-leader
+	"tc" 'subword-mode
+	"tC" 'global-subword-mode))
 
 (use-package bookmark
   :ensure t
   :defer t
-  :init
+  :config
   (setq bookmark-save-flag 1))
 
 (require 'uniquify)
@@ -586,20 +567,17 @@
 (use-package ediff
   :ensure t
   :defer t
-  :init
-  (progn
-    (setq-default
-     ediff-window-setup-function 'ediff-setup-windows-plain
-     ediff-split-window-function 'split-window-horizontally
-     ediff-merge-split-window-function 'split-window-horizontally)))
+  :config
+  (setq-default ediff-window-setup-function 'ediff-setup-windows-plain
+		ediff-split-window-function 'split-window-horizontally
+		ediff-merge-split-window-function 'split-window-horizontally))
 
 (use-package eldoc
   :ensure t
   :defer t
   :config
-  (progn
-    (add-hook 'eval-expression-minibuffer-setup-hook #'eldoc-mode)
-    (add-hook 'ielm-mode-hook #'eldoc-mode)))
+  (add-hook 'eval-expression-minibuffer-setup-hook #'eldoc-mode)
+  (add-hook 'ielm-mode-hook #'eldoc-mode))
 
 (use-package clean-aindent-mode
   :ensure t)
@@ -613,23 +591,21 @@
 
 (use-package semantic
   :ensure t
-  :init
-  (progn
-    (setq srecode-map-save-file "~/.emacs.d/cache/srecode-map.el")
-    (setq semanticdb-default-save-directory "~/.emacs.d/cache/semanticdb/")))
+  :config
+  (setq srecode-map-save-file "~/.emacs.d/cache/srecode-map.el")
+  (setq semanticdb-default-save-directory "~/.emacs.d/cache/semanticdb/"))
 
 (use-package srefactor
   :ensure t
   :defer t
-  :init
-  (progn
-    (defun lazy-load-srefactor ()
-      (require 'srefactor)
-      (add-hook 'srefactor-ui-menu-mode-hook 'evil-emacs-state))))
+  :config
+  (defun lazy-load-srefactor ()
+    (require 'srefactor)
+    (add-hook 'srefactor-ui-menu-mode-hook 'evil-emacs-state)))
 
 (use-package stickyfunc-enhance
   :defer t
-  :init (require 'stickyfunc-enhance))
+  :config (require 'stickyfunc-enhance))
 
 
 
@@ -639,77 +615,60 @@
 ;;;                               Evil Section
 ;;;------------------------------------------------------------------------------
 
-(use-package evil-leader
-  :ensure t
-  :config
-  (global-evil-leader-mode)
-  (evil-leader/set-leader "<SPC>"))
-
-(use-package evil
-  :ensure t
-  :init
-  (evil-mode 1))
-
-
 (use-package evil-numbers
   :ensure t)
 
-(use-package evil-args
-  :ensure t
-  :config
-  (define-key evil-inner-text-objects-map "a" 'evil-inner-arg)
-  (define-key evil-outer-text-objects-map "a" 'evil-outer-arg)
-  (define-key evil-normal-state-map "L" 'evil-forward-arg)
-  (define-key evil-normal-state-map "H" 'evil-backward-arg)
-  (define-key evil-motion-state-map "L" 'evil-forward-arg)
-  (define-key evil-motion-state-map "H" 'evil-backward-arg)
-  (define-key evil-normal-state-map "K" 'evil-jump-out-args))
+;(use-package evil-args
+  ;:ensure t
+  ;:config
+  ;(general-define-key :keymaps 'inner "a" 'evil-inner-arg)
+  ;(general-define-key :kepmaps 'outer "a" 'evil-outer-arg)
+  ;(general-define-key :keymaps 'normal
+;		      "L" 'evil-forward-arg
+;		      "H" 'evil-backward-argi
+;		      "K" 'evil-jump-out-args))
+;  (general-define-key :keymaps 'motion
+;		      "L" 'evil-forward-arg
+;		      "H" 'evil-backward-arg)
 
 (use-package evil-org
   :ensure t)
-
-(use-package key-chord
-  :ensure t
-  :config
-  (key-chord-mode t)
-  (key-chord-define evil-insert-state-map "kj" 'evil-normal-state)
-  (key-chord-define evil-insert-state-map "hh" 'evil-normal-state)
-  (key-chord-define evil-visual-state-map "hh" 'evil-normal-state)
-  (key-chord-define evil-insert-state-map "hh" 'evil-normal-state)
-  (key-chord-define evil-visual-state-map "hh" 'evil-normal-state)
-  (key-chord-define evil-normal-state-map ";;" 'evil-ex))
 
 (use-package evil-nerd-commenter
   :ensure t
   :config
   (evilnc-default-hotkeys)
-  (evil-leader/set-key
-    "cl" 'evilnc-comment-or-uncomment-lines
-    "ct" 'evilnc-quick-comment-or-uncomment-to-the-line
-    "cy" 'evilnc-copy-and-comment-lines
-    "cp" 'evilnc-comment-or-uncomment-paragraphs
-    "cr" 'comment-or-uncomment-region
-    "cv" 'evilnc-toggle-invert-comment-line-by-line
-    ";" 'evilnc-comment-operator
+  (nvmap :prefix evil-leader
+	"cl" 'evilnc-comment-or-uncomment-lines
+	"ct" 'evilnc-quick-comment-or-uncomment-to-the-line
+	"cy" 'evilnc-copy-and-comment-lines
+	"cp" 'evilnc-comment-or-uncomment-paragraphs
+	"cr" 'comment-or-uncomment-region
+	"cv" 'evilnc-toggle-invert-comment-line-by-line
+	";"  'evilnc-comment-operator
 	"kk" 'kill-buffer
-    ))
+	))
 
 (use-package evil-surround
   :ensure t
-  :init
-  (progn
+  :config
     (global-evil-surround-mode 1)
-    (evil-define-key 'visual evil-surround-mode-map "s" 'evil-surround-region)
-    (evil-define-key 'visual evil-surround-mode-map "S" 'evil-substitute)))
+    (general-define-key :keymaps 'surround
+			"s" 'evil-surround-region
+			"S" 'evil-substitute))
+    ;; (evil-define-key 'visual evil-surround-mode-map "s" 'evil-surround-region)
+    ;; (evil-define-key 'visual evil-surround-mode-map "S" 'evil-substitute))
 
 (use-package evil-visualstar
   :ensure t
   :commands (evil-visualstar/begin-search-forward
 	     evil-visualstar/begin-search-backward)
   :init
-  (progn
-    (define-key evil-visual-state-map (kbd "*") 'evil-visualstar/begin-search-forward)
-    (define-key evil-visual-state-map (kbd "#") 'evil-visualstar/begin-search-backward)))
+  (general-define-key :keymaps 'visual
+		      "*" 'evil-visualstar/begin-search-forward
+		      "#" 'evil-visualstar/begin-search-backward))
+
+;    (define-key evil-visual-state-map (kbd "#") 'evil-visualstar/begin-search-backward))
 
 (use-package evil-anzu
   :ensure t)
@@ -729,387 +688,385 @@
 (use-package vi-tilde-fringe
   :ensure t
   :if window-system
-  :init
-  (progn
-    (global-vi-tilde-fringe-mode)
-    (add-hook 'after-change-major-mode-hook (lambda () (when buffer-read-only
-							 (vi-tilde-fringe-mode -1))))))
+  :config
+  (global-vi-tilde-fringe-mode)
+  (add-hook 'after-change-major-mode-hook (lambda () (when buffer-read-only
+						       (vi-tilde-fringe-mode -1)))))
 
 (use-package avy
   :defer t
-  :init
-  (progn
-    (setq avy-keys (number-sequence ?a ?z))
-    (setq avy-all-windows 'all-frames)
-    (setq avy-background t)
-    (evil-leader/set-key
-      "SPC" 'avy-goto-word-or-subword-1
-      "l" 'avy-goto-line))
   :config
-  (evil-leader/set-key "`" 'avy-pop-mark))
+  (setq avy-keys (number-sequence ?a ?z))
+  (setq avy-all-windows 'all-frames)
+  (setq avy-background t)
+  (nmap :prefix "SPC"
+	"SPC" 'avy-goto-word-or-subword-1
+	"l" 'avy-goto-line
+	"`" 'avy-pop-mark))
 ;;;------------------------------------------------------------------------------
 ;;;                   Keybindings Section
 ;;;------------------------------------------------------------------------------
 
-(global-set-key (kbd "C-x C-b") 'ibuffer)
+(general-define-key "C-x C-b" 'ibuffer)
+(nmap :prefix evil-leader
+      "xb" 'ibuffer)
 
-;;;------------------------------------------------------------------------------
-;;;                   General Programming Packages Section
-;;;------------------------------------------------------------------------------
-;;;------------------------------------------------------------------------------
-;;;                             Python Section
-;;;------------------------------------------------------------------------------
+;; ;;;------------------------------------------------------------------------------
+;; ;;;                   General Programming Packages Section
+;; ;;;------------------------------------------------------------------------------
+;; ;;;------------------------------------------------------------------------------
+;; ;;;                             Python Section
+;; ;;;------------------------------------------------------------------------------
 
-;; (use-package anaconda-mode
-;;    :ensure t
-;;    :config
-;;    (add-hook 'python-mode-hook 'anaconda-mode)
-;;    (add-hook 'python-mode-hook 'eldoc-mode))
+;; ;; (use-package anaconda-mode
+;; ;;    :ensure t
+;; ;;    :config
+;; ;;    (add-hook 'python-mode-hook 'anaconda-mode)
+;; ;;    (add-hook 'python-mode-hook 'eldoc-mode))
 
-;; (use-package pyenv-mode
-;;    :ensure t
-;;    :config
-;;    (pyenv-mode))
+;; ;; (use-package pyenv-mode
+;; ;;    :ensure t
+;; ;;    :config
+;; ;;    (pyenv-mode))
 
-;; (use-package company-anaconda
-;;   :ensure t)
+;; ;; (use-package company-anaconda
+;; ;;   :ensure t)
 
-;; ;; (setq python-shell-interpreter "python")
+;; ;; ;; (setq python-shell-interpreter "python")
 
-;; ;; (setq
-;; ;;  python-shell-interpreter "ipython"
-;; ;;  python-shell-interpreter-args ""
-;; ;;  python-shell-prompt-regexp "In \\[[0-9]+\\]: "
-;; ;;  python-shell-prompt-output-regexp "Out\\[[0-9]+\\]: "
-;; ;;  python-shell-completion-setup-code
-;; ;;    "from IPython.core.completerlib import module_completion"
-;; ;;  python-shell-completion-module-string-code
-;; ;;    "';'.join(module_completion('''%s'''))\n"
-;; ;;  python-shell-completion-string-code
-;; ;;    "';'.join(get_ipython().Completer.all_completions('''%s'''))\n")
+;; ;; ;; (setq
+;; ;; ;;  python-shell-interpreter "ipython"
+;; ;; ;;  python-shell-interpreter-args ""
+;; ;; ;;  python-shell-prompt-regexp "In \\[[0-9]+\\]: "
+;; ;; ;;  python-shell-prompt-output-regexp "Out\\[[0-9]+\\]: "
+;; ;; ;;  python-shell-completion-setup-code
+;; ;; ;;    "from IPython.core.completerlib import module_completion"
+;; ;; ;;  python-shell-completion-module-string-code
+;; ;; ;;    "';'.join(module_completion('''%s'''))\n"
+;; ;; ;;  python-shell-completion-string-code
+;; ;; ;;    "';'.join(get_ipython().Completer.all_completions('''%s'''))\n")
 
-;; (add-hook 'python-mode-hook '(lambda () (linum-mode t)))
+;; ;; (add-hook 'python-mode-hook '(lambda () (linum-mode t)))
 
-;; (add-hook 'python-mode-hook '(lambda () (hl-line-mode t)))
+;; ;; (add-hook 'python-mode-hook '(lambda () (hl-line-mode t)))
 
-;; (add-hook 'python-mode-hook '(lambda () (flycheck-mode t)))
+;; ;; (add-hook 'python-mode-hook '(lambda () (flycheck-mode t)))
 
-;; (add-hook 'python-mode-hook 'anaconda-mode)
+;; ;; (add-hook 'python-mode-hook 'anaconda-mode)
 
-;; (add-hook 'python-mode-hook 'eldoc-mode)
+;; ;; (add-hook 'python-mode-hook 'eldoc-mode)
 
-;; (add-hook 'python-mode-hook '(lambda () (add-to-list 'company-backends 'company-anaconda)))
+;; ;; (add-hook 'python-mode-hook '(lambda () (add-to-list 'company-backends 'company-anaconda)))
 
-;; exec-path (cons "/usr/local/bin" exec-path))
-;; (setq exec-path (cons (concat (getenv "HOME") "/.pyenv/shims") exec-path))
-;; (setenv "PATH" (cl-reduce '(lambda (a b) (concat a ":" b)) exec-path))
+;; ;; exec-path (cons "/usr/local/bin" exec-path))
+;; ;; (setq exec-path (cons (concat (getenv "HOME") "/.pyenv/shims") exec-path))
+;; ;; (setenv "PATH" (cl-reduce '(lambda (a b) (concat a ":" b)) exec-path))
 
-;;;------------------------------------------------------------------------------
-;;;                             Lisp Section
-;;;------------------------------------------------------------------------------
+;; ;;;------------------------------------------------------------------------------
+;; ;;;                             Lisp Section
+;; ;;;------------------------------------------------------------------------------
 
 (add-hook 'emacs-lisp-mode-hook 'rainbow-delimiters-mode)
 (add-hook 'emacs-lisp-mode-hook (lambda () (hl-line-mode t)))
 
-(evil-leader/set-key-for-mode 'emacs-lisp-mode 
+(nmap :prefix evil-leader :mode 'emacs-lisp-mode-map
   "xe" 'eval-last-sexp
   "xr" 'eval-region
   "xb" 'eval-buffer
   "xf" 'eval-defun)
-;;;------------------------------------------------------------------------------
-;;;                             Racket Section
-;;;------------------------------------------------------------------------------
+;; ;;;------------------------------------------------------------------------------
+;; ;;;                             Racket Section
+;; ;;;------------------------------------------------------------------------------
 
-(use-package geiser
-  :ensure t)
+;; (use-package geiser
+;;   :ensure t)
 
-(use-package racket-mode
-  :ensure t)
+;; (use-package racket-mode
+;;   :ensure t)
 
-(add-hook 'racket-mode-hook 'rainbow-delimiters-mode)
-(add-hook 'racket-mode-hook '(lambda () (hl-line-mode t)))
-(add-hook 'racket-mode-hook 'geiser-mode)
-(add-hook 'racket-mode-hook 'evil-local-mode)
-(setq geiser-active-implementations '(racket))
-(setq geiser-racket-binary "/usr/local/bin/racket")
-(setq flycheck-racket-executable "/usr/local/bin/racket")
-
-
-(evil-leader/set-key-for-mode 'racket-mode
-  "xe" 'geiser-eval-last-sexp
-  "xr" 'geiser-eval-region-and-go
-  "xb" 'geiser-eval-buffer-and-go
-  "xf" 'geiser-eval-definition-and-go)
-
-;;;-------------------------------------------------------------------------
-;;;                             C/C++ Section
-;;;-------------------------------------------------------------------------
+;; (add-hook 'racket-mode-hook 'rainbow-delimiters-mode)
+;; (add-hook 'racket-mode-hook '(lambda () (hl-line-mode t)))
+;; (add-hook 'racket-mode-hook 'geiser-mode)
+;; (add-hook 'racket-mode-hook 'evil-local-mode)
+;; (setq geiser-active-implementations '(racket))
+;; (setq geiser-racket-binary "/usr/local/bin/racket")
+;; (setq flycheck-racket-executable "/usr/local/bin/racket")
 
 
-(use-package irony
-  :ensure t
-  :config
-  (add-hook 'c++-mode-hook 'irony-mode)
-  (add-hook 'c-mode-hook 'irony-mode)
-  (add-hook 'objc-mode-hook 'irony-mode)
-  (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options))
-(add-hook 'c++-mode-hook 'electric-pair-mode)
-(add-hook 'c-mode-hook 'electric-pair-mode)
+;; (evil-leader/set-key-for-mode 'racket-mode
+;;   "xe" 'geiser-eval-last-sexp
+;;   "xr" 'geiser-eval-region-and-go
+;;   "xb" 'geiser-eval-buffer-and-go
+;;   "xf" 'geiser-eval-definition-and-go)
 
-(use-package company-irony
-  :ensure t
-  :config
-  (push 'company-irony company-backends))
+;; ;;;-------------------------------------------------------------------------
+;; ;;;                             C/C++ Section
+;; ;;;-------------------------------------------------------------------------
 
-(use-package flycheck-irony
-  :ensure t
-  :config
-  (add-hook 'flycheck-mode-hook #'flycheck-irony-setup))
 
-(use-package irony-eldoc
-  :ensure t
-  :config
-  (with-eval-after-load "irony"
-    (add-hook 'irony-mode-hook 'irony-eldoc)))
-;; (use-package company-ycmd
+;; (use-package irony
 ;;   :ensure t
 ;;   :config
-;;   (company-ycmd-setup))
+;;   (add-hook 'c++-mode-hook 'irony-mode)
+;;   (add-hook 'c-mode-hook 'irony-mode)
+;;   (add-hook 'objc-mode-hook 'irony-mode)
+;;   (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options))
+;; (add-hook 'c++-mode-hook 'electric-pair-mode)
+;; (add-hook 'c-mode-hook 'electric-pair-mode)
 
-;; (use-package flycheck-ycmd
+;; (use-package company-irony
 ;;   :ensure t
-;;   :init
-;;   (add-hook 'ycmd-file-parse-result-hook 'flycheck-ycmd--cache-parse-results)
-;;   (add-to-list 'flycheck-checkers 'ycmd))
+;;   :config
+;;   (push 'company-irony company-backends))
 
-;; (use-package ycmd
+;; (use-package flycheck-irony
+;;   :ensure t
+;;   :config
+;;   (add-hook 'flycheck-mode-hook #'flycheck-irony-setup))
+
+;; (use-package irony-eldoc
+;;   :ensure t
+;;   :config
+;;   (with-eval-after-load "irony"
+;;     (add-hook 'irony-mode-hook 'irony-eldoc)))
+;; ;; (use-package company-ycmd
+;; ;;   :ensure t
+;; ;;   :config
+;; ;;   (company-ycmd-setup))
+
+;; ;; (use-package flycheck-ycmd
+;; ;;   :ensure t
+;; ;;   :init
+;; ;;   (add-hook 'ycmd-file-parse-result-hook 'flycheck-ycmd--cache-parse-results)
+;; ;;   (add-to-list 'flycheck-checkers 'ycmd))
+
+;; ;; (use-package ycmd
+;; ;;   :ensure t
+;; ;;   :defer t
+;; ;;   :init (set-variable 'ycmd-server-command '("python" "/usr/local/bin/ycmd")))
+
+;; (use-package cc-mode
+;;   :defer t
+;;   :init
+;;   (add-to-list 'auto-mode-alist `("\\.h$" . c-mode))
+;;   :config
+;;   (progn
+;;     (require 'compile)
+;;     (c-toggle-auto-newline 1)
+;;     (evil-leader/set-key-for-mode 'c-mode
+;;       "mga" 'projectile-find-other-file
+;;       "mgA" 'projectile-find-other-file-other-window)
+;;     (evil-leader/set-key-for-mode 'c++-mode
+;;       "mga" 'projectile-find-other-file
+;;       "mgA" 'projectile-find-other-file-other-window)))
+
+;; (use-package cmake-mode
+;;   :ensure t)
+
+;; (use-package cmake-font-lock
+;;   :ensure t)
+
+;; (use-package disaster
 ;;   :ensure t
 ;;   :defer t
-;;   :init (set-variable 'ycmd-server-command '("python" "/usr/local/bin/ycmd")))
+;;   :commands (disaster)
+;;   :init
+;;   (progn
+;;     (evil-leader/set-key-for-mode 'c-mode
+;;       "mD" 'disaster)
+;;     (evil-leader/set-key-for-mode 'c++-mode
+;;       "mD" 'disaster)))
 
-(use-package cc-mode
-  :defer t
-  :init
-  (add-to-list 'auto-mode-alist `("\\.h$" . c-mode))
-  :config
-  (progn
-    (require 'compile)
-    (c-toggle-auto-newline 1)
-    (evil-leader/set-key-for-mode 'c-mode
-      "mga" 'projectile-find-other-file
-      "mgA" 'projectile-find-other-file-other-window)
-    (evil-leader/set-key-for-mode 'c++-mode
-      "mga" 'projectile-find-other-file
-      "mgA" 'projectile-find-other-file-other-window)))
+;; (use-package company-c-headers
+;;   :ensure t
+;;   :config
+;;   (push 'company-c-headers company-backends))
 
-(use-package cmake-mode
-  :ensure t)
+;; (use-package clang-format
+;;   :ensure t)
 
-(use-package cmake-font-lock
-  :ensure t)
+;; (use-package gdb-mi
+;;   :defer t
+;;   :init
+;;   (setq
+;;    gdb-many-windows t
+;;    gdb-show-main t))
 
-(use-package disaster
-  :ensure t
-  :defer t
-  :commands (disaster)
-  :init
-  (progn
-    (evil-leader/set-key-for-mode 'c-mode
-      "mD" 'disaster)
-    (evil-leader/set-key-for-mode 'c++-mode
-      "mD" 'disaster)))
+;; (evil-leader/set-key-for-mode 'c-mode
+;;     "mgc" 'helm-gtags-create-tags
+;;     "mgd" 'helm-gtags-find-tag
+;;     "mgf" 'helm-gtags-select-path
+;;     "mgg" 'helm-gtags-dwim
+;;     "mgG" 'helm-gtags-dwim-other-window
+;;     "mgi" 'helm-gtags-tags-in-this-function
+;;     "mgl" 'helm-gtags-parse-file
+;;     "mgn" 'helm-gtags-next-history
+;;     "mgp" 'helm-gtags-previous-history
+;;     "mgr" 'helm-gtags-find-rtag
+;;     "mgR" 'helm-gtags-resume
+;;     "mgs" 'helm-gtags-select
+;;     "mgS" 'helm-gtags-show-stack
+;;     "mgu" 'helm-gtags-update-tag
+;;     "mr"  'srefactor-refactor-at-point
+;;     "mgc" 'helm-cscope-find-called-function
+;;     "mgC" 'helm-cscope-find-calling-this-funtcion
+;;     "mgd" 'helm-cscope-find-global-definition
+;;     "mge" 'helm-cscope-find-egrep-pattern
+;;     "mgf" 'helm-cscope-find-this-file
+;;     "mgF" 'helm-cscope-find-files-including-file
+;;     "mgr" 'helm-cscope-find-this-symbol
+;;     "mgx" 'helm-cscope-find-this-text-string
+;;     "mgi" 'cscope-index-files)
 
-(use-package company-c-headers
-  :ensure t
-  :config
-  (push 'company-c-headers company-backends))
+;; (evil-leader/set-key-for-mode 'c++-mode
+;;     "mgc" 'helm-gtags-create-tags
+;;     "mgd" 'helm-gtags-find-tag
+;;     "mgf" 'helm-gtags-select-path
+;;     "mgg" 'helm-gtags-dwim
+;;     "mgG" 'helm-gtags-dwim-other-window
+;;     "mgi" 'helm-gtags-tags-in-this-function
+;;     "mgl" 'helm-gtags-parse-file
+;;     "mgn" 'helm-gtags-next-history
+;;     "mgp" 'helm-gtags-previous-history
+;;     "mgr" 'helm-gtags-find-rtag
+;;     "mgR" 'helm-gtags-resume
+;;     "mgs" 'helm-gtags-select
+;;     "mgS" 'helm-gtags-show-stack
+;;     "mgu" 'helm-gtags-update-tag
+;;     "mr"  'srefactor-refactor-at-point
+;;     "mgc" 'helm-cscope-find-called-function
+;;     "mgC" 'helm-cscope-find-calling-this-funtcion
+;;     "mgd" 'helm-cscope-find-global-definition
+;;     "mge" 'helm-cscope-find-egrep-pattern
+;;     "mgf" 'helm-cscope-find-this-file
+;;     "mgF" 'helm-cscope-find-files-including-file
+;;     "mgr" 'helm-cscope-find-this-symbol
+;;     "mgx" 'helm-cscope-find-this-text-string
+;;     "mgi" 'cscope-index-files)
 
-(use-package clang-format
-  :ensure t)
+;; (add-hook 'c-mode-hook 'flycheck-mode)
+;; (add-hook 'c++-mode-hook 'flycheck-mode)
 
-(use-package gdb-mi
-  :defer t
-  :init
-  (setq
-   gdb-many-windows t
-   gdb-show-main t))
+;; (add-hook 'c-mode-hook 'lazy-load-srefactor)
+;; (add-hook 'c++-mode-hook 'lazy-load-srefactor)
 
-(evil-leader/set-key-for-mode 'c-mode
-    "mgc" 'helm-gtags-create-tags
-    "mgd" 'helm-gtags-find-tag
-    "mgf" 'helm-gtags-select-path
-    "mgg" 'helm-gtags-dwim
-    "mgG" 'helm-gtags-dwim-other-window
-    "mgi" 'helm-gtags-tags-in-this-function
-    "mgl" 'helm-gtags-parse-file
-    "mgn" 'helm-gtags-next-history
-    "mgp" 'helm-gtags-previous-history
-    "mgr" 'helm-gtags-find-rtag
-    "mgR" 'helm-gtags-resume
-    "mgs" 'helm-gtags-select
-    "mgS" 'helm-gtags-show-stack
-    "mgu" 'helm-gtags-update-tag
-    "mr"  'srefactor-refactor-at-point
-    "mgc" 'helm-cscope-find-called-function
-    "mgC" 'helm-cscope-find-calling-this-funtcion
-    "mgd" 'helm-cscope-find-global-definition
-    "mge" 'helm-cscope-find-egrep-pattern
-    "mgf" 'helm-cscope-find-this-file
-    "mgF" 'helm-cscope-find-files-including-file
-    "mgr" 'helm-cscope-find-this-symbol
-    "mgx" 'helm-cscope-find-this-text-string
-    "mgi" 'cscope-index-files)
+;; (add-hook 'c-mode-hook 'electric-pair-mode)
+;; (add-hook 'c++-mode-hook 'electric-pair-mode)
 
-(evil-leader/set-key-for-mode 'c++-mode
-    "mgc" 'helm-gtags-create-tags
-    "mgd" 'helm-gtags-find-tag
-    "mgf" 'helm-gtags-select-path
-    "mgg" 'helm-gtags-dwim
-    "mgG" 'helm-gtags-dwim-other-window
-    "mgi" 'helm-gtags-tags-in-this-function
-    "mgl" 'helm-gtags-parse-file
-    "mgn" 'helm-gtags-next-history
-    "mgp" 'helm-gtags-previous-history
-    "mgr" 'helm-gtags-find-rtag
-    "mgR" 'helm-gtags-resume
-    "mgs" 'helm-gtags-select
-    "mgS" 'helm-gtags-show-stack
-    "mgu" 'helm-gtags-update-tag
-    "mr"  'srefactor-refactor-at-point
-    "mgc" 'helm-cscope-find-called-function
-    "mgC" 'helm-cscope-find-calling-this-funtcion
-    "mgd" 'helm-cscope-find-global-definition
-    "mge" 'helm-cscope-find-egrep-pattern
-    "mgf" 'helm-cscope-find-this-file
-    "mgF" 'helm-cscope-find-files-including-file
-    "mgr" 'helm-cscope-find-this-symbol
-    "mgx" 'helm-cscope-find-this-text-string
-    "mgi" 'cscope-index-files)
+;; (add-hook 'c-mode-hook 'hlinum-activate)
+;; (add-hook 'c++-mode-hook 'hlinum-activate)
+;; (add-hook 'java-mode 'hlinum-activate)
+;; (add-hook 'java-mode 'fci-mode)
+;; (setq-default tab-width 4)
+;; (setq c-default-style "linux"
+;; 	  c-basic-offset 4)
 
-(add-hook 'c-mode-hook 'flycheck-mode)
-(add-hook 'c++-mode-hook 'flycheck-mode)
+;; ;; (add-hook 'c-mode-hook 'lazy-load-stickyfunc-enhance)
 
-(add-hook 'c-mode-hook 'lazy-load-srefactor)
-(add-hook 'c++-mode-hook 'lazy-load-srefactor)
-
-(add-hook 'c-mode-hook 'electric-pair-mode)
-(add-hook 'c++-mode-hook 'electric-pair-mode)
-
-(add-hook 'c-mode-hook 'hlinum-activate)
-(add-hook 'c++-mode-hook 'hlinum-activate)
-(add-hook 'java-mode 'hlinum-activate)
-(add-hook 'java-mode 'fci-mode)
-(setq-default tab-width 4)
-(setq c-default-style "linux"
-	  c-basic-offset 4)
-
-;; (add-hook 'c-mode-hook 'lazy-load-stickyfunc-enhance)
-
-;; (add-hook 'c++-mode-hook 'lazy-load-stickyfunc-enhance)
+;; ;; (add-hook 'c++-mode-hook 'lazy-load-stickyfunc-enhance)
 
 
-;;;------------------------------------------------------------------------------
-;;;                             Clojure Section
-;;;------------------------------------------------------------------------------
+;; ;;;------------------------------------------------------------------------------
+;; ;;;                             Clojure Section
+;; ;;;------------------------------------------------------------------------------
 (use-package paredit
   :ensure t
   :config
-	(autoload 'enable-paredit-mode "paredit" "Turn pseudo structural editing" t))
+  (autoload 'enable-paredit-mode "paredit" "Turn pseudo structural editing" t))
 
 (use-package clojure-mode
   :ensure t
   :mode "//.clj//'"
-  :init
+  :config
   (add-hook 'clojure-mode-hook 'rainbow-delimiters-mode)
   (add-hook 'clojure-mode-hook #'enable-paredit-mode)
-  :config
-  (progn
-	(evil-leader/set-key "wpb" 'popwin:popup-buffer  )))
-(popwin:popup-buffer "*cider-test-report*")
+  (nmap :prefix evil-leader "wpb" 'popwin:popup-buffer  )
+  (popwin:popup-buffer "*cider-test-report*"))
+
 (use-package clojurec-mode)
 
-(use-package clojurescript-mode)
+;; (use-package clojurescript-mode)
 
 (use-package cider-repl-mode
   :ensure cider)
 
 
-;;;------------------------------------------------------------------------------
-;;;                             Windows Section
-;;;------------------------------------------------------------------------------
+;; ;;;------------------------------------------------------------------------------
+;; ;;;                             Windows Section
+;; ;;;------------------------------------------------------------------------------
 
-(use-package ahk-mode
-  :if (string-equal system-type "windows-nt")
-  :ensure t
-  :mode "//.ahk//'")
+;; (use-package ahk-mode
+;;   :if (string-equal system-type "windows-nt")
+;;   :ensure t
+;;   :mode "//.ahk//'")
 
-;;;------------------------------------------------------------------------------
-;;;                             Latex Section
-;;;------------------------------------------------------------------------------
-(use-package tex-mik
-  :if (or (eq system-type 'ms-dos) (eq system-type 'windows-nt)))
+;; ;;;------------------------------------------------------------------------------
+;; ;;;                             Latex Section
+;; ;;;------------------------------------------------------------------------------
+;; (use-package tex-mik
+;;   :if (or (eq system-type 'ms-dos) (eq system-type 'windows-nt)))
 
-(use-package company-auctex
-  :ensure t
-  :config
-  (company-auctex-init))
+;; (use-package company-auctex
+;;   :ensure t
+;;   :config
+;;   (company-auctex-init))
 
 
-(setq ispell-program-name "aspell")
-(setq ispell-dictionary "spanish")
-(require 'ispell)
-(add-to-list 'ispell-local-dictionary-alist
-     '("spanish"
-        "[a-zA-Z]"
-        "[^a-zA-Z]"
-        "[']"
-        nil
-        ("-d" "es")
-        nil
-        iso-8859-1))
+;; (setq ispell-program-name "aspell")
+;; (setq ispell-dictionary "spanish")
+;; (require 'ispell)
+;; (add-to-list 'ispell-local-dictionary-alist
+;;      '("spanish"
+;;         "[a-zA-Z]"
+;;         "[^a-zA-Z]"
+;;         "[']"
+;;         nil
+;;         ("-d" "es")
+;;         nil
+;;         iso-8859-1))
 
-(require 'dbus)
+;; (require 'dbus)
 
-(add-hook 'LaTeX-mode-hook 'enable-evince-sync)
-  
-(setq TeX-view-program-list '(("Evince" "evince --page-index=%(outpage) %o")))
-(setq TeX-view-program-selection '((output-pdf "Evince")))
+;; (add-hook 'LaTeX-mode-hook 'enable-evince-sync)
 
-(defun th-evince-sync (file linecol &rest ignored)
-  (let* ((fname (un-urlify file))
-         (buf (find-buffer-visiting fname))
-         (line (car linecol))
-         (col (cadr linecol)))
-    (if (null buf)
-        (message "[Synctex]: %s is not opened..." fname)
-      (switch-to-buffer buf)
-      (goto-line (car linecol))
-      (unless (= col -1)
-        (move-to-column col)))))
+;; (setq TeX-view-program-list '(("Evince" "evince --page-index=%(outpage) %o")))
+;; (setq TeX-view-program-selection '((output-pdf "Evince")))
 
-(defvar *dbus-evince-signal* nil)
+;; (defun th-evince-sync (file linecol &rest ignored)
+;;   (let* ((fname (un-urlify file))
+;;          (buf (find-buffer-visiting fname))
+;;          (line (car linecol))
+;;          (col (cadr linecol)))
+;;     (if (null buf)
+;;         (message "[Synctex]: %s is not opened..." fname)
+;;       (switch-to-buffer buf)
+;;       (goto-line (car linecol))
+;;       (unless (= col -1)
+;;         (move-to-column col)))))
 
-(defun un-urlify (fname-or-url)
-  "A trivial function that replaces a prefix of file:/// with just /."
-  (if (string= (substring fname-or-url 0 8) "file:///")
-      (substring fname-or-url 7)
-    fname-or-url))
+;; (defvar *dbus-evince-signal* nil)
 
-(defun enable-evince-sync ()
-  (require 'dbus)
-  (when (and
-         (eq window-system 'x)
-         (fboundp 'dbus-register-signal))
-    (unless *dbus-evince-signal*
-      (setf *dbus-evince-signal*
-            (dbus-register-signal
-             :session nil "/org/gnome/evince/Window/0"
-             "org.gnome.evince.Window" "SyncSource"
-             'th-evince-sync)))))
+;; (defun un-urlify (fname-or-url)
+;;   "A trivial function that replaces a prefix of file:/// with just /."
+;;   (if (string= (substring fname-or-url 0 8) "file:///")
+;;       (substring fname-or-url 7)
+;;     fname-or-url))
 
-;;;------------------------------------------------------------------------------
-;;;                             Org Section
-;;;------------------------------------------------------------------------------
+;; (defun enable-evince-sync ()
+;;   (require 'dbus)
+;;   (when (and
+;;          (eq window-system 'x)
+;;          (fboundp 'dbus-register-signal))
+;;     (unless *dbus-evince-signal*
+;;       (setf *dbus-evince-signal*
+;;             (dbus-register-signal
+;;              :session nil "/org/gnome/evince/Window/0"
+;;              "org.gnome.evince.Window" "SyncSource"
+;;              'th-evince-sync)))))
+
+;; ;;;------------------------------------------------------------------------------
+;; ;;;                             Org Section
+;; ;;;------------------------------------------------------------------------------
 (setq org-latex-classes '())
 
 (add-to-list 'org-latex-classes
