@@ -1,0 +1,7 @@
+if [[ "$OSTYPE" == "linux-gnu" ]]; then
+    export VAGRANT_DOTFILE_PATH=$HOME/.vagrant
+    export VAGRANT_HOME=$HOME/.vagrant.d
+elif [[ "$OSTYPE" == "darwin"* ]]; then
+    export VAGRANT_DOTFILE_PATH=$HOME/portable/vagrant/.vagrant
+    export VAGRANT_HOME=$HOME/portable/vagrant/vagrant.d
+fi
