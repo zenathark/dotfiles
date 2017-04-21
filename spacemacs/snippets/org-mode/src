@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: Babel's Source block
+# key: src_
+# contributor: zenathark
+# --
+#+begin_src ${1:lang} :tangle ${2:file} :exports ${3:$$(yas-choose-value '("code" "both" "result"))} :noweb ${4:$$(yas-choose-value '("yes" "no"))}
+$0
+#end_src
