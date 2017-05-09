@@ -2,7 +2,7 @@
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 # Path to your oh-my-zsh installation.
-export ZSH=/home/juancgalan/.oh-my-zsh
+export ZSH=$HOME/.oh-my-zsh
 
 # Set name of the theme to load. Optionally, if you set this to "random"
 # it'll load a random theme each time that oh-my-zsh is loaded.
@@ -51,7 +51,13 @@ ZSH_THEME="norm"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git bundle zsh-syntax-highlighting zsh-autosuggestions)
+case "$OSTYPE" in
+    darwin*)
+        plugins=(git bundle bundler brew zsh-autosuggestions zsh-syntax-highlighting);;
+    linux*)
+        plugins=(git bundle bundler zsh-autosuggestions zsh-syntax-highlighting);;
+esac
+
 
 source $ZSH/oh-my-zsh.sh
 
@@ -84,15 +90,8 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
-export ZSHCONFIG="$HOME/.zsh/.zshrc"
-
-
-### BOOT Configuration
-export BOOT_CLOJURE_VERSION=1.8.0
-
 ### rbenv Configuration
-export PATH="$HOME/.rbenv/bin:$PATH"
-eval "$(rbenv init -)"
+if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
 
-### Vagrant config is on a separated file
-source $ZDOTDIR/.vagrantrc
+### pyenv Configuration
+if which pyenv > /dev/null; then eval "$(pyenv init -)"; fi
