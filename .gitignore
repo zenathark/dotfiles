@@ -1,1 +1,3 @@
-.zsh/.zshcompdump*
+zsh/.zshcompdump*
+sbt/boot/*
+sbt/0.13/*
