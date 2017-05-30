@@ -1,3 +1,12 @@
 zsh/.zshcompdump*
 sbt/boot/*
 sbt/0.13/*
+emacs/auto-save-list/*
+emacs/cache/*
+emacs/elpa/*
+emacs/ensime/*
+emacs/company-statistics-cache.el
+emacs/*~
+emacs/projectile-bookmarks.eld
+emacs/backups/*
+emacs/savehist
