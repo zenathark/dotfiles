@@ -56,4 +56,6 @@
 	     "org.gnome.evince.Window" "SyncSource"
 	     'th-evince-sync)))))
 
+(setq bibtex-dialect 'biblatex)
+
 (provide 'zen-latex)

@@ -6,9 +6,19 @@
  '(custom-safe-themes
    (quote
     ("fec45178b55ad0258c5f68f61c9c8fd1a47d73b08fb7a51c15558d42c376083d" default)))
+ '(org-preview-latex-process-alist
+   (quote
+    ((imagemagick :programs
+		  ("latex" "convert")
+		  :description "pdf > png" :message "you need to install the programs: latex and imagemagick." :use-xcolor t :image-input-type "pdf" :image-output-type "png" :image-size-adjust
+		  (1.0 . 1.0)
+		  :latex-compiler
+		  ("latexmk -pdflatex=lualatex -quiet -shell-escape -pdf -outdir=%o %f")
+		  :image-converter
+		  ("convert -density %D -trim -antialias %f -quality 100 %O")))))
  '(package-selected-packages
    (quote
-    (helm-core org-ref company-flx flx ensime ivy-rich xcscope srefactor aggressive-indent auto-highlight-symbol clean-aindent-mode stickyfunc-enhance popwin counsel swiper orgit git-timemachine git-messenger git-link gitconfig-mode gitattributes-mode gitignore-mode evil-magit magit page-break-lines projectile whitespace-cleanup-mode company-statistics company yasnippet smartparens sublimity flycheck exec-path-from-shell highlight-parentheses highlight-numbers open-junk-file rainbow-delimiters vi-tilde-fringe evil-search-highlight-persist evil-matchit evil-exchange evil-anzu evil-visualstar evil-surround evil-nerd-commenter evil-org evil-numbers ace-window ace-link general powerline evil hlinum base16-theme s dash use-package)))
+    (org-ref helm-core company-flx flx ensime ivy-rich xcscope srefactor aggressive-indent auto-highlight-symbol clean-aindent-mode stickyfunc-enhance popwin counsel swiper orgit git-timemachine git-messenger git-link gitconfig-mode gitattributes-mode gitignore-mode evil-magit magit page-break-lines projectile whitespace-cleanup-mode company-statistics company yasnippet smartparens sublimity flycheck exec-path-from-shell highlight-parentheses highlight-numbers open-junk-file rainbow-delimiters vi-tilde-fringe evil-search-highlight-persist evil-matchit evil-exchange evil-anzu evil-visualstar evil-surround evil-nerd-commenter evil-org evil-numbers ace-window ace-link general powerline evil hlinum base16-theme s dash use-package)))
  '(safe-local-variable-values
    (quote
     ((open-junk-file . "~/github/signalp/src/junk/scala/%Y-%m-%d-%H%M%S.sc")
@@ -41,8 +51,7 @@
  package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
 		    ("org" . "http://orgmode.org/elpa/")
 		    ("melpa" . "http://melpa.org/packages/")
-		    ("melpa-stable" . "http://stable.melpa.org/packages/"))
- package-archive-priorities '(("melpa-stable" . 1)))
+		    ("melpa-stable" . "http://stable.melpa.org/packages/")))
 
 (package-initialize)
 (when (not package-archive-contents)

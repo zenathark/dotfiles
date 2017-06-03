@@ -274,6 +274,9 @@
 		    :prefix evil-command
 		    "aa" 'org-ref-add-acronym-entry
 		    "gi" 'org-ref-insert-glossary-link
+		    "tt" 'org-todo
+		    "ti" 'org-insert-todo-heading
+		    "tc" 'org-toggle-checkbox
 		    )
 
 (general-define-key :states '(insert)
@@ -281,6 +284,15 @@
 		    :prefix "C-*"
 		    "aa" 'org-ref-add-acronym-entry
 		    "gi" 'org-ref-insert-glossary-link
+		    "'" 'org-edit-special
+		    "]" 'org-ref-helm-insert-cite-link
 		    )
+
+(general-define-key :states '(normal)
+		    :keymaps 'org-src-mode-map
+		    :prefix evil-command
+		    "'" 'org-edit-src-exit
+		    "k" 'org-edit-src-abort)
+
 
 (provide 'zen-evil)
