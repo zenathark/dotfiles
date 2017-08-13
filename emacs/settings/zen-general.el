@@ -1,4 +1,5 @@
 (use-package ivy
+  :diminish ivy-mode
   :ensure t
   :config
   (ivy-mode 1)
