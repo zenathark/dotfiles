@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: Babel's Source block for tangled scala
+# key: >s
+# contributor: zenathark
+# --
+#+begin_src scala :tangle ${2:file} :exports ${3:$$(yas-choose-value '("code" "both" "result"))} :noweb
+$0
+#end_src

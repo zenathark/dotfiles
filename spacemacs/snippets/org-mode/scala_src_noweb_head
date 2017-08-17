@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: Babel's Source block for tangled scala
+# key: >shw
+# contributor: zenathark
+# --
+#+begin_src scala :noweb-ref $1 :tangle no :exports code :noweb yes 
+$0
+#+end_src
