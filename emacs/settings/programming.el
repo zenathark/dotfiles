@@ -29,6 +29,7 @@
     (exec-path-from-shell-initialize)))
 
 (use-package flycheck
+  :diminish 'flycheck-mode
   :ensure t
   :config
   (add-hook 'after-init-hook #'global-flycheck-mode))
@@ -39,6 +40,7 @@
   (require 'sublimity-scroll))
 
 (use-package smartparens
+  :diminish 'smartparens-mode
   :ensure t
   :config
   (setq sp-show-pair-delay 0.2
@@ -49,6 +51,7 @@
   (sp-local-pair 'minibuffer-inactive-mode "'" nil :actions nil))
 
 (use-package yasnippet
+  :diminish 'yas-minor-mode
   :ensure t
   :config
   (yas-global-mode t))
@@ -84,6 +87,7 @@
   (setq projectile-completion-system 'ivy))
 
 (use-package page-break-lines
+  :diminish page-break-lines-mode
   :ensure t
   :config
   (global-page-break-lines-mode t))
@@ -120,6 +124,7 @@
   :ensure t)
 
 (use-package undo-tree
+  :diminish undo-tree-mode
   :ensure t
   :config
   (global-undo-tree-mode)
@@ -162,6 +167,7 @@
 		ediff-merge-split-window-function 'split-window-horizontally))
 
 (use-package eldoc
+  :diminish 'eldoc-mode
   :ensure t
   :defer t
   :config
@@ -197,6 +203,14 @@
   :config (require 'stickyfunc-enhance))
 
 (use-package xcscope
+  :ensure t)
+
+(diminish undo-tree-mode)
+
+(use-package modeline-posn
+  :ensure t)
+
+(use-package fill-column-indicator
   :ensure t)
 
 (provide 'programming)

@@ -5,7 +5,7 @@
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes
    (quote
-    ("fec45178b55ad0258c5f68f61c9c8fd1a47d73b08fb7a51c15558d42c376083d" default)))
+    ("100eeb65d336e3d8f419c0f09170f9fd30f688849c5e60a801a1e6addd8216cb" "36746ad57649893434c443567cb3831828df33232a7790d232df6f5908263692" "6145e62774a589c074a31a05dfa5efdf8789cf869104e905956f0cbd7eda9d0e" "fec45178b55ad0258c5f68f61c9c8fd1a47d73b08fb7a51c15558d42c376083d" default)))
  '(org-preview-latex-process-alist
    (quote
     ((imagemagick :programs
@@ -21,7 +21,8 @@
     (cider clojure-mode popup ivy org-ref helm-core company-flx flx ensime ivy-rich xcscope srefactor aggressive-indent auto-highlight-symbol clean-aindent-mode stickyfunc-enhance popwin counsel swiper orgit git-timemachine git-messenger git-link gitconfig-mode gitattributes-mode gitignore-mode evil-magit magit page-break-lines projectile whitespace-cleanup-mode company-statistics company yasnippet smartparens sublimity flycheck exec-path-from-shell highlight-parentheses highlight-numbers open-junk-file rainbow-delimiters vi-tilde-fringe evil-search-highlight-persist evil-matchit evil-exchange evil-anzu evil-visualstar evil-surround evil-nerd-commenter evil-org evil-numbers ace-window ace-link general powerline evil hlinum base16-theme s dash use-package)))
  '(safe-local-variable-values
    (quote
-    ((open-junk-file . "~/github/signalp/src/junk/scala/%Y-%m-%d-%H%M%S.sc")
+    ((org-latex-caption-above table)
+     (open-junk-file . "~/github/signalp/src/junk/scala/%Y-%m-%d-%H%M%S.sc")
      (open-junk-file . "~/github/signalp/src/junk/scala/%Y/%m/%d-%H%M%S.sc")
      (default-directory file-name-directory buffer-file-name)
      (default-directory parent-directory buffer-file-name)
@@ -51,7 +52,8 @@
  package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
 		    ("org" . "http://orgmode.org/elpa/")
 		    ("melpa" . "http://melpa.org/packages/")
-		    ("melpa-stable" . "http://stable.melpa.org/packages/")))
+		    ("melpa-stable" . "http://stable.melpa.org/packages/")
+		    ("elpy" . "http://jorgeschaefer.github.io/packages/")))
 
 (package-initialize)
 (when (not package-archive-contents)
@@ -88,6 +90,7 @@
       user-mail-address "juan.galan@udlap.mx")
 
 (defvar config-dir (expand-file-name "settings/" user-emacs-directory))
+(defvar gists-dir (expand-file-name "gists/" user-emacs-directory))
 (add-to-list 'load-path config-dir)
 
 (require 'global)
@@ -96,4 +99,8 @@
 (require 'scala)
 (require 'zen-clojure)
 (require 'zen-org)
+(require 'zen-elisp)
+(require 'zen-web)
+(require 'zen-python)
+(require 'zen-oz)
 (require 'zen-evil)

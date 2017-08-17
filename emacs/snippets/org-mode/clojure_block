@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name: clojure tangled block
+# key: _blclj
+# contributor: zenathark
+# --
+#+begin_src clojure :tangle yes :export code
+  $0
+#+end_src
+

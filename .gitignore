@@ -10,3 +10,4 @@ emacs/*~
 emacs/projectile-bookmarks.eld
 emacs/backups/*
 emacs/savehist
+emacs/anaconda-mode

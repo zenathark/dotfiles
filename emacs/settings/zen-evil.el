@@ -3,10 +3,10 @@
   :config
   (evil-mode t))
 
-(use-package powerline
-  :ensure t
-  :config
-  (powerline-center-evil-theme))
+;; (use-package powerline
+;;   :ensure t
+;;   :config
+;;   (powerline-center-evil-theme))
 
 (use-package general
   :ensure t
@@ -87,13 +87,14 @@
 (use-package evil-search-highlight-persist
   :ensure t)
 
-(use-package vi-tilde-fringe
-  :ensure t
-  :if window-system
-  :config
-  (global-vi-tilde-fringe-mode)
-  (add-hook 'after-change-major-mode-hook (lambda () (when buffer-read-only
-						       (vi-tilde-fringe-mode -1)))))
+;; (use-package vi-tilde-fringe
+;;   :ensure t
+;;   :if window-system
+;;   :config
+;;   (global-vi-tilde-fringe-mode)
+;;   (add-hook 'after-change-major-mode-hook (lambda () (when buffer-read-only
+;;						       (vi-tilde-fringe-mode -1)))))
+
 (use-package avy
   :defer t
   :config
@@ -231,7 +232,7 @@
 (general-define-key :states '(normal)
 		    :keymaps 'clojure-mode-map
 		    :prefix evil-command
-		    "cj")
+		    "cj" 'cider-jack-in)
 (general-define-key :states '(normal)
 		     :keymaps 'cider-mode-map
 		     :prefix evil-command
@@ -269,6 +270,7 @@
 		    "ms" 'sp-mark-sexp
 		    )
 
+;Org mode
 (general-define-key :states '(normal)
 		    :keymaps 'org-mode-map
 		    :prefix evil-command
@@ -277,7 +279,14 @@
 		    "tt" 'org-todo
 		    "ti" 'org-insert-todo-heading
 		    "tc" 'org-toggle-checkbox
+		    "'"  'org-edit-special
 		    )
+(setq-default c-basic-offset 4)
+(general-define-key :states '(normal)
+		    :keymaps 'org-mode-map
+		    :prefix evil-leader
+		    "m'" 'org-table-edit-field
+		    "m <SPC>" 'org-ctrl-c-ctrl-c)
 
 (general-define-key :states '(insert)
 		    :keymaps 'org-mode-map
@@ -293,6 +302,34 @@
 		    :prefix evil-command
 		    "'" 'org-edit-src-exit
 		    "k" 'org-edit-src-abort)
+;;------------------------------------------------------------------------------
+;;                               Elisp mode
+;;------------------------------------------------------------------------------
 
+(defun eval-last-sexp-and-replace ()
+  "This function evaluate the last sexp and replace it.
+After evaluating the last sexp, it is replaced by its result."
+  (interactive)
+  (let ((value (eval (elisp--preceding-sexp))))
+    (kill-sexp -1)
+    (insert (format "%S" value))))
+
+(general-define-key :states '(normal)
+		     :keymaps 'emacs-lisp-mode-map
+		     :prefix evil-command
+		     "ee" 'eval-last-sexp
+		     "ef" 'eval-defun
+		     "er" 'eval-region
+		     "eb" 'eval-buffer
+		     "em" 'macroexpand-1
+		     "eM" 'macroexpand-all
+		     "ew" 'eval-last-sexp-and-replace)
+
+(setq evil-emacs-state-cursor `(,(plist-get zen/base16-colors :base0D) box)
+      evil-insert-state-cursor `(,(plist-get zen/base16-colors :base0D) bar)
+      evil-motion-state-cursor `(,(plist-get zen/base16-colors :base0E) box)
+      evil-normal-state-cursor `(,(plist-get zen/base16-colors :base0B) box)
+      evil-replace-state-cursor `(,(plist-get zen/base16-colors :base08) bar)
+      evil-visual-state-cursor `(,(plist-get zen/base16-colors :base09) box))
 
 (provide 'zen-evil)
