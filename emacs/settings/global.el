@@ -11,12 +11,18 @@
 (setq inhibit-splash-screen t)
 
 ;;; Theme
-(defvar zen/font "Hack-9")
+(if (eq system-type 'darwin)
+    (defvar zen/font "Hack-14")
+    (defvar zen/font "Hack-9"))
 
 (defconst lisp--prettify-symbols-alist
   '(("lambda" . ?λ)))
 
-(defvar zen/font-status "Lato-9")
+
+(if (eq system-type 'darwin)
+    (defvar zen/font-status "Lato-14")
+    (defvar zen/font-status "Lato-9"))
+
 (use-package base16-theme
   :ensure t
   :config

@@ -126,6 +126,12 @@ BODY lambda to be evaluated"
 \\usepackage{rotating}
 \\usepackage[includeheadfoot, margin=0.6in, left=1in, headheight=70pt, twoside]{geometry}
 \\usepackage[outputdir=build/outline]{minted}
+\\usepackage{hyperref}
+\\hypersetup{
+    colorlinks = true,
+    linkbordercolor = {white},
+    allbordercolors = {white},
+}
 \\tabulinesep=1mm
 
 \\setmainfont{Noto Sans}
@@ -214,6 +220,7 @@ BODY lambda to be evaluated"
 \\usepackage{rotating}
 \\usepackage[includeheadfoot, margin=0.6in, left=1in, headheight=70pt, twoside]{geometry}
 \\usepackage[outputdir=build/examples]{minted}
+\\usepackage{hyperref}
 \\tabulinesep=1mm
 
 \\setmainfont{Noto Sans}
@@ -387,4 +394,91 @@ BODY lambda to be evaluated"
 \\addtolength{\\topmargin}{-2.54cm}
 ")
 
+(add-to-list 'org-latex-classes
+	     '("lab-document-udlap"
+	       "\\documentclass{scrartcl}
+[DEFAULT-PACKAGES]
+[PACKAGES]
+[EXTRA]
+\\usepackage{fontspec}
+\\graphicspath{{./src/resources/img/}}
+\\usepackage{tabu}
+\\usepackage{multicol}
+\\usepackage{fancyhdr}
+\\usepackage{calc}
+\\usepackage{tabularx}
+\\usepackage{rotating}
+\\usepackage[includeheadfoot, margin=0.6in, left=1in, headheight=70pt, twoside]{geometry}
+\\usepackage[outputdir=build/lab]{minted}
+\\tabulinesep=1mm
+
+\\setmainfont{Noto Sans}
+% Second enum in arabic
+\\renewcommand{\\labelenumii}{\\arabic{enumi}.\\arabic{enumii}.}
+
+% Header section
+\\directlua{
+  career = 10.0
+  title = 13
+  columntitle = 9
+  columncontent = 9
+  school = 10
+  department = 9
+}
+\\definecolor{headingcolor}{RGB}{121,121,121}
+% \\addtolength{\\headheight}{21pt}
+% \\addtolength{\\headheight}{\\headsep}
+\\newcommand{\\thecareer}{Bachelor in defaults}
+\\newcommand{\\thecareerpt}{\\directlua{tex.sprint(careerpt)}pt}
+\\newcommand{\\thedocumenttitle}{Default}
+\\newcommand{\\theterm}{Year 20XX}
+\\newcommand{\\thecoursename}{The course name}
+\\newcommand{\\thecoursecode}{XXX0000}
+\\newcommand{\\theschool}{Engineering School}
+\\newcommand{\\thedepartment}{Computing, Electronics and Mechatronics}
+
+\\newcommand{\\career}[1][\\thecareer]{{\\fontsize{11pt}{11pt}\\selectfont\\textcolor{headingcolor}{#1}}}
+\\newcommand{\\documenttitle}[1][\\textbf{\\thedocumenttitle}]{{\\fontsize{13pt}{15pt}\\selectfont\\textcolor{headingcolor}{#1}}}
+\\newcommand{\\columntitle}[1]{{\\fontsize{9pt}{9pt}\\selectfont\\textcolor{headingcolor}{\\textbf{#1}}}}
+\\newcommand{\\columnline}[1]{{\\fontsize{9pt}{9pt}\\selectfont\\textcolor{headingcolor}{#1}}}
+\\newcommand{\\school}{{\\fontsize{10pt}{14.pt}\\selectfont\\textcolor{headingcolor}{\\textbf{\\theschool}}}}
+\\newcommand{\\department}{{\\fontsize{9pt}{12pt}\\selectfont\\textcolor{headingcolor}{\\thedepartment}}}
+\\pagestyle{fancy}
+
+\\renewcommand{\\headrulewidth}{0pt}
+\\newcommand{\\makeheadfoot}{
+  \\fancyhead[LO,LE]{
+    \\begin{minipage}{\\textwidth-4.75cm}
+      \\career{}\\vspace{\\directlua{tex.sprint(career * 0.4)}pt}\\\\
+      \\documenttitle{}\\\\
+      \\textcolor{headingcolor}{\\rule{\\linewidth}{0.25pt}}\\\\
+      \\begin{center}
+	\\begin{tabularx}{\\textwidth-20pt}{lXll}
+	  \\columntitle{Instructor}\\vspace{\\directlua{tex.sprint(columntitle * 0.4)}pt}& \\columnline{Dr. Juan Carlos Gal\\'an Hern\\'andez} & \\columntitle{Term} & \\columnline{\\theterm} \\\\
+	  \\columntitle{Course}& \\columnline{\\thecoursename} & \\columntitle{Code} & \\columnline{\\thecoursecode}
+	\\end{tabularx}
+      \\end{center}
+    \\end{minipage}
+  }
+  \\fancyhead[RO,RE]{
+    \\begin{minipage}{0.5cm}
+    \\end{minipage}
+    \\hfill
+    \\textcolor{headingcolor}{\\vline width 1.0pt}
+    \\hspace{.4cm}
+    \\begin{minipage}{3.5cm}
+      \\begin{center}
+	\\includegraphics[width=3.5cm]{logoUDLAP_trans.png}\\vspace{\\directlua{tex.sprint(school * 0.4)}pt}\\\\
+	\\school\\vspace{\\directlua{tex.sprint(school * 0.4)}pt}\\\\
+	\\department\\\\
+      \\end{center}
+    \\end{minipage}
+  }
+  \\fancyfoot[C]{\\thepage}
+}"
+	       ("\\section{%s}" . "\\section*{%s}")
+	       ("\\subsection{%s}" . "\\subsection*{%s}")
+	       ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+	       ("\\paragraph{%s}" . "\\paragraph*{%s}")
+	       ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
 (provide 'zen-org)
