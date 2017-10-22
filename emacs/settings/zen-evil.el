@@ -177,6 +177,7 @@
 (nmap :prefix evil-leader
       "bb" 'ivy-switch-buffer)
 (nmap :prefix evil-leader "SPC" 'counsel-M-x)
+(vmap :prefix evil-leader "SPC" 'counsel-M-x)
 (general-define-key "M-x" 'counsel-M-x)
 (nmap :prefix evil-leader "ff" 'counsel-find-file)
 (nmap :prefix evil-leader "bb" 'ivy-switch-buffer)
@@ -324,6 +325,30 @@ After evaluating the last sexp, it is replaced by its result."
 		     "em" 'macroexpand-1
 		     "eM" 'macroexpand-all
 		     "ew" 'eval-last-sexp-and-replace)
+
+;;------------------------------------------------------------------------------
+;;                               Julia mode
+;;------------------------------------------------------------------------------
+(general-define-key :states '(normal)
+		     :keymaps 'julia-repl-mode-map
+		     :prefix evil-command
+		     "em" 'julia-repl-macroexpand
+		     "ee" 'julia-repl-edit
+		     "ed" 'julia-repl-doc
+		     "el" 'julia-repl-send-line
+		     "er" 'julia-repl-send-region-or-line
+		     "eb" 'julia-repl-send-buffer
+		     "jz" #'julia-repl)
+
+(general-define-key :states '(visual)
+		    :keymaps 'julia-repl-mode-map
+		    :prefix evil-command
+		    "em" 'julia-repl-macroexpand
+		    "ee" 'julia-repl-edit
+		    "ed" 'julia-repl-doc
+		    "er" 'julia-repl-send-region-or-line
+		    "eb" 'julia-repl-send-buffer
+		    "jz" #'julia-repl)
 
 (setq evil-emacs-state-cursor `(,(plist-get zen/base16-colors :base0D) box)
       evil-insert-state-cursor `(,(plist-get zen/base16-colors :base0D) bar)

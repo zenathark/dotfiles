@@ -2,10 +2,16 @@
 	     :ensure
 	     :mode "\\.clj\\'" "\\.boot\\'"
 	     :config
-	     (add-hook 'clojure-mode-hook 'rainbow-delimiters-mode)
-	     (add-hook 'clojure-mode-hook #'smartparens-mode)
-	     (add-hook 'clojure-mode-hook #'turn-on-smartparens-strict-mode)
-	     (add-hook 'clojure-mode-hook #'eldoc-mode)
+	     (mapc (lambda (f) (add-hook 'clojure-mode-hook f))
+		   '(rainbow-delimiters-mode
+		     smartparens-mode
+		     turn-on-smartparens-strict-mode
+		     eldoc-mode
+		     (lambda () (setq mode-name ""))))
+	     ;; (add-hook 'clojure-mode-hook 'rainbow-delimiters-mode)
+	     ;; (add-hook 'clojure-mode-hook #'smartparens-mode)
+	     ;; (add-hook 'clojure-mode-hook #'turn-on-smartparens-strict-mode)
+	     ;; (add-hook 'clojure-mode-hook #'eldoc-mode)
 	     (push "*cider-test-report*" popwin:special-display-config))
 
 (defun evil--cider-preceding-sexp (command &rest args)

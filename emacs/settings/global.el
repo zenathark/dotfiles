@@ -26,8 +26,8 @@
 (use-package base16-theme
   :ensure t
   :config
-  (load-theme 'base16-google-light)
-  (defvar zen/base16-colors base16-google-light-colors)
+  (load-theme 'base16-onedark)
+  (defvar zen/base16-colors base16-onedark-colors)
   (set-face-attribute 'fringe nil
 					  :foreground (plist-get zen/base16-colors :base04)
 					  :background (plist-get zen/base16-colors :base00))

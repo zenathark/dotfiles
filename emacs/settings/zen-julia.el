@@ -12,9 +12,26 @@
   :ensure nil
   :mode "\\.jl\\'")
 
-(use-package ein
+;; (use-package ein
+;;   :ensure t
+;;   )
+
+(use-package julia-repl
   :ensure t
-  )
+  :config
+  (add-hook 'julia-mode-hook #'julia-repl-mode))
+
+(defun update-buffer (buf)
+  (with-current-buffer buf
+    (save-excursion
+      (goto-char (point-min))
+      (let ((lines '()))
+	(while (not (eobp))
+	  (push (split-string
+		 (buffer-substring (point) (point-at-eol)) " ")
+		lines)
+	  (beginning-of-line 2))
+	(nreverse lines)))))
 
 (provide 'zen-julia)
 
