@@ -11,3 +11,11 @@ emacs/projectile-bookmarks.eld
 emacs/backups/*
 emacs/savehist
 emacs/anaconda-mode
+xmonad/*.jpg
+xmonad/*.png
+xmonad/#*
+xmonad/*.errors
+xmonad/*~
+xmonad/*.o
+xmonad/xmonad-x*
+xmonad/*.hi
