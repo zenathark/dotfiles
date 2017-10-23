@@ -10,6 +10,9 @@
 (column-number-mode 1)
 (setq inhibit-splash-screen t)
 
+(use-package fontawesome
+  :ensure t)
+
 ;;; Theme
 (if (eq system-type 'darwin)
     (defvar zen/font "Hack-14")
@@ -30,8 +33,7 @@
   (defvar zen/base16-colors base16-onedark-colors)
   (set-face-attribute 'fringe nil
 					  :foreground (plist-get zen/base16-colors :base04)
-					  :background (plist-get zen/base16-colors :base00))
-  )
+					  :background (plist-get zen/base16-colors :base00)))
 
 ; Line numbers
 (use-package hlinum

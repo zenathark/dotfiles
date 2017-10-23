@@ -303,6 +303,15 @@
 		    :prefix evil-command
 		    "'" 'org-edit-src-exit
 		    "k" 'org-edit-src-abort)
+
+(general-nvmap "d" 'evil-backward-char)
+(general-nvmap "h" 'evil-next-line)
+(general-nvmap "t" 'evil-previous-line)
+(general-nvmap "n" 'evil-forward-char)
+(general-mmap "l" 'evil-search-next)
+(general-mmap "k" 'evil-find-char-to)
+(general-nmap "j" 'evil-delete)
+
 ;;------------------------------------------------------------------------------
 ;;                               Elisp mode
 ;;------------------------------------------------------------------------------

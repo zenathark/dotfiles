@@ -18,7 +18,7 @@
 		  ("convert -trim -density 300 -shave 1x1 %f -quality 100 %O")))))
  '(package-selected-packages
    (quote
-    (julia-repl ein tide pyenv-mode-auto pyenv-mode web-mode cider clojure-mode popup ivy org-ref helm-core company-flx flx ensime ivy-rich xcscope srefactor aggressive-indent auto-highlight-symbol clean-aindent-mode stickyfunc-enhance popwin counsel swiper orgit git-timemachine git-messenger git-link gitconfig-mode gitattributes-mode gitignore-mode evil-magit magit page-break-lines projectile whitespace-cleanup-mode company-statistics company yasnippet smartparens sublimity flycheck exec-path-from-shell highlight-parentheses highlight-numbers open-junk-file rainbow-delimiters vi-tilde-fringe evil-search-highlight-persist evil-matchit evil-exchange evil-anzu evil-visualstar evil-surround evil-nerd-commenter evil-org evil-numbers ace-window ace-link general powerline evil hlinum base16-theme s dash use-package)))
+    (fontawesome haskell-mode web-beautify emmet-mode org-plus-contrib fill-column-indicator modeline-posn julia-repl ein tide pyenv-mode-auto pyenv-mode web-mode cider clojure-mode popup ivy org-ref helm-core company-flx flx ensime ivy-rich xcscope srefactor aggressive-indent auto-highlight-symbol clean-aindent-mode stickyfunc-enhance popwin counsel swiper orgit git-timemachine git-messenger git-link gitconfig-mode gitattributes-mode gitignore-mode evil-magit magit page-break-lines projectile whitespace-cleanup-mode company-statistics company yasnippet smartparens sublimity flycheck exec-path-from-shell highlight-parentheses highlight-numbers open-junk-file rainbow-delimiters vi-tilde-fringe evil-search-highlight-persist evil-matchit evil-exchange evil-anzu evil-visualstar evil-surround evil-nerd-commenter evil-org evil-numbers ace-window ace-link general powerline evil hlinum base16-theme s dash use-package)))
  '(safe-local-variable-values
    (quote
     ((eval
@@ -56,8 +56,7 @@
  package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
 		    ("org" . "http://orgmode.org/elpa/")
 		    ("melpa" . "http://melpa.org/packages/")
-		    ("melpa-stable" . "http://stable.melpa.org/packages/")
-		    ("elpy" . "http://jorgeschaefer.github.io/packages/")))
+		    ("melpa-stable" . "http://stable.melpa.org/packages/")))
 
 (package-initialize)
 (when (not package-archive-contents)
@@ -94,9 +93,12 @@
 (setq user-full-name "Juan Carlos Galán Hernández"
       user-mail-address "juan.galan@udlap.mx")
 
+(setq read-quoted-char-radix 16)
+
 (defvar config-dir (expand-file-name "settings/" user-emacs-directory))
 (defvar gists-dir (expand-file-name "gists/" user-emacs-directory))
 (add-to-list 'load-path config-dir)
+
 
 (require 'global)
 (require 'zen-general)
