@@ -63,6 +63,9 @@
   :config
   (global-whitespace-cleanup-mode))
 
+(use-package helm-projectile
+  :ensure t)
+
 (use-package projectile
   :ensure t
   :commands (projectile-run-shell-command-in-root
@@ -84,7 +87,7 @@
 	projectile-cache-file "~/.emacs.d/cache/projectile.cache"
 	projectile-knowns-projects-file "~/.emacs.d/cache/projectile-bookmarks.eld")
   (projectile-mode)
-  (setq projectile-completion-system 'ivy))
+  (setq projectile-completion-system 'helm))
 
 (use-package page-break-lines
   :diminish page-break-lines-mode
@@ -211,6 +214,21 @@
   :ensure t)
 
 (use-package fill-column-indicator
+  :ensure t)
+
+(use-package company-quickhelp
+  :ensure t)
+
+(use-package ggtags
+  :ensure t)
+
+(use-package helm-gtags
+  :ensure t)
+
+(use-package helm-make
+  :ensure t)
+
+(use-package helm-mode-manager
   :ensure t)
 
 (provide 'programming)

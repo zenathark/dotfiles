@@ -1,0 +1,30 @@
+
+xmonad.hs:20:34: warning: [-Wdeprecations]
+    In the use of ‘defaultPP’ (imported from XMonad.Hooks.DynamicLog):
+    Deprecated: "Use def (from Data.Default, and re-exported by XMonad.Hooks.DynamicLog) instead."
+   |
+20 | myPP xmproc = dynamicLogWithPP $ defaultPP { ppOutput = hPutStrLn xmproc
+   |                                  ^^^^^^^^^
+
+xmonad.hs:39:25: warning: [-Wdeprecations]
+    In the use of ‘defaultConfig’
+    (imported from XMonad, but defined in XMonad.Config):
+    Deprecated: "Use def (from Data.Default, and re-exported by XMonad and XMonad.Config) instead."
+   |
+39 | myConfig theme xmproc = defaultConfig
+   |                         ^^^^^^^^^^^^^
+
+xmonad.hs:40:15: warning: [-Wtabs]
+    Tab character found here, and in six further locations.
+    Please use spaces instead.
+   |
+40 |     { terminal          = "termite"
+   |               ^^
+
+xmonad.hs:43:38: warning: [-Wdeprecations]
+    In the use of ‘defaultConfig’
+    (imported from XMonad, but defined in XMonad.Config):
+    Deprecated: "Use def (from Data.Default, and re-exported by XMonad and XMonad.Config) instead."
+   |
+43 |     , manageHook        = manageHook defaultConfig <+> manageDocks
+   |                                      ^^^^^^^^^^^^^

@@ -153,6 +153,7 @@
       "pa" 'projectile-toggle-between-implementation-and-test
       "pc" 'projectile-compile-project
       "pD" 'projectile-dired
+      "pd" 'helm-projectile-find-dir
       "pG" 'projectile-regenerate-tags
       "pI" 'projectile-invalidate-cache
       "pk" 'projectile-kill-buffers
@@ -160,14 +161,23 @@
       "pR" 'projectile-replace
       "pT" 'projectile-find-test-file
       "py" 'projectile-find-tag
-      "pp" 'projectile-switch-project
-      "pb" 'projectile-switch-to-buffer
-      "pd" 'projectile-find-dir
-      "pf" 'projectile-find-file
-      "ph" 'projectile
-      "pr" 'projectile-recentf
+      "pp" 'helm-projectile-switch-project
+      "pb" 'helm-projectile-switch-to-buffer
+      "pd" 'helm-projectile-find-dir
+      "pf" 'helm-projectile-find-file
+      "ph" 'helm-projectile
+      "pr" 'helm-projectile-recentf
       "pv" 'projectile-vc
-      "pgp" 'projectile-grep)
+      "sgp" 'helm-projectile-grep)
+
+(nmap :prefix evil-leader
+      "cc" 'helm-make-projectile
+      "cm" 'helm-make)
+
+(nmap :prefix evil-leader
+      "hM" 'helm-switch-major-mode
+      "h C-m" 'helm-enable-minor-mode)
+
 (nmap :prefix evil-leader
       "gS" 'magit-stage-file
       "gM" 'magit-display-last)
@@ -176,11 +186,11 @@
       "tC" 'global-subword-mode)
 (nmap :prefix evil-leader
       "bb" 'ivy-switch-buffer)
-(nmap :prefix evil-leader "SPC" 'counsel-M-x)
-(vmap :prefix evil-leader "SPC" 'counsel-M-x)
-(general-define-key "M-x" 'counsel-M-x)
-(nmap :prefix evil-leader "ff" 'counsel-find-file)
-(nmap :prefix evil-leader "bb" 'ivy-switch-buffer)
+(nmap :prefix evil-leader "SPC" 'helm-M-x)
+(vmap :prefix evil-leader "SPC" 'helm-M-x)
+(general-define-key "M-x" 'helm-M-x)
+(nmap :prefix evil-leader "ff" 'helm-find-files)
+(nmap :prefix evil-leader "bb" 'helm-mini)
 (nmap :prefix evil-leader
       "wpm" 'popwin:messages
       "wpp" 'popwin:close-popup-window
@@ -257,7 +267,7 @@
 		     "cz" 'cider-switch-to-last-clojure-buffer)
 ;Smartparens
 (general-define-key :states '(normal)
-		    :keymaps '(clojure-mode-map lisp-mode-map)
+		    :keymaps '(clojure-mode-map lisp-mode-map racket-mode-map)
 		    :prefix "\\"
 		    "sf" 'sp-forward-slurp-sexp
 		    "sb" 'sp-backward-slurp-sexp
@@ -365,5 +375,52 @@ After evaluating the last sexp, it is replaced by its result."
       evil-normal-state-cursor `(,(plist-get zen/base16-colors :base0B) box)
       evil-replace-state-cursor `(,(plist-get zen/base16-colors :base08) bar)
       evil-visual-state-cursor `(,(plist-get zen/base16-colors :base09) box))
+
+
+;;------------------------------------------------------------------------------
+;;                               Racket mode
+;;------------------------------------------------------------------------------
+
+
+(general-define-key :states '(normal visual)
+
+		    :keymaps 'racket-mode-map
+		    :prefix evil-command
+		    "g`" 'geiser-unvisit
+		    "gm" 'racket-visit-module
+		    "gr" 'racket-open-require-path
+		    "hd" 'racket-describe
+		    "hh" 'racket-doc
+		    "il" 'racket-insert-lambda
+		    "'" 'racket-repl
+		    "sb" 'racket-run
+		    "gn" 'next-error
+		    "gN" 'previous-error
+
+		    "sB" 'racket-run-and-switch-to-repl
+		    "se" 'racket-send-last-sexp
+		    "sf" 'racket-send-definition
+		    "sr" 'racket-send-region
+		    "si" 'racket-run
+		    "ss" 'racket-repl
+		    "tb" 'racket-test)
+;;; TODO create gtags keys
+(general-define-key :states '(normal visual)
+		    :keymaps '(racket-mode-map)
+		    :prefix evil-leader
+		    "gc" 'helm-gtags-create-tags
+		    "gd" 'helm-gtags-find-tag
+		    "gD" 'helm-gtags-find-tag-other-window
+		    "gf" 'helm-gtags-select-path
+		    "gG" 'helm-gtags-dwim
+		    "gi" 'helm-gtags-tags-in-this-function
+		    "gl" 'helm-gtags-parse-file
+		    "gn" 'helm-gtags-next-history
+		    "gN" 'helm-gtags-previous-history
+		    "gn" 'helm-gtags-find-rtag
+		    "gR" 'helm-gtags-resume
+		    "gs" 'helm-gtags-select
+		    "gS" 'helm-gtags-show-stack
+		    "gu" 'helm-gtags-update-tags)
 
 (provide 'zen-evil)

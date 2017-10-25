@@ -1,0 +1,122 @@
+import XMonad
+import XMonad.Hooks.ManageDocks
+import XMonad.Hooks.DynamicLog
+import XMonad.Actions.SpawnOn
+import XMonad.Util.EZConfig          (additionalKeys)
+import System.Environment            (getEnv)
+import XMonad.Util.Run
+import XMonad.Util.Loggers
+import Data.ByteString.UTF8          (fromString, toString)
+import XMonad.Layout.Spacing
+
+import qualified XMonad.StackSet as W
+import qualified Data.Map        as M
+  
+
+
+myBar = "xmobar"
+
+myPP theme = xmobarPP { ppCurrent = xmobarColor ("#"++(headings theme)) "" . wrap "<" ">"
+                      , ppTitle   = xmobarColor ("#"++(bold theme)) "" . shorten 40
+                      }
+
+myModMask = mod4Mask
+toggleStrutsKey XConfig {XMonad.modMask = modMask} = (modMask, xK_b)
+
+myStartupHook = spawnHere "feh --bg-scale $HOME/.xmonad/background.jpg"
+    >> spawnHere "xbanish"
+    >> spawn "compton"
+    >> spawn "emacs --daemon"
+
+myConfig theme =  defaultConfig
+    { terminal		= "termite"
+    , modMask 		= myModMask
+    , layoutHook 	= spacing 2 $ Tall 1 (3/100) (1/2) 
+      -- avoidStruts $ layoutHook defaultConfig
+    , manageHook 	= manageHook defaultConfig <+> manageDocks
+    , startupHook 	= myStartupHook
+    , normalBorderColor = "#" ++ (lighterBackground theme)
+    , focusedBorderColor = "#" ++ (selectionBackground theme)
+    } `additionalKeys` (customKeys theme)
+
+data Theme = Theme { defaultBackground :: String
+                   , lighterBackground :: String
+                   , selectionBackground :: String
+                   , comments :: String
+                   , darkForeground :: String
+                   , defaultForeground :: String
+                   , lightForeground :: String
+                   , lightBackground :: String
+                   , variables :: String
+                   , types :: String
+                   , bold :: String
+                   , diff :: String
+                   , quotes :: String
+                   , headings :: String
+                   , italic :: String
+                   , sectionHeaders :: String
+                   , normalFont :: String
+                   , monoFont :: String
+                   , headerFont :: String
+                   , dmenuPrompt :: String
+                   } deriving (Show)
+                                        
+buildDmenuFlag flag value theme = " " ++ flag ++ " '#" ++ (value theme) ++ "'"
+buildDmenuString theme =
+                 let fn = buildDmenuFlag "-fn" headerFont theme
+                     nb = buildDmenuFlag "-nb" defaultBackground theme
+                     nf = buildDmenuFlag "-nf" defaultForeground theme
+                     sb = buildDmenuFlag "-sb" selectionBackground theme
+                     sf = buildDmenuFlag "-sf" lightForeground theme
+                     ppt = buildDmenuFlag "-p" dmenuPrompt theme
+                 in "dmenu_run " ++ fn ++ nb ++ sb ++ sf ++ ppt
+
+customKeys theme =
+                   [ ((myModMask              , xK_c), spawn $ buildDmenuString theme)
+                   , ((Mymodmask              , xK_h), windows W.focusDown)
+                   , ((myModMask              , xK_t), windows W.focusUp)
+                   , ((myModMask .|. shiftMask, xK_h), windows W.swapDown)
+                   , ((myModMask .|. shiftMask, xK_t), windows W.swapUp)
+                   , ((myModMask              , xK_d), sendMessage Shrink)
+                   , ((myModMask              , xK_n), sendMessage Expand)
+                   ]
+                   
+main = do
+    base00 <- getEnv "base00"
+    base01 <- getEnv "base01"
+    base02 <- getEnv "base02"
+    base03 <- getEnv "base03"
+    base04 <- getEnv "base04"
+    base05 <- getEnv "base05"
+    base06 <- getEnv "base06"
+    base07 <- getEnv "base07"
+    base08 <- getEnv "base08"
+    base09 <- getEnv "base09"
+    base10 <- getEnv "base0A"
+    base11 <- getEnv "base0B"
+    base12 <- getEnv "base0C"
+    base13 <- getEnv "base0D"
+    base14 <- getEnv "base0E"
+    base15 <- getEnv "base0F"
+    let theme = Theme {defaultBackground    = base00
+                      , lighterBackground   = base01
+                      , selectionBackground = base02
+                      , comments            = base03 
+                      , darkForeground      = base04 
+                      , defaultForeground   = base05 
+                      , lightForeground     = base06 
+                      , lightBackground     = base07 
+                      , variables           = base08 
+                      , types               = base09 
+                      , bold                = base10
+                      , diff                = base11 
+                      , quotes              = base12
+                      , headings            = base13 
+                      , italic              = base14 
+                      , sectionHeaders      = base15 
+                      , normalFont          = ""
+                      , monoFont            = ""
+                      , headerFont          = "Lato Medium-9"
+                      , dmenuPrompt         = "λ."
+                      }
+    xmonad =<< statusBar myBar (myPP theme) toggleStrutsKey (myConfig theme)

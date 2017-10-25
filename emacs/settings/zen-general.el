@@ -1,18 +1,24 @@
-(use-package ivy
-  :diminish ivy-mode
+;; (use-package ivy
+;;   :diminish ivy-mode
+;;   :ensure t
+;;   :config
+;;   (ivy-mode 1)
+;;   (setq use-ivy-virtual-buffers t))
+
+;; (use-package counsel
+;;   :ensure t)
+
+;; (use-package ivy-rich
+;;   :ensure t
+;;   :config
+;;   (ivy-set-display-transformer 'ivy-switch-buffer 'ivy-rich-switch-buffer-transformer)
+;;   (setq ivy-use-virtual-buffers t))
+
+(use-package helm
+  :diminish helm-mode
   :ensure t
   :config
-  (ivy-mode 1)
-  (setq use-ivy-virtual-buffers t))
-
-(use-package counsel
-  :ensure t)
-
-(use-package ivy-rich
-  :ensure t
-  :config
-  (ivy-set-display-transformer 'ivy-switch-buffer 'ivy-rich-switch-buffer-transformer)
-  (setq ivy-use-virtual-buffers t))
+  (helm-mode 1))
 
 (use-package company
   :ensure t
