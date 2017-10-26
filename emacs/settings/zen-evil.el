@@ -238,34 +238,88 @@
       "C-c" 'evil-normal-state)
 (vmap :keymaps 'ensime-inf-mode-map
       "C-c" 'evil-normal-state)
-;; Clojure
+;;------------------------------------------------------------------------------
+;;                               Clojure mode
+;;------------------------------------------------------------------------------
 (nmap :prefix evil-leader "wpb" 'popwin:popup-buffer  )
 (general-define-key :states '(normal)
 		    :keymaps 'clojure-mode-map
 		    :prefix evil-command
-		    "cj" 'cider-jack-in)
+		    "'" 'cider-jack-in)
 (general-define-key :states '(normal)
 		     :keymaps 'cider-mode-map
 		     :prefix evil-command
-		     "cji" 'cider-jack-in
+		     "ha" 'cider-apropos
+		     "hh" 'cider-doc
+		     "hg" 'cider-grimoire
+		     "hj" 'cider-javadoc
+		     "hn" 'cider-browse-ns
+
+		     "eb" 'cider-eval-buffer
 		     "ee" 'cider-eval-last-sexp
 		     "ef" 'cider-eval-defun-at-point
-		     "er" 'cider-eval-region
-		     "eb" 'cider-eval-buffer
 		     "em" 'cider-macroexpand-1
 		     "eM" 'cider-macroexpand-all
+		     "er" 'cider-eval-region
 		     "ew" 'cider-eval-last-sexp-and-replace
-		     "cz" 'cider-switch-to-repl-buffer
-		     "cq" 'cider-quit
-		     "tt" 'cider-test-run-test
-		     "tn" 'cider-test-run-ns-tests
+
+		     "=" 'cider-format-buffer
+		     "fb" 'cider-format-buffer
+
+		     "gb" 'cider-pop-back
+		     "gC" 'cider-classpath
+		     "ge" 'cider-jump-to-compilation-error
+		     "gr" 'cider-jump-to-resource
+		     "gn" 'cider-browse-ns
+		     "gN" 'cider-browse-ns-all
+
+		     "'" 'cider-switch-to-repl-buffer
+		     "\"" 'cider-jack-in-clojurescript
+		     "sb" 'cider-load-buffer
+		     "sB" '(if (eq major-mode 'cider-repl-mode)
+			       'cider-repl-clear-buffer
+			     'cider-connect)
+		     "sC" 'cider-find-and-clear-repl-output
+		     "si" 'cider-jack-in
+		     "sI" 'cider-jack-in-clojurescript
+		     "so" 'cider-repl-switch-to-other
+		     "sq" 'cider-quit
+		     "ss" (if (eq major-mode 'cider-repl-mode)
+			      'cider-switch-to-last-clojure-buffer
+			    'cider-switch-to-repl-buffer)
+		     "sx" 'cider-refresh
+
+		     "Te" 'cider-enlighten-mode
+		     "Tt" 'cider-auto-test-mode
+
+		     "tb" 'cider-test-show-report
+
+		     "db" 'cider-debug-defun-at-point
+		     "dv" 'cider-inspect
+
+		     "rc{" 'clojure-convert-collection-to-map
+		     "rc(" 'clojure-convert-collection-to-list
+		     "rc'" 'clojure-convert-collection-to-quoted-list
+		     "rc#" 'clojure-convert-collection-to-set
+		     "rc[" 'clojure-convert-collection-to-vector
 		     )
 
 (general-define-key :states '(normal)
 		     :keymap 'cider-repl-mode-map
 		     :prefix evil-command
+		     "," 'cider-repl-handle-shortcut
 		     "cz" 'cider-switch-to-last-clojure-buffer)
-;Smartparens
+
+(evil-define-key 'normal cider-repl-mode-map
+  "C-j" 'cider-repl-next-input
+  "C-k" 'cider-repl-previous-input)
+
+(general-define-key :states '(normal)
+		    :mode 'cider-clojure-interaction-mode
+		    "ep" 'cider-eval-print-last-sexp)
+;;------------------------------------------------------------------------------
+;;                               Smaprtparens mode
+;;------------------------------------------------------------------------------
 (general-define-key :states '(normal)
 		    :keymaps '(clojure-mode-map lisp-mode-map racket-mode-map)
 		    :prefix "\\"
@@ -280,8 +334,9 @@
 		    "ks" 'sp-kill-sexp
 		    "ms" 'sp-mark-sexp
 		    )
-
-;Org mode
+;;------------------------------------------------------------------------------
+;;                               Org mode
+;;------------------------------------------------------------------------------
 (general-define-key :states '(normal)
 		    :keymaps 'org-mode-map
 		    :prefix evil-command
@@ -320,7 +375,8 @@
 (general-nvmap "n" 'evil-forward-char)
 (general-mmap "l" 'evil-search-next)
 (general-mmap "k" 'evil-find-char-to)
-(general-nmap "j" 'evil-delete)
+(general-nvmap "j" 'evil-delete)
+
 
 ;;------------------------------------------------------------------------------
 ;;                               Elisp mode
