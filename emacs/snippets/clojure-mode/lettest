@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: Let Test
+# key: lettest
+# --
+(deftest $1
+  (let [$2]
+    (testing "$3"
+      (is $0))))

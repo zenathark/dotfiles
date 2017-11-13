@@ -196,54 +196,59 @@
       "wpp" 'popwin:close-popup-window
       "wpc" '(lambda () (interactive) (popwin:display-buffer "*compilation*")))
 ;;; Scala Hotkeys
-(nmap :prefix evil-command
-      :kepmaps 'scala-mode-map
-      "vf" 'ensime-format-source
-      "vr" 'ensime-show-uses-of-symbol-at-point
-      "v5i" 'ensime-inspect-type-at-point-other-frame
-      "vt" 'ensime-type-at-point
-      "ve" 'ensime-print-errors-at-point
-      "vp" 'ensime-inspect-package-at-point
-      "vo" 'ensime-inspect-project-package
-      "vu" 'ensime-undo-peek
-      "cc" 'ensime-typecheck-current-buffer
-      "ca" 'ensime-typecheck-all
-      "cr" 'ensime-reload-open-files
-      "ce" 'ensime-show-all-errors-and-warnings
-      "tt" 'ensime-goto-test
-      "ti" 'ensime-goto-impl
-      "ra" 'ensime-refactor-add-type-annotation
-      "ro" 'ensime-refactor-diff-organize-imports
-      "rt" 'ensime-import-type-at-point
-      "rr" 'ensime-refactor-diff-rename
-      "rl" 'ensime-refactor-diff-extract-local
-      "rm" 'ensime-refactor-diff-extract-method
-      "ri" 'ensime-refactor-diff-inline-local
-      "m." 'ensime-edit-definition
-      "m," 'ensime-pop-find-definition-stack
-      "mn" 'ensime-forward-note
-      "mp" 'ensime-backward-note
-      "v." 'ensime-expand-selection-command
-      "vv" 'ensime-search
-      "vd" 'ensime-show-doc-for-symbol-at-point
-      "vz" 'ensime-inf-switch
-      "vkz" 'ensime-inf-quit-interpreter
-      "vb" 'ensime-inf-eval-buffer
-      "vl" 'ensime-inf-load-file
-      "bs" 'ensime-sbt-switch)
-(vmap :prefix evil-command
-      :keymaps 'scala-mode-map
-      "vr" 'ensime-inf-eval-region)
-(imap :keymaps 'ensime-inf-mode-map
-      "C-c" 'evil-normal-state)
-(vmap :keymaps 'ensime-inf-mode-map
-      "C-c" 'evil-normal-state)
+(general-define-key :states '(normal)
+		    :kepmaps 'scala-mode-map
+		    :prefix evil-command
+		    "vf" 'ensime-format-source
+		    "vr" 'ensime-show-uses-of-symbol-at-point
+		    "v5i" 'ensime-inspect-type-at-point-other-frame
+		    "vt" 'ensime-type-at-point
+		    "ve" 'ensime-print-errors-at-point
+		    "vp" 'ensime-inspect-package-at-point
+		    "vo" 'ensime-inspect-project-package
+		    "vu" 'ensime-undo-peek
+		    "cc" 'ensime-typecheck-current-buffer
+		    "ca" 'ensime-typecheck-all
+		    "cr" 'ensime-reload-open-files
+		    "ce" 'ensime-show-all-errors-and-warnings
+		    "tt" 'ensime-goto-test
+		    "ti" 'ensime-goto-impl
+		    "ra" 'ensime-refactor-add-type-annotation
+		    "ro" 'ensime-refactor-diff-organize-imports
+		    "rt" 'ensime-import-type-at-point
+		    "rr" 'ensime-refactor-diff-rename
+		    "rl" 'ensime-refactor-diff-extract-local
+		    "rm" 'ensime-refactor-diff-extract-method
+		    "ri" 'ensime-refactor-diff-inline-local
+		    "m." 'ensime-edit-definition
+		    "m," 'ensime-pop-find-definition-stack
+		    "mn" 'ensime-forward-note
+		    "mp" 'ensime-backward-note
+		    "v." 'ensime-expand-selection-command
+		    "vv" 'ensime-search
+		    "vd" 'ensime-show-doc-for-symbol-at-point
+		    "vz" 'ensime-inf-switch
+		    "vkz" 'ensime-inf-quit-interpreter
+		    "vb" 'ensime-inf-eval-buffer
+		    "vl" 'ensime-inf-load-file
+		    "bs" 'ensime-sbt-switch)
+
+(general-define-key :states '(visual)
+		    :prefix evil-command
+		    :keymaps 'scala-mode-map
+		    "vr" 'ensime-inf-eval-region)
+(general-define-key :states '(insert)
+		    :keymaps 'ensime-inf-mode-map
+		    "C-c" 'evil-normal-state)
+(general-define-key :states '(visual)
+		    :keymaps 'ensime-inf-mode-map
+		    "C-c" 'evil-normal-state)
 ;; Clojure
 (nmap :prefix evil-leader "wpb" 'popwin:popup-buffer  )
 (general-define-key :states '(normal)
 		    :keymaps 'clojure-mode-map
 		    :prefix evil-command
-		    "cj" 'cider-jack-in)
+		    "'" 'cider-jack-in)
 (general-define-key :states '(normal)
 		     :keymaps 'cider-mode-map
 		     :prefix evil-command
@@ -255,7 +260,7 @@
 		     "em" 'cider-macroexpand-1
 		     "eM" 'cider-macroexpand-all
 		     "ew" 'cider-eval-last-sexp-and-replace
-		     "cz" 'cider-switch-to-repl-buffer
+		     "'" 'cider-switch-to-repl-buffer
 		     "cq" 'cider-quit
 		     "tt" 'cider-test-run-test
 		     "tn" 'cider-test-run-ns-tests
@@ -264,7 +269,7 @@
 (general-define-key :states '(normal)
 		     :keymap 'cider-repl-mode-map
 		     :prefix evil-command
-		     "cz" 'cider-switch-to-last-clojure-buffer)
+		     "'" 'cider-switch-to-last-clojure-buffer)
 ;Smartparens
 (general-define-key :states '(normal)
 		    :keymaps '(clojure-mode-map lisp-mode-map racket-mode-map)

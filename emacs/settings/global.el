@@ -15,7 +15,7 @@
 
 ;;; Theme
 (if (eq system-type 'darwin)
-    (defvar zen/font "Hack-14")
+    (defvar zen/font "Hack-12")
     (defvar zen/font "Hack-9"))
 
 (defconst lisp--prettify-symbols-alist
@@ -23,29 +23,20 @@
 
 
 (if (eq system-type 'darwin)
-    (defvar zen/font-status "Lato-14")
+    (defvar zen/font-status "DejaVu Sans Mono-12")
     (defvar zen/font-status "Lato-9"))
 
 (use-package base16-theme
   :ensure t
   :config
+  ;; (load-theme 'base16-onedark)
+  ;; (defvar zen/base16-colors base16-onedark-colors)
   (load-theme 'base16-onedark)
   (defvar zen/base16-colors base16-onedark-colors)
   (set-face-attribute 'fringe nil
 					  :foreground (plist-get zen/base16-colors :base04)
 					  :background (plist-get zen/base16-colors :base00)))
 
-; Line numbers
-(use-package hlinum
-  :ensure t
-  :config
-  (hlinum-activate)
-  (set-face-attribute 'linum nil
-		      :foreground (plist-get zen/base16-colors :base04)
-		      :background (plist-get zen/base16-colors :base00))
-  (set-face-attribute 'linum-highlight-face nil
-					  :foreground (plist-get zen/base16-colors :base05)
-					  :background (plist-get zen/base16-colors :base02)))
 
 (global-linum-mode)
 (hl-line-mode t)
@@ -114,6 +105,13 @@
 ;;   :ensure t
 ;;   :config
 ;;   (mode-icons-mode))
+
+(use-package xterm-color
+  :ensure t
+  :config
+  (add-hook 'comint-preoutput-filter-functions 'xterm-color-filter)
+  (setq comint-output-filter-functions (remove 'ansi-color-process-output comint-preoutput-filter-functions)))
+
 
 
 (provide 'global)
