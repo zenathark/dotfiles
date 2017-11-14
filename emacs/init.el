@@ -112,6 +112,7 @@
 (require 'zen-typescript)
 (require 'zen-julia)
 (require 'zen-racket)
+(require 'zen-go)
 (require 'zen-evil)
 
 ;;; init.el ends here
