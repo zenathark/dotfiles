@@ -12,7 +12,12 @@
 	     ;; (add-hook 'clojure-mode-hook #'smartparens-mode)
 	     ;; (add-hook 'clojure-mode-hook #'turn-on-smartparens-strict-mode)
 	     ;; (add-hook 'clojure-mode-hook #'eldoc-mode)
-	     (push "*cider-test-report*" popwin:special-display-config))
+	     (push '("*cider-error*" :dedicated t :position bottom :stick t :noselect nil :height 0.4)
+		   popwin:special-display-config)
+	     (push '("*cider-doc*" :dedicated t :position bottom :stick t :noselect nil :height 0.4)
+		   popwin:special-display-config)
+	     (push "*cider-test-report*"
+		   popwin:special-display-config))
 
 (defun evil--cider-preceding-sexp (command &rest args)
   "In normal-state or motion-state, cider-last-sexp ends at point."

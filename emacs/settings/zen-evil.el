@@ -252,13 +252,18 @@
 (general-define-key :states '(normal)
 		     :keymaps 'cider-mode-map
 		     :prefix evil-command
-		     "cji" 'cider-jack-in
+		     "ha" 'cider-apropos
+		     "hh" 'cider-doc
+		     "hg" 'cider-grimoire
+		     "hj" 'cider-javadoc
+		     "hn" 'cider-browse-ns
+
+		     "eb" 'cider-eval-buffer
 		     "ee" 'cider-eval-last-sexp
 		     "ef" 'cider-eval-defun-at-point
-		     "er" 'cider-eval-region
-		     "eb" 'cider-eval-buffer
 		     "em" 'cider-macroexpand-1
 		     "eM" 'cider-macroexpand-all
+		     "er" 'cider-eval-region
 		     "ew" 'cider-eval-last-sexp-and-replace
 		     "'" 'cider-switch-to-repl-buffer
 		     "cq" 'cider-quit
@@ -285,8 +290,9 @@
 		    "ks" 'sp-kill-sexp
 		    "ms" 'sp-mark-sexp
 		    )
-
-;Org mode
+;;------------------------------------------------------------------------------
+;;                               Org mode
+;;------------------------------------------------------------------------------
 (general-define-key :states '(normal)
 		    :keymaps 'org-mode-map
 		    :prefix evil-command
@@ -325,7 +331,8 @@
 (general-nvmap "n" 'evil-forward-char)
 (general-mmap "l" 'evil-search-next)
 (general-mmap "k" 'evil-find-char-to)
-(general-nmap "j" 'evil-delete)
+(general-nvmap "j" 'evil-delete)
+
 
 ;;------------------------------------------------------------------------------
 ;;                               Elisp mode
