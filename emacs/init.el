@@ -18,7 +18,7 @@
 		  ("convert -trim -density 300 -shave 1x1 %f -quality 100 %O")))))
  '(package-selected-packages
    (quote
-    (helm-mode-manager helm-make helm-projectile helm-gtags counsel-gtags ggtags company-quickhelp racket-mode quack geiser fontawesome haskell-mode web-beautify emmet-mode org-plus-contrib fill-column-indicator modeline-posn julia-repl ein tide pyenv-mode-auto pyenv-mode web-mode cider clojure-mode popup ivy org-ref helm-core company-flx flx ensime ivy-rich xcscope srefactor aggressive-indent auto-highlight-symbol clean-aindent-mode stickyfunc-enhance popwin counsel swiper orgit git-timemachine git-messenger git-link gitconfig-mode gitattributes-mode gitignore-mode evil-magit magit page-break-lines projectile whitespace-cleanup-mode company-statistics company yasnippet smartparens sublimity flycheck exec-path-from-shell highlight-parentheses highlight-numbers open-junk-file rainbow-delimiters vi-tilde-fringe evil-search-highlight-persist evil-matchit evil-exchange evil-anzu evil-visualstar evil-surround evil-nerd-commenter evil-org evil-numbers ace-window ace-link general powerline evil hlinum base16-theme s dash use-package)))
+    (company-go go-eldoc go-mode helm-mode-manager helm-make helm-projectile helm-gtags counsel-gtags ggtags company-quickhelp racket-mode quack geiser fontawesome haskell-mode web-beautify emmet-mode org-plus-contrib fill-column-indicator modeline-posn julia-repl ein tide pyenv-mode-auto pyenv-mode web-mode cider clojure-mode popup ivy org-ref helm-core company-flx flx ensime ivy-rich xcscope srefactor aggressive-indent auto-highlight-symbol clean-aindent-mode stickyfunc-enhance popwin counsel swiper orgit git-timemachine git-messenger git-link gitconfig-mode gitattributes-mode gitignore-mode evil-magit magit page-break-lines projectile whitespace-cleanup-mode company-statistics company yasnippet smartparens sublimity flycheck exec-path-from-shell highlight-parentheses highlight-numbers open-junk-file rainbow-delimiters vi-tilde-fringe evil-search-highlight-persist evil-matchit evil-exchange evil-anzu evil-visualstar evil-surround evil-nerd-commenter evil-org evil-numbers ace-window ace-link general powerline evil hlinum base16-theme s dash use-package)))
  '(safe-local-variable-values
    (quote
     ((eval
@@ -112,6 +112,7 @@
 (require 'zen-typescript)
 (require 'zen-julia)
 (require 'zen-racket)
+(require 'zen-go)
 (require 'zen-evil)
 
 ;;; init.el ends here
