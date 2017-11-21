@@ -435,4 +435,12 @@ After evaluating the last sexp, it is replaced by its result."
 		    "gS" 'helm-gtags-show-stack
 		    "gu" 'helm-gtags-update-tags)
 
+
+;;------------------------------------------------------------------------------
+;;                               Yasnippet minor mode
+;;------------------------------------------------------------------------------
+(general-define-key :states '(insert)
+		    :keymaps '(yas-minor-mode-map)
+		    "C-g" 'yas-expand-snippet)
+
 (provide 'zen-evil)

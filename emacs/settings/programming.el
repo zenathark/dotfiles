@@ -231,6 +231,12 @@
 (use-package helm-mode-manager
   :ensure t)
 
-(use-package aggresive-indent-mode
-  :ensure t)
+;;; github.com/Fuco1/smartparens/isuues80
+(defun create-newline-and-enter-sexp (&rest _ignored)
+  "Open a new brace or braket expression, with relevant newlines and indent.  "
+  (newline)
+  (indent-according-to-mode)
+  (forward-line -1)
+  (indent-according-to-mode))
+
 (provide 'programming)

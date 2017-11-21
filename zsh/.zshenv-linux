@@ -1,3 +1,4 @@
+# -*- mode: sh -*-
 export ALTERNATE_EDITOR=""
 export EDITOR="emacsclient -t"
 export VISUAL="emacsclient -c -a emacs"
@@ -5,3 +6,20 @@ alias sem='sudo emacsclient -nc'
 alias emc='emacsclient -c -a emacs'
 alias emx='emacsclient -t'
 alias em='emacsclient -nc'
+
+export PROJECTS=$HOME/projects
+
+# Local executables
+export PATH=$PATH:$HOME/.local/bin
+
+
+# Go Lang Config
+export GOROOT=$PROJECTS/golang
+export PATH=$PATH:$GOROOT/bin
+
+export GOPATH=$HOME/.go
+export PATH=$PATH:$GOPATH/bin
+
+# Julia Lang Config
+export JULIAROOT=$PROJECTS/julia
+export JULIASRC=$JULIAROOT/src
