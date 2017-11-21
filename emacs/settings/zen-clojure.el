@@ -7,6 +7,7 @@
 		     smartparens-mode
 		     turn-on-smartparens-strict-mode
 		     eldoc-mode
+		     aggressive-indent-mode
 		     (lambda () (setq mode-name ""))))
 	     ;; (add-hook 'clojure-mode-hook 'rainbow-delimiters-mode)
 	     ;; (add-hook 'clojure-mode-hook #'smartparens-mode)

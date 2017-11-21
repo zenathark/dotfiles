@@ -231,4 +231,6 @@
 (use-package helm-mode-manager
   :ensure t)
 
+(use-package aggresive-indent-mode
+  :ensure t)
 (provide 'programming)
