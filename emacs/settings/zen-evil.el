@@ -1,12 +1,39 @@
+;;; package --- Evil general configuration
+;;; Commentary:
+;;; Code:
+
+(defvar aw-keys)
+(defvar zen/base16-colors)
+(defvar evil-emacs-state-cursor   `(,(plist-get zen/base16-colors :base0D) box))
+(defvar evil-insert-state-cursor  `(,(plist-get zen/base16-colors :base0D) bar))
+(defvar evil-motion-state-cursor  `(,(plist-get zen/base16-colors :base0E) box))
+(defvar evil-normal-state-cursor  `(,(plist-get zen/base16-colors :base0B) box))
+(defvar evil-replace-state-cursor `(,(plist-get zen/base16-colors :base08) bar))
+(defvar evil-visual-state-cursor  `(,(plist-get zen/base16-colors :base09) box))
+
+(declare-function nmap "general.el")
+(declare-function vmap "general.el")
+(declare-function imap "general.el")
+(declare-function nvmap "general.el")
+(declare-function general-mmap "general.el")
+(declare-function general-imap "general.el")
+(declare-function general-emap "general.el")
+(declare-function general-nmap "general.el")
+(declare-function general-vmap "general.el")
+(declare-function general-omap "general.el")
+(declare-function general-rmap "general.el")
+(declare-function general-nvmap "general.el")
+(declare-function general-iemap "general.el")
+(declare-function general-tomap "general.el")
+(declare-function general-itomap "general.el")
+(declare-function general-otomap "general.el")
+(declare-function evil-ex-define-cmd "evil.el")
+
+
 (use-package evil
   :ensure t
   :config
   (evil-mode t))
-
-;; (use-package powerline
-;;   :ensure t
-;;   :config
-;;   (powerline-center-evil-theme))
 
 (use-package general
   :ensure t
@@ -34,18 +61,19 @@
 (use-package evil-numbers
   :ensure t)
 
-;(use-package evil-args
-  ;:ensure t
-  ;:config
-  ;(general-define-key :keymaps 'inner "a" 'evil-inner-arg)
-  ;(general-define-key :kepmaps 'outer "a" 'evil-outer-arg)
-  ;(general-define-key :keymaps 'normal
-;		      "L" 'evil-forward-arg
-;		      "H" 'evil-backward-argi
-;		      "K" 'evil-jump-out-args))
-;  (general-define-key :keymaps 'motion
-;		      "L" 'evil-forward-arg
-;		      "H" 'evil-backward-arg)
+;; (use-package evil-args
+;;   :ensure t
+;;   :config
+;;   (general-define-key :keymaps 'inner "a" 'evil-inner-arg)
+;;   (general-define-key :kepmaps 'outer "a" 'evil-outer-arg)
+;;   (general-define-key :keymaps 'normal
+;;		      "L" 'evil-forward-arg
+;;		      "H" 'evil-backward-argi
+;;		      "K" 'evil-jump-out-args))
+
+ (general-define-key :keymaps 'motion
+		      "L" 'evil-forward-arg
+		      "H" 'evil-backward-arg)
 
 (use-package evil-org
   :ensure t)
@@ -100,12 +128,13 @@
   :config
   (setq avy-keys (number-sequence ?a ?z))
   (setq avy-all-windows 'all-frames)
-  (setq avy-background t)
-  )
+  (setq avy-background t))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;                               Hotkeys
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(defvar evil-leader) ;; Evil leader key (vim like)
+(defvar evil-command) ;; Second leader key for specific mode keys
 
 (setq evil-leader "SPC")
 (setq evil-command ",")
@@ -195,87 +224,25 @@
       "wpm" 'popwin:messages
       "wpp" 'popwin:close-popup-window
       "wpc" '(lambda () (interactive) (popwin:display-buffer "*compilation*")))
-;;; Scala Hotkeys
-(general-define-key :states '(normal)
-		    :kepmaps 'scala-mode-map
-		    :prefix evil-command
-		    "vf" 'ensime-format-source
-		    "vr" 'ensime-show-uses-of-symbol-at-point
-		    "v5i" 'ensime-inspect-type-at-point-other-frame
-		    "vt" 'ensime-type-at-point
-		    "ve" 'ensime-print-errors-at-point
-		    "vp" 'ensime-inspect-package-at-point
-		    "vo" 'ensime-inspect-project-package
-		    "vu" 'ensime-undo-peek
-		    "cc" 'ensime-typecheck-current-buffer
-		    "ca" 'ensime-typecheck-all
-		    "cr" 'ensime-reload-open-files
-		    "ce" 'ensime-show-all-errors-and-warnings
-		    "tt" 'ensime-goto-test
-		    "ti" 'ensime-goto-impl
-		    "ra" 'ensime-refactor-add-type-annotation
-		    "ro" 'ensime-refactor-diff-organize-imports
-		    "rt" 'ensime-import-type-at-point
-		    "rr" 'ensime-refactor-diff-rename
-		    "rl" 'ensime-refactor-diff-extract-local
-		    "rm" 'ensime-refactor-diff-extract-method
-		    "ri" 'ensime-refactor-diff-inline-local
-		    "m." 'ensime-edit-definition
-		    "m," 'ensime-pop-find-definition-stack
-		    "mn" 'ensime-forward-note
-		    "mp" 'ensime-backward-note
-		    "v." 'ensime-expand-selection-command
-		    "vv" 'ensime-search
-		    "vd" 'ensime-show-doc-for-symbol-at-point
-		    "vz" 'ensime-inf-switch
-		    "vkz" 'ensime-inf-quit-interpreter
-		    "vb" 'ensime-inf-eval-buffer
-		    "vl" 'ensime-inf-load-file
-		    "bs" 'ensime-sbt-switch)
 
-(general-define-key :states '(visual)
-		    :prefix evil-command
-		    :keymaps 'scala-mode-map
-		    "vr" 'ensime-inf-eval-region)
-(general-define-key :states '(insert)
-		    :keymaps 'ensime-inf-mode-map
-		    "C-c" 'evil-normal-state)
-(general-define-key :states '(visual)
-		    :keymaps 'ensime-inf-mode-map
-		    "C-c" 'evil-normal-state)
-;; Clojure
-(nmap :prefix evil-leader "wpb" 'popwin:popup-buffer  )
-(general-define-key :states '(normal)
-		    :keymaps 'clojure-mode-map
-		    :prefix evil-command
-		    "'" 'cider-jack-in)
-(general-define-key :states '(normal)
-		     :keymaps 'cider-mode-map
-		     :prefix evil-command
-		     "ha" 'cider-apropos
-		     "hh" 'cider-doc
-		     "hg" 'cider-grimoire
-		     "hj" 'cider-javadoc
-		     "hn" 'cider-browse-ns
+(general-mmap "l" 'evil-search-next)
+(general-mmap "k" 'evil-find-char-to)
+(general-mmap "d" 'evil-backward-char)
+(general-mmap "h" 'evil-next-line)
+(general-define-key :states '(motion)
+		    "h" 'evil-next-line)
+(general-mmap "t" 'evil-previous-line)
+(general-mmap "n" 'evil-forward-char)
+(general-nvmap "d" 'evil-backward-char)
+(general-nvmap "h" 'evil-next-line)
+(general-nvmap "t" 'evil-previous-line)
+(general-nvmap "n" 'evil-forward-char)
+(general-nvmap "j" 'evil-delete)
+(general-define-key "C-x C-b" 'helm-buffers-list)
 
-		     "eb" 'cider-eval-buffer
-		     "ee" 'cider-eval-last-sexp
-		     "ef" 'cider-eval-defun-at-point
-		     "em" 'cider-macroexpand-1
-		     "eM" 'cider-macroexpand-all
-		     "er" 'cider-eval-region
-		     "ew" 'cider-eval-last-sexp-and-replace
-		     "'" 'cider-switch-to-repl-buffer
-		     "cq" 'cider-quit
-		     "tt" 'cider-test-run-test
-		     "tn" 'cider-test-run-ns-tests
-		     )
-
-(general-define-key :states '(normal)
-		     :keymap 'cider-repl-mode-map
-		     :prefix evil-command
-		     "'" 'cider-switch-to-last-clojure-buffer)
-;Smartparens
+;;------------------------------------------------------------------------------
+;;                               Smartparens mode
+;;------------------------------------------------------------------------------
 (general-define-key :states '(normal)
 		    :keymaps '(clojure-mode-map lisp-mode-map racket-mode-map)
 		    :prefix "\\"
@@ -290,151 +257,10 @@
 		    "ks" 'sp-kill-sexp
 		    "ms" 'sp-mark-sexp
 		    )
-;;------------------------------------------------------------------------------
-;;                               Org mode
-;;------------------------------------------------------------------------------
-(general-define-key :states '(normal)
-		    :keymaps 'org-mode-map
-		    :prefix evil-command
-		    "aa" 'org-ref-add-acronym-entry
-		    "gi" 'org-ref-insert-glossary-link
-		    "tt" 'org-todo
-		    "ti" 'org-insert-todo-heading
-		    "tc" 'org-toggle-checkbox
-		    "'"  'org-edit-special
-		    )
-(setq-default c-basic-offset 4)
-(general-define-key :states '(normal)
-		    :keymaps 'org-mode-map
-		    :prefix evil-leader
-		    "m'" 'org-table-edit-field
-		    "m <SPC>" 'org-ctrl-c-ctrl-c)
-
-(general-define-key :states '(insert)
-		    :keymaps 'org-mode-map
-		    :prefix "C-*"
-		    "aa" 'org-ref-add-acronym-entry
-		    "gi" 'org-ref-insert-glossary-link
-		    "'" 'org-edit-special
-		    "]" 'org-ref-helm-insert-cite-link
-		    )
-
-(general-define-key :states '(normal)
-		    :keymaps 'org-src-mode-map
-		    :prefix evil-command
-		    "'" 'org-edit-src-exit
-		    "k" 'org-edit-src-abort)
-
-(general-nvmap "d" 'evil-backward-char)
-(general-nvmap "h" 'evil-next-line)
-(general-nvmap "t" 'evil-previous-line)
-(general-nvmap "n" 'evil-forward-char)
-(general-mmap "l" 'evil-search-next)
-(general-mmap "k" 'evil-find-char-to)
-(general-nvmap "j" 'evil-delete)
-
 
 ;;------------------------------------------------------------------------------
-;;                               Elisp mode
+;;                               Popwin minor mode
 ;;------------------------------------------------------------------------------
-
-(defun eval-last-sexp-and-replace ()
-  "This function evaluate the last sexp and replace it.
-After evaluating the last sexp, it is replaced by its result."
-  (interactive)
-  (let ((value (eval (elisp--preceding-sexp))))
-    (kill-sexp -1)
-    (insert (format "%S" value))))
-
-(general-define-key :states '(normal)
-		     :keymaps 'emacs-lisp-mode-map
-		     :prefix evil-command
-		     "ee" 'eval-last-sexp
-		     "ef" 'eval-defun
-		     "er" 'eval-region
-		     "eb" 'eval-buffer
-		     "em" 'macroexpand-1
-		     "eM" 'macroexpand-all
-		     "ew" 'eval-last-sexp-and-replace)
-
-;;------------------------------------------------------------------------------
-;;                               Julia mode
-;;------------------------------------------------------------------------------
-(general-define-key :states '(normal)
-		     :keymaps 'julia-repl-mode-map
-		     :prefix evil-command
-		     "em" 'julia-repl-macroexpand
-		     "ee" 'julia-repl-edit
-		     "ed" 'julia-repl-doc
-		     "el" 'julia-repl-send-line
-		     "er" 'julia-repl-send-region-or-line
-		     "eb" 'julia-repl-send-buffer
-		     "jz" #'julia-repl)
-
-(general-define-key :states '(visual)
-		    :keymaps 'julia-repl-mode-map
-		    :prefix evil-command
-		    "em" 'julia-repl-macroexpand
-		    "ee" 'julia-repl-edit
-		    "ed" 'julia-repl-doc
-		    "er" 'julia-repl-send-region-or-line
-		    "eb" 'julia-repl-send-buffer
-		    "jz" #'julia-repl)
-
-(setq evil-emacs-state-cursor `(,(plist-get zen/base16-colors :base0D) box)
-      evil-insert-state-cursor `(,(plist-get zen/base16-colors :base0D) bar)
-      evil-motion-state-cursor `(,(plist-get zen/base16-colors :base0E) box)
-      evil-normal-state-cursor `(,(plist-get zen/base16-colors :base0B) box)
-      evil-replace-state-cursor `(,(plist-get zen/base16-colors :base08) bar)
-      evil-visual-state-cursor `(,(plist-get zen/base16-colors :base09) box))
-
-
-;;------------------------------------------------------------------------------
-;;                               Racket mode
-;;------------------------------------------------------------------------------
-
-
-(general-define-key :states '(normal visual)
-
-		    :keymaps 'racket-mode-map
-		    :prefix evil-command
-		    "g`" 'geiser-unvisit
-		    "gm" 'racket-visit-module
-		    "gr" 'racket-open-require-path
-		    "hd" 'racket-describe
-		    "hh" 'racket-doc
-		    "il" 'racket-insert-lambda
-		    "'" 'racket-repl
-		    "sb" 'racket-run
-		    "gn" 'next-error
-		    "gN" 'previous-error
-
-		    "sB" 'racket-run-and-switch-to-repl
-		    "se" 'racket-send-last-sexp
-		    "sf" 'racket-send-definition
-		    "sr" 'racket-send-region
-		    "si" 'racket-run
-		    "ss" 'racket-repl
-		    "tb" 'racket-test)
-;;; TODO create gtags keys
-(general-define-key :states '(normal visual)
-		    :keymaps '(racket-mode-map)
-		    :prefix evil-leader
-		    "gc" 'helm-gtags-create-tags
-		    "gd" 'helm-gtags-find-tag
-		    "gD" 'helm-gtags-find-tag-other-window
-		    "gf" 'helm-gtags-select-path
-		    "gG" 'helm-gtags-dwim
-		    "gi" 'helm-gtags-tags-in-this-function
-		    "gl" 'helm-gtags-parse-file
-		    "gn" 'helm-gtags-next-history
-		    "gN" 'helm-gtags-previous-history
-		    "gn" 'helm-gtags-find-rtag
-		    "gR" 'helm-gtags-resume
-		    "gs" 'helm-gtags-select
-		    "gS" 'helm-gtags-show-stack
-		    "gu" 'helm-gtags-update-tags)
-
 
 ;;------------------------------------------------------------------------------
 ;;                               Yasnippet minor mode
@@ -444,3 +270,4 @@ After evaluating the last sexp, it is replaced by its result."
 		    "C-g" 'yas-expand-snippet)
 
 (provide 'zen-evil)
+;;; zen-evil ends here

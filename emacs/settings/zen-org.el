@@ -1,5 +1,6 @@
 (use-package org-plus-contrib
-  :ensure)
+  :ensure t
+  :defer t)
 
 (require 'ox)
 (require 'ox-latex)

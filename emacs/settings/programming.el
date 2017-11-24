@@ -1,3 +1,7 @@
+;;; programming.el --- General emacs configuration for programming
+;;; Commentary:
+;;; Code:
+
 (use-package rainbow-delimiters
   :ensure t
   :defer t)
@@ -233,10 +237,11 @@
 
 ;;; github.com/Fuco1/smartparens/isuues80
 (defun create-newline-and-enter-sexp (&rest _ignored)
-  "Open a new brace or braket expression, with relevant newlines and indent.  "
+  "Open a new brace or braket expression, with relevant newlines and indent."
   (newline)
   (indent-according-to-mode)
   (forward-line -1)
   (indent-according-to-mode))
 
 (provide 'programming)
+;;; programming.el ends here

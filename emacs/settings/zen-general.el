@@ -1,3 +1,7 @@
+;;; zen-general.el --- Basic configuration
+;;; Commentary:
+;;; Code:
+
 ;; (use-package ivy
 ;;   :diminish ivy-mode
 ;;   :ensure t
@@ -13,6 +17,9 @@
 ;;   :config
 ;;   (ivy-set-display-transformer 'ivy-switch-buffer 'ivy-rich-switch-buffer-transformer)
 ;;   (setq ivy-use-virtual-buffers t))
+
+(use-package diminish
+  :ensure t)
 
 (use-package helm
   :diminish helm-mode
@@ -38,8 +45,9 @@
 (use-package company-flx
   :ensure t)
 
-(setq ivy-re-builders-alist
-      '((t . ivy--regex-fuzzy)))
+;; (defvar ivy-re-builders-alist)
+;; (setq ivy-re-builders-alist
+;;       '((t . ivy--regex-fuzzy)))
 
 
 (use-package popup
@@ -52,6 +60,7 @@
   (popwin-mode 1)
   (setq popwin:special-display-config nil)
   (push '("*Help*"                   :dedicated t :position bottom :stick t :noselect nil :height 0.4) popwin:special-display-config)
+  (push '("*Metahelp*"                            :position bottom :stick t :noselect t   :height 0.4) popwin:special-display-config)
   (push '("*compilation*"            :dedicated t :position bottom :stick t :noselect t   :height 0.4) popwin:special-display-config)
   (push '("*Warnings*"               :dedicated t :position bottom :stick t :noselect t   :height 0.4) popwin:special-display-config)
   (push '("*Shell Command Output*"   :dedicated t :position bottom :stick t :noselect nil            ) popwin:special-display-config)
@@ -62,7 +71,8 @@
   (push '("*nosetests*"              :dedicated t :position bottom :stick t :noselect nil :height 0.4) popwin:special-display-config)
   (push '("^\*WoMan.+\*$" :regexp t               :position bottom                                   ) popwin:special-display-config)
   (push '("*cider-test-report*"      :dedicated t :position bottom :stick t :noselect t   :height 0.4) popwin:special-display-config)
-  (push '("*cider-error*"            :dedicated t :position bottom :stick t :noselect t   :height 0.4) popwin:special-display-config))
+  (push '("*cider-error*"            :dedicated t :position bottom :stick t :noselect t   :height 0.4) popwin:special-display-config)
+  (push '("*Buffer List*"            :dedicated t :position bottom :stick t               :height 0.4) popwin:special-display-config))
 
 (use-package recentf
   :ensure t

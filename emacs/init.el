@@ -1,3 +1,7 @@
+;;; package --- Main config file
+;;; Commentary:
+;;; Code:
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -18,7 +22,7 @@
 		  ("convert -trim -density 300 -shave 1x1 %f -quality 100 %O")))))
  '(package-selected-packages
    (quote
-    (aggresive-indent-mode aggresive-indent go-eldoc yaml-mode groovy-mode xterm-color helm-mode-manager helm-make helm-projectile helm-gtags counsel-gtags ggtags company-quickhelp racket-mode quack geiser fontawesome haskell-mode web-beautify emmet-mode org-plus-contrib fill-column-indicator modeline-posn julia-repl ein tide pyenv-mode-auto pyenv-mode web-mode cider clojure-mode popup ivy org-ref helm-core company-flx flx ensime ivy-rich xcscope srefactor aggressive-indent auto-highlight-symbol clean-aindent-mode stickyfunc-enhance popwin counsel swiper orgit git-timemachine git-messenger git-link gitconfig-mode gitattributes-mode gitignore-mode evil-magit magit page-break-lines projectile whitespace-cleanup-mode company-statistics company yasnippet smartparens sublimity flycheck exec-path-from-shell highlight-parentheses highlight-numbers open-junk-file rainbow-delimiters vi-tilde-fringe evil-search-highlight-persist evil-matchit evil-exchange evil-anzu evil-visualstar evil-surround evil-nerd-commenter evil-org evil-numbers ace-window ace-link general powerline evil hlinum base16-theme s dash use-package)))
+    (eval-sexp-fu yaml-mode julia-mode company-go go-eldoc go-mode helm-mode-manager helm-make helm-projectile helm-gtags counsel-gtags ggtags company-quickhelp racket-mode quack geiser fontawesome haskell-mode web-beautify emmet-mode org-plus-contrib fill-column-indicator modeline-posn julia-repl ein tide pyenv-mode-auto pyenv-mode web-mode cider clojure-mode popup ivy org-ref helm-core company-flx flx ensime ivy-rich xcscope srefactor aggressive-indent auto-highlight-symbol clean-aindent-mode stickyfunc-enhance popwin counsel swiper orgit git-timemachine git-messenger git-link gitconfig-mode gitattributes-mode gitignore-mode evil-magit magit page-break-lines projectile whitespace-cleanup-mode company-statistics company yasnippet smartparens sublimity flycheck exec-path-from-shell highlight-parentheses highlight-numbers open-junk-file rainbow-delimiters vi-tilde-fringe evil-search-highlight-persist evil-matchit evil-exchange evil-anzu evil-visualstar evil-surround evil-nerd-commenter evil-org evil-numbers ace-window ace-link general powerline evil hlinum base16-theme s dash use-package)))
  '(safe-local-variable-values
    (quote
     ((eval
@@ -38,7 +42,7 @@
  ;; If there is more than one, they won't work right.
  )
 
-
+(defvar utf-translate-cjk-mode)
 ;;; UTF-8
 (setq utf-translate-cjk-mode nil) ; disable CJK coding/encoding (Chinese/Japanese/Korean characters)
 (set-language-environment 'utf-8)
@@ -81,11 +85,11 @@
 (setq vc-make-backup-files t)
 (setq auto-save-file-name-transforms '((".*" "~/.emacs.d/auto-save-list/" t)))
 
-(setq savehist-file "~/.emacs.d/savehist")
+(defvar savehist-file "~/.emacs.d/savehist")
 (savehist-mode 1)
 (setq history-delete-duplicates t)
-(setq savehist-save-minibuffer-history 1)
-(setq savehist-additional-variables
+(defvar savehist-save-minibuffer-history 1)
+(defvar savehist-additional-variables
       '(kill-ring
 	search-ring
 	regexp-search-ring))
@@ -103,6 +107,7 @@
 (require 'global)
 (require 'zen-general)
 (require 'programming)
+(require 'zen-evil)
 (require 'scala)
 (require 'zen-clojure)
 (require 'zen-org)
@@ -113,6 +118,6 @@
 (require 'zen-julia)
 (require 'zen-racket)
 (require 'zen-go)
-(require 'zen-evil)
+(require 'zen-shortcuts)
 
 ;;; init.el ends here
