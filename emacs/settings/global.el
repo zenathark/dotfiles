@@ -20,8 +20,8 @@
 ;;; Theme
 (defvar zen/font)
 (if (eq system-type 'darwin)
-    (setq zen/font "Hack-14")
-    (setq zen/font "Hack-9"))
+    (defvar zen/font "Hack-12")
+    (defvar zen/font "Hack-9"))
 
 (defconst lisp--prettify-symbols-alist
   '(("lambda" . ?λ)))
@@ -29,13 +29,15 @@
 
 (defvar zen/font-status)
 (if (eq system-type 'darwin)
-    (setq zen/font-status "DejaVu Sans Mono-14")
-    (setq zen/font-status "DejaVu Sans Mono-9"))
+    (defvar zen/font-status "DejaVu Sans Mono-12")
+    (defvar zen/font-status "DevaVu Sans Mono-9"))
 
 (defvar zen/base16-colors)
 (use-package base16-theme
   :ensure t
   :config
+  ;; (load-theme 'base16-onedark)
+  ;; (defvar zen/base16-colors base16-onedark-colors)
   (load-theme 'base16-onedark)
   (defvar base16-onedark-colors)
   (defvar zen/base16-colors base16-onedark-colors)

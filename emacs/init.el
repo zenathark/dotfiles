@@ -9,7 +9,7 @@
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes
    (quote
-    ("100eeb65d336e3d8f419c0f09170f9fd30f688849c5e60a801a1e6addd8216cb" "36746ad57649893434c443567cb3831828df33232a7790d232df6f5908263692" "6145e62774a589c074a31a05dfa5efdf8789cf869104e905956f0cbd7eda9d0e" "fec45178b55ad0258c5f68f61c9c8fd1a47d73b08fb7a51c15558d42c376083d" default)))
+    ("1263771faf6967879c3ab8b577c6c31020222ac6d3bac31f331a74275385a452" "100eeb65d336e3d8f419c0f09170f9fd30f688849c5e60a801a1e6addd8216cb" "36746ad57649893434c443567cb3831828df33232a7790d232df6f5908263692" "6145e62774a589c074a31a05dfa5efdf8789cf869104e905956f0cbd7eda9d0e" "fec45178b55ad0258c5f68f61c9c8fd1a47d73b08fb7a51c15558d42c376083d" default)))
  '(org-preview-latex-process-alist
    (quote
     ((imagemagick :programs
@@ -57,9 +57,9 @@
 
 (require 'package)
 (setq
- package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
+ package-archives '(("melpa" . "http://melpa.org/packages/")
+		    ("gnu" . "http://elpa.gnu.org/packages/")
 		    ("org" . "http://orgmode.org/elpa/")
-		    ("melpa" . "http://melpa.org/packages/")
 		    ("melpa-stable" . "http://stable.melpa.org/packages/")))
 
 (package-initialize)

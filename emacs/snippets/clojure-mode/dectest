@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: Basic Test
+# key: dectest
+# --
+(deftest $1
+  (testing "$2"
+    (is $0)))
