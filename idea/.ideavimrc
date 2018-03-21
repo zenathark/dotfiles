@@ -1,6 +1,18 @@
-set nocompatible
-imap hh <Esc>
-vmap hh <Esc>
-set timeout timeoutlen=300 ttimeoutlen=500
 set surround
+no d h
+no h j
+no t k
+no n l
+no s :
+no S ;
+no j d
+no l n
+no L N
+no k t
 
+no - $
+no N :action VimMotionNextTab<CR>
+no D :action VimMotionPreviousTab<CR>
+no T 8<Up>
+no H 8<Down>
+no _ ^
