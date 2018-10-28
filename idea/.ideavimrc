@@ -1,8 +1,8 @@
 set surround
-no d h
-no h j
-no t k
-no n l
+no d :action VimMotionLeft<CR>
+no h :action VimMotionDown<CR>
+no t :action VimMotionUp<CR>
+no n :action VimMotionRight<CR>
 no s :
 no S ;
 no j d

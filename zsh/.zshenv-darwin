@@ -3,6 +3,9 @@ export PATH=$PATH:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/texbin
 # Latex 2016
 export PATH=$PATH:/Library/TeX/texbin
 
+# VSCode
+export PATH=$PATH:/Applications/Visual\ Studio\ Code.app/Contents/Resources/app/bin
+
 # set clicolor if you want ansi colors in iterm2 
 export clicolor=1
 # set colors to match iterm2 terminal colors
@@ -21,10 +24,10 @@ export PATH=$PATH:/applications/julia-0.5.app/contents/resources/julia/bin
 export texmfhome=$HOME/library/texmf
 
 # vagrant config
-# export vagrant_dotfile_path=/volumes/macbookelements/vagrant/.vagrant
-# export vagrant_home=/volumes/macbookelements/vagrant/.vagrant.d
-vagrant_dotfile_path=~/.vagrant
-vagrant_home=~/.vagrant.d
+export vagrant_dotfile_path=/volumes/macbookelements/vagrant/.vagrant
+export vagrant_home=/volumes/macbookelements/vagrant/.vagrant.d
+#vagrant_dotfile_path=~/.vagrant
+#vagrant_home=~/.vagrant.d
 # export HOMEBREW_GITHUB_API_TOKEN="1ff4964b9b287702aa6befc263efb1870fc33690"
 
 #rust cargo
@@ -32,7 +35,7 @@ export PATH=$PATH:$HOME/.cargo/bin
 export rust_src_path=HOME/github/rust/src
 
 #golang
-export GOPATH=$HOME/github/golang
+export GOPATH=$HOME/projects/golang
 export GOROOT=/usr/local/opt/go/libexec
 export PATH=$PATH:$GOPATH/bin
 export PATH=$PATH:$GOROOT/bin
