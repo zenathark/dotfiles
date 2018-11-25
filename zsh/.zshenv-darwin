@@ -20,7 +20,6 @@ export pythonpath=/usr/local/opt/opencv3/lib/python3.5/site-packages/
 alias wemacs='/applications/emacs.app/contents/macos/emacs $@ &'
 
 # julia path
-export PATH=$PATH:/applications/julia-0.5.app/contents/resources/julia/bin
 export texmfhome=$HOME/library/texmf
 
 # vagrant config

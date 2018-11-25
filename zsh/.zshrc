@@ -96,5 +96,8 @@ if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
 ### pyenv Configuration
 if which pyenv > /dev/null; then eval "$(pyenv init -)"; fi
 
+### pyenv Configuration
+if which swiftenv > /dev/null; then eval "$(swiftenv init -)"; fi
+
 export FFMPEG_HOME=/usr/local/Cellar/ffmpeg/3.3.3
 export DYLD_LIBRARY_PATH="$DYLD_LIBRARY_PATH:$FFMPEG_HOME/lib"
