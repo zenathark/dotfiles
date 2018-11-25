@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: map
+# key: map
+# --
+map($1) do $2
+$0
+end
