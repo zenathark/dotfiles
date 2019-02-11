@@ -1,4 +1,3 @@
-set surround
 no d :action VimMotionLeft<CR>
 no h :action VimMotionDown<CR>
 no t :action VimMotionUp<CR>
