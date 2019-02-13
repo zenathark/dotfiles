@@ -32,9 +32,9 @@ call plug#end()
 
 
 " UI
-let g:lightline = {
-	\ 'colorscheme': 'base16_onedark',
-	\ }
+" let g:lightline = {
+" 	\ 'colorscheme': 'base16_onedark',
+" 	\ }
 
 let g:rainbow_active = 1
 
@@ -75,6 +75,12 @@ no N <C-w><C-w>
 no H 8<Down>
 no T 8<Up>
 no D <C-w><S-w>
+
+"ctrl-space
+nnoremap <silent><C-p> :CtrlSpace O<CR>
+if executable("ag")
+    let g:CtrlSpaceGlobCommand = 'ag -l --nocolor -g ""'
+endif
 
 "fuzzy finder enigne fzf
 ""TODO
