@@ -9,7 +9,7 @@ let mapleader = "\<Space>"
 set nocompatible
 filetype off
 
-call plug#begin()
+call plug#begin('~/.local/share/nvim/plugged')
 
 " NVim enhacements
 Plug 'ciaranm/securemodelines'
@@ -18,17 +18,29 @@ Plug 'justinmk/vim-sneak'
 " Visuals
 Plug 'itchyny/lightline.vim'
 Plug 'w0rp/ale'
-Plug 'machakann/vim-highlightedyank'
-Plug 'andymass/vim-matchup'
-
 " Syntax
 Plug 'cespare/vim-toml'
 Plug 'rust-lang/rust'
 Plug 'dag/vim-fish'
 Plug 'godlygeek/tabular'
 Plug 'plasticboy/vim-markdown'
+Plug 'ncm2/ncm2'
+
 
 Plug 'chriskempson/base16-vim'
+
+" Fuzzy finder
+Plug 'airblade/vim-rooter'
+"Plug '/usr/bin/fzf'
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
+
+
+" Clojure
+Plug 'tpope/vim-fireplace'
+Plug 'guns/vim-sexp'
+Plug 'luochen1990/rainbow'
+
 
 call plug#end()
 
@@ -293,6 +305,9 @@ autocmd BufWritePost *.scss if filereadable("Makefile") | make | endif
 
 au Filetype rust source ~/.config/nvim/scripts/spacetab.vim
 au Filetype rust set colorcolumn=100
+
+au Filetype clojure source ~/.config/nvim/scripts/clojure.vim
+au Filetype clojurescript source ~/.config/nvim/scripts/clojure.vim
 
 " File autodetection
 autocmd BufRead *.plot set filetype=gnuplot
