@@ -19,3 +19,5 @@ xmonad/*~
 xmonad/*.o
 xmonad/xmonad-x*
 xmonad/*.hi
+.netrwhist
+plugged/
