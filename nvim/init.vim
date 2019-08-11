@@ -35,12 +35,14 @@ Plug 'airblade/vim-rooter'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 
+"Language servers
+Plug 'prabirshrestha/asyncomplete.vim'
+Plug 'prabirshrestha/async.vim'
+Plug 'prabirshrestha/vim-lsp'
+Plug 'prabirshrestha/asyncomplete-lsp.vim'
 
-" Clojure
-Plug 'tpope/vim-fireplace'
-Plug 'guns/vim-sexp'
-Plug 'luochen1990/rainbow'
-
+Plug 'ryanolsonx/vim-lsp-javascript'
+Plug 'ryanolsonx/vim-lsp-typescript'
 
 call plug#end()
 
@@ -210,17 +212,17 @@ vnoremap <C-f> :sus<cr>
 nnoremap <C-f> :sus<cr>
 
 " Vim dvorak remmaping, doesn't work with other editors :P
-no h j
-no d h
-no t k
-no k t
-no n l
-no s :
-no j d
-no l n
-no L N
-no _ ^
-no - $
+"no h j
+"no d h
+"no t k
+"no k t
+"no n l
+"no s :
+"no j d
+"no l n
+"no L N
+"no _ ^
+"no - $
 
 " X clipboard integration
 noremap <leader>p :read !xsel --clipboard --output<cr>
@@ -322,3 +324,25 @@ autocmd Filetype html,xml,xsl,php source ~/.config/nvim/scrips/closetag.vim
 "if has('nvim')
 "    runtime! plugin/python_setup.vim
 "endif
+"
+
+" Javascript
+
+"if executable('typescript-language-server')
+"    au User lsp_setup call lsp#register_server({
+"      \ 'name': 'javascript support using typescript-language-server',
+"      \ 'cmd': { server_info->[&shell, &shellcmdflag, 'typescript-language-server --stdio']},
+"      \ 'root_uri': { server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), 'package.json'))},
+"      \ 'whitelist': ['javascript', 'javascript.jsx']
+"      \ })
+"endif
+
+"if executable('typescript-language-server')
+"    au User lsp_setup call lsp#register_server({
+"        \ 'name': 'typescript-language-server',
+"        \ 'cmd': {server_info->[&shell, &shellcmdflag, 'typescript-language-server --stdio']},
+"        \ 'root_uri':{server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), 'tsconfig.json'))},
+"        \ 'whitelist': ['typescript', 'typescript.tsx'],
+"        \ })
+"endif
+

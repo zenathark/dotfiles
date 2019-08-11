@@ -111,6 +111,18 @@ function fish_prompt
 	set_color normal
 end
 
+if not functions -q fisher
+	set -q XDG_CONFIG_HOME; or set XDG_CONFIG_HOME ~/.config
+	curl https://git.io/fisher --create-dirs -sLo $XDG_CONFIG_HOME/fish/functions/fisher.fish
+	fish -c fisher
+end
 
+export NVM_DIR="$HOME/.nvm"
+bass source $NVM_DIR/nvm.sh
+# [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+# [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
-
+#THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
+export SDKMAN_DIR="/home/zenathark/.sdkman"
+bass source $SDKMAN_DIR/bin/sdkman-init.sh
+# [[ -s "/home/zenathark/.sdkman/bin/sdkman-init.sh" ]] && source "/home/zenathark/.sdkman/bin/sdkman-init.sh"
