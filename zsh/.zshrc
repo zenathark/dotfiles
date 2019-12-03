@@ -53,9 +53,9 @@ ZSH_THEME="norm"
 # Add wisely, as too many plugins slow down shell startup.
 case "$OSTYPE" in
     darwin*)
-        plugins=(git bundle bundler brew zsh-autosuggestions zsh-syntax-highlighting);;
+        plugins=(git brew zsh-autosuggestions zsh-syntax-highlighting);;
     linux*)
-        plugins=(git bundle bundler zsh-autosuggestions zsh-syntax-highlighting);;
+        plugins=(git zsh-autosuggestions zsh-syntax-highlighting);;
 esac
 
 source $ZSH/oh-my-zsh.sh

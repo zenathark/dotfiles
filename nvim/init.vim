@@ -2,6 +2,7 @@ call plug#begin('~/.vim/plugged')
 
 Plug 'neoclide/coc.nvim', {'do': { -> coc#util#install()}}
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
+Plug 'andymass/vim-matchup'
 
 Plug 'ciaranm/securemodelines'
 Plug 'editorconfig/editorconfig-vim'
@@ -13,13 +14,12 @@ Plug 'ryanoasis/vim-devicons'
 Plug 'airblade/vim-gitgutter'
 
 Plug 'scrooloose/nerdcommenter'
-Plug 'morhetz/gruvbox'
 Plug 'itchyny/lightline.vim'
 Plug 'machakann/vim-highlightedyank'
 Plug 'andymass/vim-matchup'
 
 Plug 'airblade/vim-rooter'
-"Plug 'junegunn/fzf', {'dir': '~/.fzf'}
+Plug '/usr/local/opt/fzf'
 Plug 'junegunn/fzf.vim'
 Plug 'airblade/vim-gitgutter'
 
@@ -34,41 +34,73 @@ Plug 'mattn/emmet-vim'
 Plug 'tpope/vim-surround'
 Plug 'Konfekt/FastFold'
 Plug 'tpope/vim-fugitive'
-Plug 'tmsvg/pear-tree'
+"Plug 'tmsvg/pear-tree'
+Plug 'chriskempson/base16-vim'
+Plug 'easymotion/vim-easymotion'
+Plug 'pboettch/vim-cmake-syntax'
 
 call plug#end()
 
-set encoding=utf-8
-set guifont=Fira\ Code:h11
 
 inoremap jk <Esc>
 inoremap kj <Esc>
 nmap s :
 
+"---------------------------- Base Editor Config -------------------------------
+nnoremap <Space> <Nop>
+let mapleader="\<Space>"
 set fileformat=unix
 set fileformats=unix,dos
-"---------------------------- Base Editor Config -------------------------------
 set number
+filetype plugin indent on
+set autoindent
+set timeoutlen=300 "  http://stackoverflow.com/questions/2158516/delay-before-o-opens-a-new-line
+set encoding=utf-8
+set guifont=Fira\ Code:h11
+set scrolloff=2
+set noshowmode
+set hidden
+set nowrap
+set nojoinspaces
+set signcolumn=yes
 
-"set tabstop=2
-"set shiftwidth=2
-"set cindent
-"set expandtab
-"set smarttab
+set splitright
+set splitbelow
+
+set undodir=~/.vimdid
+set undofile
+
+set wildmenu
+set wildmode=list:longest
+set wildignore=.hg,.svn,*~,*.png,*.jpg,*.gif,*.settings,Thumbs.db,*.min.js,*.swp,publish/*,intermediate/*,*.o,*.hi,Zend,vendor
+
+
+
+set tabstop=4
+set shiftwidth=4
+set cindent
+set expandtab
+set smarttab
 
 set background=dark
-colorscheme gruvbox
+colorscheme base16-onedark
 syntax on
 
-nmap <C-/> <plug>NERDCommenterToggle
-vmap <C-/> <plug>NERDCommenterToggle
+map <leader><leader> <Plug>(easymotion-prefix)
+map <leader>f <Plug>(snipe-f)
+map <leader>b <Plug>(snipe-b)
+
+nmap <leader>/ <plug>NERDCommenterToggle
+vmap <leader>/ <plug>NERDCommenterToggle
 nmap <C-s> :w<CR>
 imap <C-s> :w<CR>
 
+nmap <leader>p :FZF<CR>
+
 " NERDTree Config
 
-nmap <M-(> :NERDTreeToggle<CR>
-nmap <S-Esc> :NERDTreeToggle<CR>
+nmap <leader>( :NERDTreeToggle<CR>
+
 
 let g:NERDTreeGitStatusWithFlags = 1
 
@@ -183,7 +215,7 @@ nnoremap <silent> <space>o :<C-u>CocList outline<cr>
 nnoremap <silent> <space>s :<C-u>CocList -I symbols<cr>
 nnoremap <silent> <space>j :<C-u>CocNext<cr>
 nnoremap <silent> <space>k :<C-u>CocPrev<cr>
-nnoremap <silent> <space>p :<C-u>CocListListResume<cr>
+"nnoremap <silent> <space>p :<C-u>CocListListResume<cr>
 
 "---------------------------- Lightline Config ---------------------------------
 "let g:lightline = {
@@ -204,3 +236,16 @@ if executable('rg')
   set grepformat=%f:%l:%c:%m
 endif
 
+"---------------------------- Secure Modeline Config ----------------------------
+let g:secure_modelines_allowed_items = [
+                \ "textwidth",   "tw",
+                \ "softtabstop", "sts",
+                \ "tabstop",     "ts",
+                \ "shiftwidth",  "sw",
+                \ "expandtab",   "et",   "noexpandtab", "noet",
+                \ "filetype",    "ft",
+                \ "foldmethod",  "fdm",
+                \ "readonly",    "ro",   "noreadonly", "noro",
+                \ "rightleft",   "rl",   "norightleft", "norl",
+                \ "colorcolumn"
+                \ ]
