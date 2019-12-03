@@ -21,3 +21,4 @@ xmonad/xmonad-x*
 xmonad/*.hi
 .netrwhist
 plugged/
+shell/.config/fish/*
